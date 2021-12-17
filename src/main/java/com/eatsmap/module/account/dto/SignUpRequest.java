@@ -28,5 +28,5 @@ public class SignUpRequest {
     private String name;
 
     @NotEmpty
-    private String phone;
+    private String nickname;
 }

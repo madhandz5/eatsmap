@@ -59,7 +59,7 @@ public class CommonResponseController {
     //          ...
     //      }
 
-    protected ResponseEntity<String> createResponse(Map<String, Object> data) {
+    protected ResponseEntity<String> createResponse(Object data) {
         CommonResponse response = CommonResponse.createResponse(true, data);
         return convertToResponseEntity(response);
     }

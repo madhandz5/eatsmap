@@ -29,13 +29,16 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
+    @Enumerated(EnumType.STRING)
+    private AccountRole accountRole;
+
     @Column(unique = true)
     private String email;
     private String password;
     private String name;
 
     @Column(unique = true)
-    private String phone;
+    private String nickname;
 
     private boolean exited;
     private LocalDateTime exitedAt;
@@ -47,10 +50,10 @@ public class Account {
     public static Account createAccount(SignUpRequest request, String encodedPassword) {
         return Account.builder()
                 .accountType(request.getAccountType())
+                .name(request.getName())
+                .nickname(request.getNickname())
                 .email(request.getEmail())
                 .password(encodedPassword)
-                .name(request.getName())
-                .phone(request.getPhone())
                 .build();
     }
 
