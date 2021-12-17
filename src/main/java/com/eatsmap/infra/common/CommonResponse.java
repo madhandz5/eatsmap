@@ -2,8 +2,6 @@ package com.eatsmap.infra.common;
 
 import lombok.Data;
 
-import java.util.Map;
-
 /**
  * @author : ryan
  * @version : 1.0.0
