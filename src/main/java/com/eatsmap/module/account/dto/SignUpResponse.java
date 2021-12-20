@@ -1,24 +1,25 @@
 package com.eatsmap.module.account.dto;
 
-import com.eatsmap.module.account.AccountRole;
-import com.eatsmap.module.account.AccountType;
+import com.eatsmap.module.account.Member;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
+@Builder(access = AccessLevel.PRIVATE)
 public class SignUpResponse {
 
     private Long id;
-
-    private AccountType accountType;
-
-    private AccountRole accountRole;
 
     private String email;
     private String name;
     private String nickname;
 
-    private LocalDateTime joinedAt;
-
+    public static SignUpResponse createResponse(Member member) {
+        return SignUpResponse.builder()
+                .id(member.getId())
+                .email(member.getEmail())
+                .nickname(member.getNickname())
+                .build();
+    }
 }

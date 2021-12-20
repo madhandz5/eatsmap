@@ -1,6 +1,6 @@
 package com.eatsmap.module.account.dto;
 
-import com.eatsmap.module.account.AccountType;
+import com.eatsmap.module.account.MemberType;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -8,9 +8,6 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 public class SignUpRequest {
-
-    @NotEmpty
-    private AccountType accountType;
 
     @Email
     @NotEmpty

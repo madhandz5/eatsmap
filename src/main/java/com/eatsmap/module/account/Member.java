@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * @author : ryan
@@ -20,17 +21,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(access = AccessLevel.PRIVATE)
 @SequenceGenerator(name = "account_seq", sequenceName = "account_seq", initialValue = 1001)
-public class Account {
+public class Member {
     @Id
     @GeneratedValue(generator = "account_seq")
     @Column(name = "account_id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private AccountType accountType;
+    private MemberType memberType;
 
     @Enumerated(EnumType.STRING)
-    private AccountRole accountRole;
+    private MemberRole memberRole;
 
     @Column(unique = true)
     private String email;
@@ -47,14 +48,23 @@ public class Account {
     private LocalDateTime passwordModifiedAt;
     private LocalDateTime lastLoginAt;
 
-    public static Account createAccount(SignUpRequest request, String encodedPassword) {
-        return Account.builder()
-                .accountType(request.getAccountType())
+    private String emailCheckToken;
+    private LocalDateTime emailCheckTokenGeneratedAt;
+    private boolean verified;
+
+    public static Member createAccount(SignUpRequest request) {
+        return Member.builder()
                 .name(request.getName())
                 .nickname(request.getNickname())
                 .email(request.getEmail())
-                .password(encodedPassword)
+                .password(request.getPassword())
+                .verified(false)
                 .build();
+    }
+
+    public void generatedEmailCheckToken() {
+        this.emailCheckToken = UUID.randomUUID().toString();
+        this.emailCheckTokenGeneratedAt = LocalDateTime.now();
     }
 
 

@@ -1,5 +1,5 @@
 package com.eatsmap.module.account;
 
-public enum AccountRole {
+public enum MemberRole {
     GUEST, USER, ADMIN
 }

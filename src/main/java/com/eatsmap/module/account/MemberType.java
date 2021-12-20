@@ -1,5 +1,5 @@
 package com.eatsmap.module.account;
 
-public enum AccountType {
+public enum MemberType {
     EMAIL, KAKAO
 }
