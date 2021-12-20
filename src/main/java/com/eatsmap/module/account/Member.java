@@ -1,10 +1,13 @@
 package com.eatsmap.module.account;
 
 import com.eatsmap.module.account.dto.SignUpRequest;
+import com.eatsmap.module.review.Review;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -20,10 +23,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(access = AccessLevel.PRIVATE)
-@SequenceGenerator(name = "account_seq", sequenceName = "account_seq", initialValue = 1001)
+@SequenceGenerator(name = "member_seq", sequenceName = "member_seq", initialValue = 1001)
 public class Member {
     @Id
-    @GeneratedValue(generator = "account_seq")
+    @GeneratedValue(generator = "member_seq")
     @Column(name = "account_id")
     private Long id;
 
@@ -52,6 +55,11 @@ public class Member {
     private LocalDateTime emailCheckTokenGeneratedAt;
     private boolean verified;
 
+
+    @Builder.Default
+    @OneToMany(mappedBy = "member")
+    private List<Review> reviews = new ArrayList<>();
+
     public static Member createAccount(SignUpRequest request) {
         return Member.builder()
                 .name(request.getName())
@@ -66,6 +74,4 @@ public class Member {
         this.emailCheckToken = UUID.randomUUID().toString();
         this.emailCheckTokenGeneratedAt = LocalDateTime.now();
     }
-
-
 }
