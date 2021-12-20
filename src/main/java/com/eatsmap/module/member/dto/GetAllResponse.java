@@ -1,11 +1,7 @@
-package com.eatsmap.module.account.dto;
+package com.eatsmap.module.member.dto;
 
-import com.eatsmap.module.review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @AllArgsConstructor

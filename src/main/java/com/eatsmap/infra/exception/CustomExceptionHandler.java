@@ -1,6 +1,6 @@
 package com.eatsmap.infra.exception;
 
-import com.eatsmap.module.account.exception.UserNotFoundException;
+import com.eatsmap.module.member.exception.UserNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

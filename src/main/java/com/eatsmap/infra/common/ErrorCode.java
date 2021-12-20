@@ -21,7 +21,7 @@ public enum ErrorCode {
     // account, verification (1000)
     ACCOUNT_NOT_FOUND("1001", "Account Not Found",null),
     VERIFICATION_NOT_FOUND("1002", "Verification Not Found",null),
-
+    INVALID_VERIFICATION("1003", "유효하지 않은 인증입니다.", null),
 
     LOGIN_PROCESS_PASSWORD_NOTMATCH("1007" , "비밀번호가 일치하지 않습니다.", null),
     LOGIN_PROCESS_FAILED("1008" , "로그인에 실패하였습니다.", null),

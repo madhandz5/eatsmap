@@ -1,7 +1,7 @@
 package com.eatsmap.module.review;
 
-import com.eatsmap.module.account.Member;
-import com.eatsmap.module.account.MemberRepository;
+import com.eatsmap.module.member.Member;
+import com.eatsmap.module.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

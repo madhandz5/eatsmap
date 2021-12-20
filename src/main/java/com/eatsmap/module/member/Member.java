@@ -1,6 +1,6 @@
-package com.eatsmap.module.account;
+package com.eatsmap.module.member;
 
-import com.eatsmap.module.account.dto.SignUpRequest;
+import com.eatsmap.module.member.dto.SignUpRequest;
 import com.eatsmap.module.review.Review;
 import lombok.*;
 
@@ -27,7 +27,7 @@ import java.util.UUID;
 public class Member {
     @Id
     @GeneratedValue(generator = "member_seq")
-    @Column(name = "account_id")
+    @Column(name = "member_id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -39,7 +39,6 @@ public class Member {
     @Column(unique = true)
     private String email;
     private String password;
-    private String name;
 
     @Column(unique = true)
     private String nickname;
@@ -47,7 +46,7 @@ public class Member {
     private boolean exited;
     private LocalDateTime exitedAt;
 
-    private LocalDateTime joinedAt;
+    private LocalDateTime regDate;
     private LocalDateTime passwordModifiedAt;
     private LocalDateTime lastLoginAt;
 
@@ -61,13 +60,18 @@ public class Member {
     private List<Review> reviews = new ArrayList<>();
 
     public static Member createAccount(SignUpRequest request) {
+
         return Member.builder()
-                .name(request.getName())
                 .nickname(request.getNickname())
                 .email(request.getEmail())
                 .password(request.getPassword())
                 .verified(false)
                 .build();
+    }
+
+    public void verifiedMemberByEmail() {
+        this.verified = true;
+        this.regDate = LocalDateTime.now();
     }
 
     public void generatedEmailCheckToken() {

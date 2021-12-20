@@ -1,6 +1,5 @@
-package com.eatsmap.module.account.dto;
+package com.eatsmap.module.member.dto;
 
-import com.eatsmap.module.account.MemberType;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -18,9 +17,6 @@ public class SignUpRequest {
 
     @NotEmpty
     private String passwordConfirm;
-
-    @NotEmpty
-    private String name;
 
     @NotEmpty
     private String nickname;

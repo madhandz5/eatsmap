@@ -1,7 +1,7 @@
-package com.eatsmap.module.account.validator;
+package com.eatsmap.module.member.validator;
 
-import com.eatsmap.module.account.MemberRepository;
-import com.eatsmap.module.account.dto.SignUpRequest;
+import com.eatsmap.module.member.MemberRepository;
+import com.eatsmap.module.member.dto.SignUpRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

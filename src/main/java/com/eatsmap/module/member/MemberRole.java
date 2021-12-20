@@ -1,4 +1,4 @@
-package com.eatsmap.module.account;
+package com.eatsmap.module.member;
 
 public enum MemberRole {
     GUEST, USER, ADMIN

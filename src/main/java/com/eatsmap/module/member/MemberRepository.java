@@ -1,6 +1,6 @@
-package com.eatsmap.module.account;
+package com.eatsmap.module.member;
 
-import com.eatsmap.module.account.dto.GetAllResponse;
+import com.eatsmap.module.member.dto.GetAllResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,6 +15,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Member findByEmail(String email);
 
-    @Query("select new com.eatsmap.module.account.dto.GetAllResponse(m.id, m.email, m.nickname, r.id) from Review r join r.member m")
+    @Query("select new com.eatsmap.module.member.dto.GetAllResponse(m.id, m.email, m.nickname, r.id) from Review r join r.member m")
     List<GetAllResponse> findToGetAllResponse();
 }

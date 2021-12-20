@@ -1,7 +1,6 @@
 package com.eatsmap.module.review;
 
-import com.eatsmap.module.account.Member;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.eatsmap.module.member.Member;
 import lombok.*;
 
 import javax.persistence.*;
