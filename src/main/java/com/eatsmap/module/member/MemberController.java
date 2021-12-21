@@ -45,7 +45,7 @@ public class MemberController {
     public ResponseEntity<CommonResponse> verifyEmailWithToken(@Valid @RequestBody VerifyEmailRequest request, Errors errors){
         if(errors.hasErrors()){
             CommonResponse response = CommonResponse.createResponse(false, null);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            return ResponseEntity.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).body(response);
         }
         VerifyEmailResponse data = memberService.verifyByEmailToken(request);
         CommonResponse response = CommonResponse.createResponse(true, data);
