@@ -1,6 +1,5 @@
 package com.eatsmap.module.review.dto;
 
-import com.eatsmap.module.Category.Category;
 import com.eatsmap.module.review.Review;
 import com.eatsmap.module.review.ReviewPrivacy;
 import lombok.AccessLevel;
@@ -9,7 +8,6 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Builder(access = AccessLevel.PRIVATE)

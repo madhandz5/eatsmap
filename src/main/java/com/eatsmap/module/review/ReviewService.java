@@ -1,7 +1,7 @@
 package com.eatsmap.module.review;
 
-import com.eatsmap.module.Category.Category;
-import com.eatsmap.module.Category.CategoryRepository;
+import com.eatsmap.module.category.Category;
+import com.eatsmap.module.category.CategoryRepository;
 import com.eatsmap.module.hashtag.Hashtag;
 import com.eatsmap.module.hashtag.HashtagService;
 import com.eatsmap.module.member.Member;

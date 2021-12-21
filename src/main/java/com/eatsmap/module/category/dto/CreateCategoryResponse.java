@@ -1,6 +1,6 @@
-package com.eatsmap.module.Category.dto;
+package com.eatsmap.module.category.dto;
 
-import com.eatsmap.module.Category.Category;
+import com.eatsmap.module.category.Category;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;

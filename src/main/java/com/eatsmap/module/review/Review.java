@@ -1,6 +1,6 @@
 package com.eatsmap.module.review;
 
-import com.eatsmap.module.Category.Category;
+import com.eatsmap.module.category.Category;
 import com.eatsmap.module.hashtag.Hashtag;
 import com.eatsmap.module.member.Member;
 import com.eatsmap.module.review.dto.CreateReviewRequest;
@@ -10,21 +10,22 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(access = AccessLevel.PRIVATE)
+@SequenceGenerator(name = "review_seq",sequenceName = "review_seq",initialValue = 1001, allocationSize = 30)
 public class Review {
 
     @Id
-    @GeneratedValue
-    @Column(name = "rev_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_seq")
+    @Column(name = "review_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     private Integer taste;
@@ -35,7 +36,7 @@ public class Review {
     //Groups
 
     //Hashtag
-    @OneToOne
+    @OneToOne(mappedBy = "review")
     @JoinColumn(name = "hashtag_id")
     private Hashtag hashtag;
 

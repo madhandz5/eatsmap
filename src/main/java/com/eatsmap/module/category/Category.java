@@ -1,6 +1,6 @@
-package com.eatsmap.module.Category;
+package com.eatsmap.module.category;
 
-import com.eatsmap.module.Category.dto.CreateCategoryRequest;
+import com.eatsmap.module.category.dto.CreateCategoryRequest;
 import com.eatsmap.module.review.Review;
 import lombok.*;
 

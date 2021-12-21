@@ -1,4 +1,4 @@
-package com.eatsmap.module.Category.dto;
+package com.eatsmap.module.category.dto;
 
 import lombok.Data;
 

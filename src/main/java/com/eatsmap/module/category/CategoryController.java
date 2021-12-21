@@ -1,8 +1,8 @@
-package com.eatsmap.module.Category;
+package com.eatsmap.module.category;
 
 import com.eatsmap.infra.common.CommonResponse;
-import com.eatsmap.module.Category.dto.CreateCategoryRequest;
-import com.eatsmap.module.Category.dto.CreateCategoryResponse;
+import com.eatsmap.module.category.dto.CreateCategoryRequest;
+import com.eatsmap.module.category.dto.CreateCategoryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

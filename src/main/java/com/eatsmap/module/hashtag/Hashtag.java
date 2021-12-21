@@ -16,7 +16,8 @@ public class Hashtag {
     @Column(name = "hashtag_id")
     private Long id;
 
-    @OneToOne(mappedBy = "hashtag")
+    @OneToOne
+    @JoinColumn(name = "review_id")
     private Review review;
 
     private int md01 = 0;
@@ -36,7 +37,7 @@ public class Hashtag {
         this.review = review;
     }
 
-    public Hashtag updateHashtag(List<String> hashtags) {
+    public void updateHashtag(List<String> hashtags) {
         for (String hashtag : hashtags) {
             switch (hashtag) {
                 case "md01" : this.md01 = 1; break;
@@ -53,6 +54,5 @@ public class Hashtag {
                 default: break;
             }
         }
-        return this;
     }
 }
