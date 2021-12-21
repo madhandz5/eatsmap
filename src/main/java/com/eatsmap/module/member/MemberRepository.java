@@ -15,6 +15,12 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Member findByEmail(String email);
 
-    @Query("select new com.eatsmap.module.member.dto.GetAllResponse(m.id, m.email, m.nickname, r.id) from Review r join r.member m")
+    @Query("select new com.eatsmap.module.member.dto.GetAllResponse(m.id, m.email, m.nickname, r.id) from Member m join m.reviews r")
     List<GetAllResponse> findToGetAllResponse();
+
+    boolean existsByEmailAndVerified(String email, boolean verified);
+
+    boolean existsByNicknameAndVerified(String nickname, boolean verified);
+
+    Member findByEmailAndVerified(String email, boolean verified);
 }

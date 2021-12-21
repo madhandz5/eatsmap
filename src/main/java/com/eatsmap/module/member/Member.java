@@ -1,5 +1,6 @@
 package com.eatsmap.module.member;
 
+import com.eatsmap.module.groupMemberHistory.MemberGroupHistory;
 import com.eatsmap.module.member.dto.SignUpRequest;
 import com.eatsmap.module.review.Review;
 import lombok.*;
@@ -36,7 +37,6 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
 
-    @Column(unique = true)
     private String email;
     private String password;
 
@@ -59,12 +59,16 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member")   //양방향
+    private List<MemberGroupHistory> groups = new ArrayList<>();
+
     public static Member createAccount(SignUpRequest request) {
 
         return Member.builder()
                 .nickname(request.getNickname())
                 .email(request.getEmail())
                 .password(request.getPassword())
+                .memberRole(MemberRole.GUEST)
                 .verified(false)
                 .build();
     }
@@ -72,10 +76,16 @@ public class Member {
     public void verifiedMemberByEmail() {
         this.verified = true;
         this.regDate = LocalDateTime.now();
+        this.memberRole = MemberRole.USER;
+        this.memberType = MemberType.EMAIL;
     }
 
     public void generatedEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();
         this.emailCheckTokenGeneratedAt = LocalDateTime.now();
+    }
+
+    public void setLastLoginAt(){
+        this.lastLoginAt = LocalDateTime.now();
     }
 }

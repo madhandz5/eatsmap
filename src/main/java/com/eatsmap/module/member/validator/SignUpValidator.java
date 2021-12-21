@@ -22,11 +22,11 @@ public class SignUpValidator implements Validator {
     public void validate(Object target, Errors errors) {
         SignUpRequest request = (SignUpRequest) target;
 
-        if (memberRepository.existsByEmail(request.getEmail())) {
+        if (memberRepository.existsByEmailAndVerified(request.getEmail(), true)) {
             errors.rejectValue("email", "invalid.email", "이미 사용중인 이메일입니다.");
         }
 
-        if (memberRepository.existsByNickname(request.getNickname())) {
+        if (memberRepository.existsByNicknameAndVerified(request.getNickname(), true)) {
             errors.rejectValue("nickname", "invalid.nickname", "이미 사용중인 닉네임입니다.");
         }
 

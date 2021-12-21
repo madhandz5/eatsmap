@@ -28,6 +28,7 @@ public class MemberService {
         return SignUpResponse.createResponse(memberRepository.save(member));
     }
     //이메일 인증
+    @Transactional
     public VerifyEmailResponse verifyByEmailToken(VerifyEmailRequest request){
         Member member = memberRepository.findByEmail(request.getEmail());
         //중복인증 여부 체크
@@ -38,9 +39,18 @@ public class MemberService {
         return VerifyEmailResponse.createResponse(memberRepository.save(member));
     }
 
+    @Transactional
+    public LoginResponse loginImpl(LoginRequest request) {
+        Member member = memberRepository.findByEmail(request.getEmail());
+        member.setLastLoginAt();
+        return LoginResponse.createResponse(member);
+    }
+
+    //관계 매핑 테스트
     public List<GetAllResponse> getAllMembers() {
         List<GetAllResponse> memberList = memberRepository.findToGetAllResponse();
 
         return memberList;
     }
+
 }
