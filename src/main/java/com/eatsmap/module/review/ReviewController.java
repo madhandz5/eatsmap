@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 
 @RestController
@@ -18,7 +19,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping(path = "/create")
-    public ResponseEntity<CommonResponse> createReview(@RequestBody CreateReviewRequest request) {
+    public ResponseEntity<CommonResponse> createReview(@Valid @RequestBody CreateReviewRequest request) {
         CreateReviewResponse data = reviewService.createReview(request);
         CommonResponse response = CommonResponse.createResponse(true, data);
 

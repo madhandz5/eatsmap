@@ -1,11 +1,12 @@
 package com.eatsmap.module.hashtag;
 
 import com.eatsmap.module.review.Review;
-import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.List;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -16,7 +17,7 @@ public class Hashtag {
     @Column(name = "hashtag_id")
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name = "review_id")
     private Review review;
 
