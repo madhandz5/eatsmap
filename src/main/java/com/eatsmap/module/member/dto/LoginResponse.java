@@ -9,20 +9,19 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder(access = AccessLevel.PRIVATE)
-public class VerifyEmailResponse {
-
+public class LoginResponse {
     private Long id;
 
     private String email;
     private String nickname;
-    private LocalDateTime regDate;
+    private LocalDateTime lastLoginAt;
 
-    public static VerifyEmailResponse createResponse(Member member) {
-        return VerifyEmailResponse.builder()
+    public static LoginResponse createResponse(Member member){
+        return LoginResponse.builder()
                 .id(member.getId())
                 .email(member.getEmail())
                 .nickname(member.getNickname())
-                .regDate(member.getRegDate())
+                .lastLoginAt(member.getLastLoginAt())
                 .build();
     }
 }
