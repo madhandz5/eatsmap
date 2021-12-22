@@ -28,8 +28,8 @@ public class CreateReviewRequest {
     @NotEmpty
     private String category;
 
-    @NotEmpty
-    private String groups;
+    @NotNull
+    private Long groupId;
 
     @NotEmpty
     private String privacy;

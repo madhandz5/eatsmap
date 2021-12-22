@@ -1,6 +1,7 @@
 package com.eatsmap.module.review;
 
 import com.eatsmap.module.category.Category;
+import com.eatsmap.module.group.MemberGroup;
 import com.eatsmap.module.hashtag.Hashtag;
 import com.eatsmap.module.member.Member;
 import com.eatsmap.module.restaurant.Restaurant;
@@ -40,7 +41,9 @@ public class Review {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    //Groups
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "membergroup_id")
+    private MemberGroup group;
 
     @OneToOne(mappedBy = "review", fetch = LAZY)
     @JoinColumn(name = "hashtag_id")
@@ -92,5 +95,10 @@ public class Review {
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
         restaurant.getReviews().add(this);
+    }
+
+    public void setGroup(MemberGroup group) {
+        this.group = group;
+        group.getReviews().add(this);
     }
 }

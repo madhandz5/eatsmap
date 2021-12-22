@@ -2,6 +2,7 @@ package com.eatsmap.module.group;
 
 import com.eatsmap.module.group.dto.CreateMemberGroupRequest;
 import com.eatsmap.module.groupMemberHistory.MemberGroupHistory;
+import com.eatsmap.module.review.Review;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,6 +21,9 @@ public class MemberGroup {
     @GeneratedValue
     @Column(name = "membergroup_id")
     private Long id;
+
+    @OneToMany(mappedBy = "group")
+    private List<Review> reviews = new ArrayList<>();
 
     private Long createdBy;
     private String groupName;
