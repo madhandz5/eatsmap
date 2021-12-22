@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
+
     boolean existsByEmail(String email);
 
     boolean existsByNickname(String nickname);
@@ -23,4 +24,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     boolean existsByNicknameAndVerified(String nickname, boolean verified);
 
     Member findByEmailAndVerified(String email, boolean verified);
+
+    Member findMemberByJwtToken(String token);
 }

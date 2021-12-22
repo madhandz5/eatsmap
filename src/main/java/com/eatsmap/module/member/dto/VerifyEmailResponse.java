@@ -14,9 +14,7 @@ public class VerifyEmailResponse {
     private Long id;
 
     private String email;
-
     private String nickname;
-
     private LocalDateTime regDate;
 
     public static VerifyEmailResponse createResponse(Member member) {

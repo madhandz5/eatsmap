@@ -10,12 +10,8 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequest {
+public class AuthRequest {
 
-    @Email
-    @NotEmpty
     private String email;
-
-    @NotEmpty
     private String password;
 }

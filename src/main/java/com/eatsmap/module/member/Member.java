@@ -1,6 +1,7 @@
 package com.eatsmap.module.member;
 
 import com.eatsmap.module.groupMemberHistory.MemberGroupHistory;
+import com.eatsmap.module.member.dto.ModifyRequest;
 import com.eatsmap.module.member.dto.SignUpRequest;
 import com.eatsmap.module.review.Review;
 import lombok.*;
@@ -54,6 +55,7 @@ public class Member {
     private LocalDateTime emailCheckTokenGeneratedAt;
     private boolean verified;
 
+    private String jwtToken;
 
     @Builder.Default
     @OneToMany(mappedBy = "member")
@@ -73,6 +75,12 @@ public class Member {
                 .build();
     }
 
+    public void modifyMember(ModifyRequest request){
+        this.nickname = request.getNickname();
+        this.password = request.getPassword();
+        this.passwordModifiedAt = LocalDateTime.now();
+    }
+
     public void verifiedMemberByEmail() {
         this.verified = true;
         this.regDate = LocalDateTime.now();
@@ -85,7 +93,9 @@ public class Member {
         this.emailCheckTokenGeneratedAt = LocalDateTime.now();
     }
 
-    public void setLastLoginAt(){
+    public void saveLoginInfo(String token){
         this.lastLoginAt = LocalDateTime.now();
+        this.jwtToken = token;
     }
+
 }

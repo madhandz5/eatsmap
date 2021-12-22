@@ -13,10 +13,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(access = AccessLevel.PRIVATE)
+@SequenceGenerator(name = "member_group_history_seq",sequenceName = "member_group_history_seq",initialValue = 1001)
 public class MemberGroupHistory {
 
     @Id
-    @Column(name = "membergroup_history_id")
+    @Column(name = "member_group_history_seq")
     @GeneratedValue
     private Long id;
 
