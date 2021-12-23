@@ -48,7 +48,8 @@ public class JwtUtil {
                 .withExpiresAt(Date.from(ZonedDateTime.now(ZoneId.systemDefault()).plusDays(1).toInstant())) // 하루 설정
                 .sign(Algorithm.HMAC256(jwtProps.getSecretkey()));
     }
-    //    FEEDBACK : 이런 키들은 노출되면 안되는 값이라서 코드에 작성하기 보다는 application.yml 같은곳에다가 작성하고, 불러와서 사용합니다.
+    //    FEEDBACK : 이런 키들은 노출되면 안되는 값이라서 코드에 작성하기 보다는 application.yml 같은곳에다가 작성하고, 불러와서 사용합니다. PROPS로 정리된 쪽 보세요!
+
 //    private static final Key key = Keys.hmacShaKeyFor("MyNicknameIsEatsmapAndNameIsEatsmap".getBytes(StandardCharsets.UTF_8));
     //토큰 유효시간
 //    private static final long JWT_EXPIRATION_MS = System.currentTimeMillis() + 1000 * 60 * 60 * 10; //10h

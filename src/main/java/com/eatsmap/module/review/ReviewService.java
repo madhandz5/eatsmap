@@ -44,11 +44,8 @@ public class ReviewService {
         review.setCategory(category);
 
 //        그룹이 존재하히 않으면 예외처리
-        Optional<MemberGroup> group = memberGroupRepository.findById(request.getGroupId());
-        if (group.isEmpty()) {
-            throw new CommonException(ErrorCode.CONSTRAINT_PROCESS_FAIL);
-        }
-        review.setGroup(group.get());
+        MemberGroup group = memberGroupRepository.findById(request.getGroupId()).orElseThrow(() -> new CommonException(ErrorCode.GROUP_IS_NOT_EXISTS));
+        review.setGroup(group);
 
 //        음식점이 없으면 새로 생성
         Restaurant storedRestaurant = restaurantRepository.findByResNameAndAddress(request.getResName(), request.getAddress());
@@ -66,6 +63,8 @@ public class ReviewService {
 
         reviewRepository.save(review);
         hashtagService.createHashtag(hashtag);
+
+//       FEEDBACK :  여기는 ReviewService 니까 Restaurant 를 새롭게 저장하는 로직은 RestaurantService에 구현하면 좋을것 같습니다!
         restaurantRepository.save(review.getRestaurant());
 
         return CreateReviewResponse.createResponse(review);
