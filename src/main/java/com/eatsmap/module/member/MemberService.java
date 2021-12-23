@@ -6,19 +6,25 @@ import com.eatsmap.infra.utils.kakao.KakaoAccountInfoDto;
 import com.eatsmap.infra.utils.kakao.KakaoAuthDto;
 import com.eatsmap.infra.utils.kakao.KakaoOAuth;
 import com.eatsmap.module.member.dto.*;
+import com.eatsmap.module.verification.Verification;
 import com.eatsmap.module.verification.VerificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -145,4 +151,48 @@ public class MemberService implements UserDetailsService {
         }
         return new MemberAccount(member);
     }
+
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+//        1. Get Current Auth
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+//        2. Check Current Member is Logged in
+        if (authentication == null) {
+            throw new CommonException(ErrorCode.LOGOUT_DONE);
+        }
+
+        MemberAccount principal = (MemberAccount) authentication.getPrincipal();
+        MemberType memberType = principal.getMember().getMemberType();
+        String kakaoUserId = principal.getMember().getKakaoUserId();
+
+//        3. Logout.
+        new SecurityContextLogoutHandler().logout(request, response, authentication);
+
+//        3-1. Kakao Logout.
+
+        if (memberType.equals(MemberType.KAKAO)) {
+            kakaoOAuth.logoutByKakaoUserId(kakaoUserId);
+        }
+    }
+
+    @Transactional
+    public void checkVerificationKey(String key, String email) {
+        Member member = getMember(email);
+
+//        현재 Member의 확인되지 않은 Verification 필터
+        Optional<Verification> verify = member.getVerificationGroup().stream().filter(verification -> !verification.isChecked()).findFirst();
+
+//        Verification 존재 및 일치 여부 확인
+        if (verify.isEmpty()) {
+            throw new CommonException(ErrorCode.VERIFICATION_NOT_FOUND);
+        } else if (!key.equals(verify.get().getKey())) {
+            throw new CommonException(ErrorCode.VERIFICATION_NOT_CORRECT);
+        }
+
+//        Expire verification Key
+        verificationService.terminateVerification(key);
+
+
+    }
+
 }

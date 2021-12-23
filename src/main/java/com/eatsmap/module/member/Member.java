@@ -7,6 +7,7 @@ import com.eatsmap.module.member.dto.SignUpRequest;
 import com.eatsmap.module.review.Review;
 import com.eatsmap.module.verification.Verification;
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -43,8 +44,18 @@ public class Member {
     private String email;
     private String password;
 
+    @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
+    private byte[] profileImage;
+
+    @Column(unique = true)
+    private String kakaoUserId;
+
+
     @Column(unique = true)
     private String nickname;
+
+    private boolean kakaoAuth;
 
     private boolean exited;
     private LocalDateTime exitedAt;
@@ -113,11 +124,6 @@ public class Member {
         this.emailCheckTokenGeneratedAt = LocalDateTime.now();
     }
 
-    public void saveLoginInfo(String token) {
-        this.lastLoginAt = LocalDateTime.now();
-        this.jwtToken = token;
-    }
-
     public void setLastLoginAt() {
         this.lastLoginAt = LocalDateTime.now();
     }
@@ -125,5 +131,10 @@ public class Member {
     public void completeSignUp() {
         this.memberRole = MemberRole.USER;
         this.regDate = LocalDateTime.now();
+    }
+
+    public void memberExit() {
+        this.exited = true;
+        this.exitedAt = LocalDateTime.now();
     }
 }

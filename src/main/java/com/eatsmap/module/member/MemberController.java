@@ -4,6 +4,7 @@ import com.eatsmap.infra.common.CommonResponse;
 import com.eatsmap.infra.common.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
 import com.eatsmap.infra.jwt.JwtUtil;
+import com.eatsmap.infra.utils.kakao.KakaoAuthDto;
 import com.eatsmap.module.member.dto.*;
 import com.eatsmap.module.member.validator.LoginValidator;
 import com.eatsmap.module.member.validator.SignUpValidator;
@@ -18,6 +19,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -100,6 +103,44 @@ public class MemberController {
 //        CommonResponse response = CommonResponse.createResponse(true, data);
 //        return ResponseEntity.status(HttpStatus.CREATED).body(response);
 //    }
+
+
+    //    로그인 완료 후 JWT Token 반환, 헤더에 참조시킬것.
+    @PostMapping(path = "/login/password")
+    public ResponseEntity loginByPassword(@RequestBody @Valid LoginRequest request, BindingResult result) {
+        if (result.hasErrors()) {
+            CommonResponse response = CommonResponse.createResponse(false, result.getAllErrors());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        String token = jwtUtil.encodeJwt(request.getEmail());
+        CommonResponse response = CommonResponse.createResponse(true, token);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping(path = "/login/kakao")
+    public ResponseEntity loginByKakao(KakaoAuthDto request) {
+        if (request.getError() != null && !request.getError().isBlank()) {
+            throw new CommonException(ErrorCode.KAKAO_LOGIN_PROCESS_FAILED);
+        }
+
+//        Login - KAKAO
+        Member member = memberService.loginByKakao(request);
+//      Make Token
+        String token = jwtUtil.encodeJwt(member.getEmail());
+
+        CommonResponse response = CommonResponse.createResponse(true, token);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity logout(@CurrentMember Member member, HttpServletRequest request, HttpServletResponse response) {
+        memberService.logout(request, response);
+        CommonResponse success = CommonResponse.createResponse(true, "success");
+        return ResponseEntity.status(HttpStatus.OK).body(success);
+    }
+
 
     @PostMapping(path = "/update-profile")
     public ResponseEntity<CommonResponse> updateProfile(@RequestBody @Valid ModifyRequest request, @CurrentMember Member member, BindingResult result) {
