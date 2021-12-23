@@ -34,22 +34,24 @@ public class MemberController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
-    @InitBinder(value = "signUpRequest")
-    public void initBindSignUpRequest(WebDataBinder webDataBinder){
+    @InitBinder(value = "SignUpRequest")
+    public void initBindSignUpRequest(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(signUpValidator);
     }
+
     @InitBinder(value = "verifyEmailRequest")
-    public void initBindVerifyEmailRequest(WebDataBinder webDataBinder){
+    public void initBindVerifyEmailRequest(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(verifyEmailValidator);
     }
+
     @InitBinder(value = "loginRequest")
-    public void initBindLoginRequest(WebDataBinder webDataBinder){
+    public void initBindLoginRequest(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(loginValidator);
     }
 
     @PostMapping(path = "/sign-up") //토큰 인증유효기간 지난 사용자 동일 이메일로 save하는 과정에서 오류
     public ResponseEntity<CommonResponse> signUp(@Valid @RequestBody SignUpRequest request, Errors errors) {
-        if(errors.hasErrors()){
+        if (errors.hasErrors()) {
             CommonResponse response = CommonResponse.createResponse(false, errors.getAllErrors());
             return ResponseEntity.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).body(response);
         }
@@ -60,15 +62,16 @@ public class MemberController {
     }
 
     @PostMapping(path = "/verify-email")
-    public ResponseEntity<CommonResponse> verifyEmailWithToken(@Valid @RequestBody VerifyEmailRequest request, Errors errors){
-        if(errors.hasErrors()){
-            CommonResponse response = CommonResponse.createResponse(false, errors.getAllErrors());
+    public ResponseEntity<CommonResponse> verifyEmailWithToken(@Valid @RequestBody VerifyEmailRequest request, Errors errors) {
+        if (errors.hasErrors()) {
+            CommonResponse response = CommonResponse.createResponse(false, null);
             return ResponseEntity.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).body(response);
         }
         VerifyEmailResponse data = memberService.verifyByEmailToken(request);
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
     //jwt 테스트
     @PostMapping("/authenticate")
     public String generateToken(@RequestBody AuthRequest authRequest) throws Exception {
@@ -83,8 +86,8 @@ public class MemberController {
     }
 
     @PostMapping(path = "/login")
-    public ResponseEntity<CommonResponse> loginImpl(@Valid @RequestBody LoginRequest request, Errors errors){
-        if(errors.hasErrors()){
+    public ResponseEntity<CommonResponse> loginImpl(@Valid @RequestBody LoginRequest request, Errors errors) {
+        if (errors.hasErrors()) {
             CommonResponse response = CommonResponse.createResponse(false, errors.getAllErrors());
             return ResponseEntity.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).body(response);
         }
@@ -93,18 +96,19 @@ public class MemberController {
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
         } catch (Exception ex) {
-            throw new CommonException(ErrorCode.JWT_EXCEPTION_FAIL,ex);
+            throw new CommonException(ErrorCode.JWT_EXCEPTION_FAIL, ex);
         }
-
-        LoginResponse data = memberService.loginImpl(request);
-        CommonResponse response = CommonResponse.createResponse(true, data);
+//TODO : LOGIN
+//        LoginResponse data = memberService.login(request);
+//        TODO : DATA
+        CommonResponse response = CommonResponse.createResponse(true, true);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping(path = "/modify")  //jwt 토큰 필요
     public ResponseEntity<CommonResponse> modifyImpl(@Valid @RequestBody ModifyRequest modifyRequest, Errors errors
-                                                    , HttpServletRequest http){
-        if(errors.hasErrors()){
+            , HttpServletRequest http) {
+        if (errors.hasErrors()) {
             CommonResponse response = CommonResponse.createResponse(false, errors.getAllErrors());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }

@@ -1,9 +1,11 @@
 package com.eatsmap.module.member;
 
 import com.eatsmap.module.groupMemberHistory.MemberGroupHistory;
+import com.eatsmap.module.member.dto.KakaoSignUpRequest;
 import com.eatsmap.module.member.dto.ModifyRequest;
 import com.eatsmap.module.member.dto.SignUpRequest;
 import com.eatsmap.module.review.Review;
+import com.eatsmap.module.verification.Verification;
 import lombok.*;
 
 import javax.persistence.*;
@@ -64,6 +66,11 @@ public class Member {
     @OneToMany(mappedBy = "member")   //양방향
     private List<MemberGroupHistory> groups = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "member")
+    private List<Verification> verificationGroup = new ArrayList<>();
+
+    //    EMAIL
     public static Member createAccount(SignUpRequest request) {
 
         return Member.builder()
@@ -75,7 +82,20 @@ public class Member {
                 .build();
     }
 
-    public void modifyMember(ModifyRequest request){
+    //    KAKAO
+    public static Member createAccount(KakaoSignUpRequest request) {
+
+        return Member.builder()
+                .memberType(request.getMemberType())
+                .nickname(request.getNickname())
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .memberRole(MemberRole.GUEST)
+                .verified(false)
+                .build();
+    }
+
+    public void modifyMember(ModifyRequest request) {
         this.nickname = request.getNickname();
         this.password = request.getPassword();
         this.passwordModifiedAt = LocalDateTime.now();
@@ -93,9 +113,17 @@ public class Member {
         this.emailCheckTokenGeneratedAt = LocalDateTime.now();
     }
 
-    public void saveLoginInfo(String token){
+    public void saveLoginInfo(String token) {
         this.lastLoginAt = LocalDateTime.now();
         this.jwtToken = token;
     }
 
+    public void setLastLoginAt() {
+        this.lastLoginAt = LocalDateTime.now();
+    }
+
+    public void completeSignUp() {
+        this.memberRole = MemberRole.USER;
+        this.regDate = LocalDateTime.now();
+    }
 }
