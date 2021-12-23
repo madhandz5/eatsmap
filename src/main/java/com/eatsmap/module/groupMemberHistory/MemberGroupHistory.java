@@ -5,7 +5,6 @@ import com.eatsmap.module.member.Member;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
 
 @Entity

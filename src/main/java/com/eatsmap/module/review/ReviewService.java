@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -77,6 +76,8 @@ public class ReviewService {
 
         reviewRepository.save(review);
         hashtagService.createHashtag(hashtag);
+
+//       FEEDBACK :  여기는 ReviewService 니까 Restaurant 를 새롭게 저장하는 로직은 RestaurantService에 구현하면 좋을것 같습니다!
         restaurantRepository.save(review.getRestaurant());
 
         return CreateReviewResponse.createResponse(review);

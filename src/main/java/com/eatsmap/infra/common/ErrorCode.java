@@ -9,23 +9,23 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
-* @package : com.eatsmap.infra.common
-* @name : ErrorCode.java
-* @date : 2021/12/17 12:28 오후
-* @author : ryan
-* @version : 1.0.0
-* @modifyed :
-**/
+ * @author : ryan
+ * @version : 1.0.0
+ * @package : com.eatsmap.infra.common
+ * @name : ErrorCode.java
+ * @date : 2021/12/17 12:28 오후
+ * @modifyed :
+ **/
 public enum ErrorCode {
 
     // account, verification (1000)
-    ACCOUNT_NOT_FOUND("1001", "Account Not Found",null),
-    VERIFICATION_NOT_FOUND("1002", "Verification Not Found",null),
+    ACCOUNT_NOT_FOUND("1001", "Account Not Found", null),
+    VERIFICATION_NOT_FOUND("1002", "Verification Not Found", null),
     INVALID_VERIFICATION("1003", "유효하지 않은 인증입니다.", null),
 
-    LOGIN_PROCESS_PASSWORD_NOTMATCH("1007" , "비밀번호가 일치하지 않습니다.", null),
-    LOGIN_PROCESS_FAILED("1008" , "로그인에 실패하였습니다.", null),
-    KAKAO_LOGIN_PROCESS_FAILED("1009" , "카카오 로그인에 실패하였습니다.", null),
+    LOGIN_PROCESS_PASSWORD_NOTMATCH("1007", "비밀번호가 일치하지 않습니다.", null),
+    LOGIN_PROCESS_FAILED("1008", "로그인에 실패하였습니다.", null),
+    KAKAO_LOGIN_PROCESS_FAILED("1009", "카카오 로그인에 실패하였습니다.", null),
     LOGOUT_DONE("1010", "이미 로그아웃된 계정입니다.", null),
 
 
@@ -38,16 +38,19 @@ public enum ErrorCode {
     JWT_EXCEPTION_FAIL("1203", "로그인 정보가 유효하지 않습니다.", null),
     ACCESS_DENIED("1204", "접근 권한이 없습니다.", null),
 
+    //    GROUP (1300)
+    GROUP_IS_NOT_EXISTS("1301", "그룹이 존재하지 않습니다.", null),
+
 
     // etc (9000)
-    JSON_PROCESS_FAIL("9001", "Failed From Processing Json",null),
-    WRONG_PATH("9002", "Wrong Path",null),
-    CONSTRAINT_PROCESS_FAIL("9003", "정보가 서로 일치하지 않습니다.",null),
+    JSON_PROCESS_FAIL("9001", "Failed From Processing Json", null),
+    WRONG_PATH("9002", "Wrong Path", null),
+    CONSTRAINT_PROCESS_FAIL("9003", "정보가 서로 일치하지 않습니다.", null),
 
     FAILED("9999", "Unexpected Error", null);
 
     private static final Map<String, ErrorCode> errorMap =
-            Arrays.stream(values()).collect(Collectors.toMap(ErrorCode::getCode, e->e));
+            Arrays.stream(values()).collect(Collectors.toMap(ErrorCode::getCode, e -> e));
 
     public static ErrorCode findByCode(String code) {
         return errorMap.get(code);
@@ -63,7 +66,10 @@ public enum ErrorCode {
         this.redirectUrl = url;
     }
 
-    public String getCode() { return code; }
+    public String getCode() {
+        return code;
+    }
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -73,7 +79,7 @@ public enum ErrorCode {
     }
 
     public Map<String, String> getErrorMap() {
-        return new HashMap<>(){{
+        return new HashMap<>() {{
             put("code", code);
             put("message", errorMsg);
         }};
@@ -88,8 +94,8 @@ public enum ErrorCode {
         try {
             jsonObject.put("code", code);
             jsonObject.put("message", errorMsg);
+        } catch (JSONException ignore) {
         }
-        catch (JSONException ignore) {}
         return jsonObject;
     }
 

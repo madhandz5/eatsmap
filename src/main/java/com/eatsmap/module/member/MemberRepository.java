@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryExtension {
 
     boolean existsByEmail(String email);
 
@@ -26,4 +26,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findByEmailAndVerified(String email, boolean verified);
 
     Member findMemberByJwtToken(String token);
+
+    Member findByIdAndExited(Long memberId, boolean exited);
 }
