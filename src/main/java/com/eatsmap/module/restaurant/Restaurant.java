@@ -36,11 +36,16 @@ public class Restaurant {
 //        this.location = new Point(request.getX(), request.getY());
 //    }
 
-    public static Restaurant createRestaurant(CreateReviewRequest request) {
+    public static Restaurant createRestaurant(String resName, String address, double x, double y) {
         return Restaurant.builder()
-                .resName(request.getResName())
-                .address(request.getAddress())
-                .location(new Point(request.getX(), request.getY()))
+                .resName(resName)
+                .address(address)
+                .location(new Point(x, y))
                 .build();
+    }
+
+    public void setReview(Review review) {
+        this.getReviews().add(review);
+        review.setRestaurant(this);
     }
 }

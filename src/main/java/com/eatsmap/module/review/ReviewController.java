@@ -24,7 +24,6 @@ public class ReviewController {
     public ResponseEntity<CommonResponse> createReview(@Valid @RequestBody CreateReviewRequest request) {
         CreateReviewResponse data = reviewService.createReview(request);
         CommonResponse response = CommonResponse.createResponse(true, data);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

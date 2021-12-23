@@ -35,4 +35,8 @@ public class Category {
                 .build();
     }
 
+    public void setReview(Review review) {
+        this.getReviews().add(review);
+        review.setCategory(this);
+    }
 }

@@ -3,21 +3,20 @@ package com.eatsmap.module.review;
 import com.eatsmap.infra.common.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
 import com.eatsmap.module.category.Category;
-import com.eatsmap.module.category.CategoryRepository;
+import com.eatsmap.module.category.CategoryService;
 import com.eatsmap.module.group.MemberGroup;
-import com.eatsmap.module.group.MemberGroupRepository;
-import com.eatsmap.module.hashtag.Hashtag;
-import com.eatsmap.module.hashtag.HashtagService;
+import com.eatsmap.module.group.MemberGroupService;
 import com.eatsmap.module.member.Member;
-import com.eatsmap.module.member.MemberRepository;
+import com.eatsmap.module.member.MemberService;
 import com.eatsmap.module.restaurant.Restaurant;
-import com.eatsmap.module.restaurant.RestaurantRepository;
+import com.eatsmap.module.restaurant.RestaurantService;
 import com.eatsmap.module.review.dto.CreateReviewRequest;
 import com.eatsmap.module.review.dto.CreateReviewResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,59 +25,36 @@ import java.util.Optional;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final MemberRepository memberRepository;
-    private final CategoryRepository categoryRepository;
-    private final RestaurantRepository restaurantRepository;
-    private final MemberGroupRepository memberGroupRepository;
-    private final HashtagService hashtagService;
 
+    private final MemberService memberService;
+    private final CategoryService categoryService;
+    private final RestaurantService restaurantService;
+    private final MemberGroupService memberGroupService;
 
     @Transactional
     public CreateReviewResponse createReview(CreateReviewRequest request) {
-        Review review = Review.createReview(request);
-
-        Member member = memberRepository.findByEmail("alpaca@naver.com");
-        review.setMember(member);
+        Member member = memberService.getMember("alpaca@naver.com");
+        Restaurant restaurant = restaurantService.getRestaurant(request.getResName(), request.getAddress());
 
 //        방문날짜가 미래이면 예외처리
-        if (review.getVisitDate().isAfter(LocalDate.now())) {
-            throw new CommonException(ErrorCode.CONSTRAINT_PROCESS_FAIL);
+//        if (request.getVisitDate().(LocalDate.now())) {
+//            throw new CommonException(ErrorCode.CONSTRAINT_PROCESS_FAIL);
+//        }
+
+        //        음식점이 없으면 새로 생성
+        if (restaurant == null) {
+            restaurant = restaurantService.createNewRestaurant(request.getResName(), request.getAddress(), request.getX(), request.getY());
         }
 
 //        카테고리 코드가 없으면 예외처리
-        Category category = categoryRepository.findByCategoryCode(request.getCategory());
+        Category category = categoryService.getCategoryCode(request.getCategory());
         if (category == null) {
             throw new CommonException(ErrorCode.CONSTRAINT_PROCESS_FAIL);
         }
-        review.setCategory(category);
+        MemberGroup group = memberGroupService.getMemberGroup(request.getGroupId());
 
-//        그룹이 존재하히 않으면 예외처리
-        if(request.getGroupId() != null ) {
-            Optional<MemberGroup> group = memberGroupRepository.findById(request.getGroupId());
-            if (group.isEmpty()) {
-                throw new CommonException(ErrorCode.CONSTRAINT_PROCESS_FAIL);
-            }
-            review.setGroup(group.get());
-        }
-
-//        음식점이 없으면 새로 생성
-        Restaurant storedRestaurant = restaurantRepository.findByResNameAndAddress(request.getResName(), request.getAddress());
-        if (storedRestaurant == null) {
-            Restaurant restaurant = Restaurant.createRestaurant(request);
-            review.setRestaurant(restaurant);
-        } else {
-            review.setRestaurant(storedRestaurant);
-        }
-
-        Hashtag hashtag = new Hashtag();
-        hashtag.updateHashtag(request.getHashtag());
-        review.setHashtag(hashtag);
-
+        Review review = Review.createReview(member, restaurant, group, category, request);
         reviewRepository.save(review);
-        hashtagService.createHashtag(hashtag);
-
-//       FEEDBACK :  여기는 ReviewService 니까 Restaurant 를 새롭게 저장하는 로직은 RestaurantService에 구현하면 좋을것 같습니다!
-        restaurantRepository.save(review.getRestaurant());
 
         return CreateReviewResponse.createResponse(review);
     }

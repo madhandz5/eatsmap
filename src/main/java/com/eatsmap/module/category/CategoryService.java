@@ -18,4 +18,8 @@ public class CategoryService {
         Category category = categoryRepository.save(Category.createCategory(request));
         return CreateCategoryResponse.createResponse(category);
     }
+
+    public Category getCategoryCode(String categoryCode) {
+        return categoryRepository.findByCategoryCode(categoryCode);
+    }
 }

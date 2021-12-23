@@ -13,6 +13,6 @@ public class HashtagService {
 
     @Transactional
     public Hashtag createHashtag(Hashtag hashtag) {
-        return hashtagRepository.save(hashtag);
+        return hashtagRepository.saveAndFlush(hashtag);
     }
 }

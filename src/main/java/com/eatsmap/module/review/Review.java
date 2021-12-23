@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -20,7 +21,7 @@ import static javax.persistence.FetchType.LAZY;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(access = AccessLevel.PRIVATE)
-@SequenceGenerator(name = "review_seq", sequenceName = "review_seq",initialValue = 1001, allocationSize = 30)
+@SequenceGenerator(name = "review_seq", sequenceName = "review_seq", initialValue = 1001, allocationSize = 30)
 public class Review {
 
     @Id
@@ -56,35 +57,34 @@ public class Review {
     private LocalDateTime regDate;
     private boolean deleted;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
 
-    public static Review createReview(CreateReviewRequest request) {
+    public static Review createReview(Member member, Restaurant restaurant, MemberGroup group, Category category, CreateReviewRequest request) {
 //        visitDate
         String visitDate = request.getVisitDate();
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        return Review.builder()
-                .taste((request.getTaste()))
-                .clean(request.getClean())
-                .service(request.getService())
-                .content(request.getContent())
-                .privacy(ReviewPrivacy.valueOf(request.getPrivacy()))
-                .visitDate(LocalDate.parse(visitDate, fmt))
-                .regDate(LocalDateTime.now())
-                .build();
+        Review review = new Review();
+        review.setMember(member);
+        review.setRestaurant(restaurant);
+        review.setGroup(group);
+        review.setCategory(category);
+        review.taste = request.getTaste();
+        review.service = request.getService();
+        review.clean = request.getClean();
+        review.content = request.getContent();
+        return review;
     }
 
     public void setMember(Member member) {
         this.member = member;
-        member.getReviews().add(this);
     }
 
     public void setCategory(Category category) {
         this.category = category;
-        category.getReviews().add(this);
     }
 
     public void setHashtag(Hashtag hashtag) {
@@ -94,12 +94,10 @@ public class Review {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
-        restaurant.getReviews().add(this);
     }
 
     public void setGroup(MemberGroup group) {
         this.group = group;
-        group.getReviews().add(this);
     }
 
     public void deleteReview() {

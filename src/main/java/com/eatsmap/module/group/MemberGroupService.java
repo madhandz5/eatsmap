@@ -1,5 +1,7 @@
 package com.eatsmap.module.group;
 
+import com.eatsmap.infra.common.ErrorCode;
+import com.eatsmap.infra.exception.CommonException;
 import com.eatsmap.module.group.dto.CreateMemberGroupRequest;
 import com.eatsmap.module.group.dto.CreateMemberGroupResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +17,12 @@ public class MemberGroupService {
 
     //그룹생성
     @Transactional
-    public CreateMemberGroupResponse createMemberGroup(CreateMemberGroupRequest request){
+    public CreateMemberGroupResponse createMemberGroup(CreateMemberGroupRequest request) {
         MemberGroup group = MemberGroup.createMemberGroup(request);
         return CreateMemberGroupResponse.createResponse(memberGroupRepository.save(group));
     }
 
+    public MemberGroup getMemberGroup(Long groupId) {
+        return memberGroupRepository.findById(groupId).orElseThrow(() -> new CommonException(ErrorCode.GROUP_IS_NOT_EXISTS));
+    }
 }

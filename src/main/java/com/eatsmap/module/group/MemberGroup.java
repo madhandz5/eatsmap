@@ -39,7 +39,7 @@ public class MemberGroup {
 //        this.groupMembers = members;
 //    }
 
-    public static MemberGroup createMemberGroup(CreateMemberGroupRequest request){
+    public static MemberGroup createMemberGroup(CreateMemberGroupRequest request) {
         return MemberGroup.builder()
                 .createdBy(request.getCreatedBy())
                 .groupName(request.getGroupName())
@@ -49,4 +49,8 @@ public class MemberGroup {
                 .build();
     }
 
+    public void setReview(Review review) {
+        this.getReviews().add(review);
+        review.setGroup(this);
+    }
 }

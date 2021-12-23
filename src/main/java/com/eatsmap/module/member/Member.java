@@ -137,4 +137,9 @@ public class Member {
         this.exited = true;
         this.exitedAt = LocalDateTime.now();
     }
+
+    public void setReview(Review review) {
+        this.getReviews().add(review);
+        review.setMember(this);
+    }
 }
