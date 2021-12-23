@@ -32,7 +32,6 @@ public class MemberController {
     private final MemberService memberService;
     private final SignUpValidator signUpValidator;
     private final VerifyEmailValidator verifyEmailValidator;
-    private final LoginValidator loginValidator;
     private final JwtUtil jwtUtil;
 
     @InitBinder(value = "SignUpRequest")
@@ -45,22 +44,30 @@ public class MemberController {
         webDataBinder.addValidators(verifyEmailValidator);
     }
 
-    @InitBinder(value = "loginRequest")
-    public void initBindLoginRequest(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(loginValidator);
-    }
+//    @PostMapping(path = "/sign-up") //토큰 인증유효기간 지난 사용자 동일 이메일로 save하는 과정에서 오류
+//    public ResponseEntity<CommonResponse> signUp(@Valid @RequestBody SignUpRequest request, Errors errors) {
+//        if (errors.hasErrors()) {
+//            CommonResponse response = CommonResponse.createResponse(false, errors.getAllErrors());
+//            return ResponseEntity.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).body(response);
+//        }
+//        SignUpResponse data = memberService.signUp(request);
+//        CommonResponse response = CommonResponse.createResponse(true, data);
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//    }
 
-    @PostMapping(path = "/sign-up") //토큰 인증유효기간 지난 사용자 동일 이메일로 save하는 과정에서 오류
-    public ResponseEntity<CommonResponse> signUp(@Valid @RequestBody SignUpRequest request, Errors errors) {
-        if (errors.hasErrors()) {
-            CommonResponse response = CommonResponse.createResponse(false, errors.getAllErrors());
-            return ResponseEntity.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).body(response);
+    @PostMapping(path = "/sign-up")
+    public ResponseEntity signup(@RequestBody @Valid SignUpRequest request, BindingResult result) {
+        if (result.hasErrors()) {
+            CommonResponse response = CommonResponse.createResponse(false, result.getAllErrors());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
+
         SignUpResponse data = memberService.signUp(request);
         CommonResponse response = CommonResponse.createResponse(true, data);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
 
     @PostMapping(path = "/verify-email")
     public ResponseEntity<CommonResponse> verifyEmailWithToken(@Valid @RequestBody VerifyEmailRequest request, Errors errors) {
@@ -159,5 +166,12 @@ public class MemberController {
     @GetMapping(path = "/all")
     public List<GetAllResponse> getAllMembers() {
         return memberService.getAllMembers();
+    }
+
+    @GetMapping(path = "/exit-service")
+    public ResponseEntity exitService(@CurrentMember Member member) {
+        Member data = memberService.exitService(member);
+        CommonResponse response = CommonResponse.createResponse(true, data);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

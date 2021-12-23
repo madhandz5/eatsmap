@@ -42,6 +42,7 @@ public class MemberService implements UserDetailsService {
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         Member member = Member.createAccount(request);
         member.generatedEmailCheckToken();
+//        TODO : Send Mail
         return SignUpResponse.createResponse(memberRepository.save(member));
     }
 
@@ -195,4 +196,11 @@ public class MemberService implements UserDetailsService {
 
     }
 
+    @Transactional
+//    TODO : Response DTO 만들어서 리턴할것.
+    public Member exitService(Member member) {
+        Member findMember = memberRepository.findByEmail(member.getEmail());
+        findMember.memberExit();
+        return findMember;
+    }
 }
