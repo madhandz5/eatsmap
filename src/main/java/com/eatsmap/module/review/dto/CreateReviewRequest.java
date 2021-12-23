@@ -1,5 +1,6 @@
 package com.eatsmap.module.review.dto;
 
+import com.sun.istack.Nullable;
 import lombok.Data;
 
 import javax.validation.constraints.*;
@@ -28,7 +29,7 @@ public class CreateReviewRequest {
     @NotEmpty
     private String category;
 
-    @NotNull
+    @Nullable
     private Long groupId;
 
     @NotEmpty

@@ -26,5 +26,10 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PostMapping(path = "/delete")
+    public void deleteReview(@RequestBody String reviewId) {
+        reviewService.deleteReview(Long.parseLong(reviewId));
+    }
+
 
 }

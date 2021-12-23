@@ -101,4 +101,8 @@ public class Review {
         this.group = group;
         group.getReviews().add(this);
     }
+
+    public void deleteReview() {
+        this.deleted = true;
+    }
 }
