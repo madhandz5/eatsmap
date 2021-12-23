@@ -1,6 +1,5 @@
 package com.eatsmap.infra.utils.kakao;
 
-import com.eatsmap.infra.common.CommonResponse;
 import com.eatsmap.infra.common.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
 import lombok.RequiredArgsConstructor;

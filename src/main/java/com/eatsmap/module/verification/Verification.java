@@ -1,10 +1,12 @@
 package com.eatsmap.module.verification;
 
 import com.eatsmap.module.member.Member;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
 import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.PRIVATE;

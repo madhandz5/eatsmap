@@ -5,7 +5,6 @@ import com.eatsmap.module.verification.dto.VerificationResponse;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.hibernate.annotations.QueryHints;
-import org.hibernate.criterion.Projection;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.time.LocalDateTime;

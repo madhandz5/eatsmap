@@ -2,7 +2,6 @@ package com.eatsmap.module.member;
 
 import com.eatsmap.infra.common.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
-import com.eatsmap.infra.jwt.JwtUtil;
 import com.eatsmap.infra.utils.kakao.KakaoAccountInfoDto;
 import com.eatsmap.infra.utils.kakao.KakaoAuthDto;
 import com.eatsmap.infra.utils.kakao.KakaoOAuth;
@@ -19,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service
@@ -57,7 +55,7 @@ public class MemberService implements UserDetailsService {
     public void loginByPassword(LoginRequest request) {
         String email = request.getEmail();
         String password = request.getPassword();
-        Member member = getAccount(email);
+        Member member = getMember(email);
 //        invalid password
         if (!passwordEncoder.matches(password, member.getPassword())) {
             throw new CommonException(ErrorCode.LOGIN_PROCESS_PASSWORD_NOTMATCH);
@@ -102,28 +100,15 @@ public class MemberService implements UserDetailsService {
     }
 
 
-//        Member member = memberRepository.findByEmail(request.getEmail());
-//        member.saveLoginInfo(jwtUtil.generateToken(request.getEmail()));
-//        return LoginResponse.createResponse(member);
-
     @Transactional
-    public ModifyResponse modify(ModifyRequest modifyRequest, HttpServletRequest http) {
-        String token = http.getHeader("Authorization").substring(7);
-
-        //user 정보 조회
-        //  i) token으로 조회
-        Member member = memberRepository.findByEmail(jwtUtil.extractUserEmail(token));
-        member.modifyMember(modifyRequest);
-
-        //  ii) email로 조회; userDetails.getUserName(); --> 어쨌든 token 필요
-//        String email = jwtUtil.extractUserEmail(token);
-
+    public ModifyResponse updateProfile(Member member, ModifyRequest request) {
+        member.modifyMember(request);
         return ModifyResponse.createResponse(memberRepository.save(member));
     }
 
     @Transactional
     public Member createNewAccount(KakaoSignUpRequest request) {
-        request.setPassword(passwordEncoder.encode(request.getPassword());
+        request.setPassword(passwordEncoder.encode(request.getPassword()));
         Member member = Member.createAccount(request);
         member.completeSignUp();
         return memberRepository.save(member);
@@ -136,7 +121,7 @@ public class MemberService implements UserDetailsService {
         return memberList;
     }
 
-    public Member getAccount(String email) {
+    public Member getMember(String email) {
         Member member = memberRepository.findByEmail(email);
         if (member == null) {
             throw new CommonException(ErrorCode.ACCOUNT_NOT_FOUND);
@@ -144,7 +129,7 @@ public class MemberService implements UserDetailsService {
         return member;
     }
 
-    public Member getAccount(Long memberId) {
+    public Member getMember(Long memberId) {
         Member member = memberRepository.findByIdAndExited(memberId, false);
         if (member == null) {
             throw new CommonException(ErrorCode.ACCOUNT_NOT_FOUND);

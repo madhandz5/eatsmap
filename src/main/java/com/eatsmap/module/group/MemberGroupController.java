@@ -4,7 +4,6 @@ import com.eatsmap.infra.common.CommonResponse;
 import com.eatsmap.module.group.dto.CreateMemberGroupRequest;
 import com.eatsmap.module.group.dto.CreateMemberGroupResponse;
 import com.eatsmap.module.group.dto.JoinMemberToGroupResponse;
-import com.eatsmap.module.groupMemberHistory.MemberGroupHistoryRepository;
 import com.eatsmap.module.groupMemberHistory.MemberGroupHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -9,16 +9,15 @@ import com.eatsmap.module.member.validator.LoginValidator;
 import com.eatsmap.module.member.validator.SignUpValidator;
 import com.eatsmap.module.member.validator.VerifyEmailValidator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -31,7 +30,6 @@ public class MemberController {
     private final SignUpValidator signUpValidator;
     private final VerifyEmailValidator verifyEmailValidator;
     private final LoginValidator loginValidator;
-    private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
     @InitBinder(value = "SignUpRequest")
@@ -72,47 +70,47 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    //jwt 테스트
-    @PostMapping("/authenticate")
-    public String generateToken(@RequestBody AuthRequest authRequest) throws Exception {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
-            );
-        } catch (Exception ex) {
-            throw new Exception("invalid email/password");
-        }
-        return jwtUtil.generateToken(authRequest.getEmail());
-    }
+//    //jwt 테스트
+//    @PostMapping("/authenticate")
+//    public String generateToken(@RequestBody AuthRequest authRequest) throws Exception {
+//        try {
+//            authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
+//            );
+//        } catch (Exception ex) {
+//            throw new Exception("invalid email/password");
+//        }
+//        return jwtUtil.generateToken(authRequest.getEmail());
+//    }
 
-    @PostMapping(path = "/login")
-    public ResponseEntity<CommonResponse> loginImpl(@Valid @RequestBody LoginRequest request, Errors errors) {
-        if (errors.hasErrors()) {
-            CommonResponse response = CommonResponse.createResponse(false, errors.getAllErrors());
-            return ResponseEntity.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).body(response);
-        }
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-            );
-        } catch (Exception ex) {
-            throw new CommonException(ErrorCode.JWT_EXCEPTION_FAIL, ex);
-        }
-//TODO : LOGIN
+//    @PostMapping(path = "/login")
+//    public ResponseEntity<CommonResponse> loginImpl(@Valid @RequestBody LoginRequest request, Errors errors) {
+//        if (errors.hasErrors()) {
+//            CommonResponse response = CommonResponse.createResponse(false, errors.getAllErrors());
+//            return ResponseEntity.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).body(response);
+//        }
+//        try {
+//            authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+//            );
+//        } catch (Exception ex) {
+//            throw new CommonException(ErrorCode.JWT_EXCEPTION_FAIL, ex);
+//        }
 //        LoginResponse data = memberService.login(request);
-//        TODO : DATA
-        CommonResponse response = CommonResponse.createResponse(true, true);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+//        CommonResponse response = CommonResponse.createResponse(true, data);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//    }
 
-    @PostMapping(path = "/modify")  //jwt 토큰 필요
-    public ResponseEntity<CommonResponse> modifyImpl(@Valid @RequestBody ModifyRequest modifyRequest, Errors errors
-            , HttpServletRequest http) {
-        if (errors.hasErrors()) {
-            CommonResponse response = CommonResponse.createResponse(false, errors.getAllErrors());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    @PostMapping(path = "/update-profile")
+    public ResponseEntity<CommonResponse> updateProfile(@RequestBody @Valid ModifyRequest request, @CurrentMember Member member, BindingResult result) {
+        if (result.hasErrors()) {
+            CommonResponse response = CommonResponse.createResponse(false, result.getAllErrors());
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+//            FEEDBACK : NOT_FOUND 보다는 BAD_REQUEST 가 맞을 것 같아요.
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+
         }
-        ModifyResponse data = memberService.modify(modifyRequest, http);
+        ModifyResponse data = memberService.updateProfile(member, request);
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

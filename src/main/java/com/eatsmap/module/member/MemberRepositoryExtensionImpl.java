@@ -1,6 +1,5 @@
 package com.eatsmap.module.member;
 
-import com.eatsmap.module.verification.QVerification;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 

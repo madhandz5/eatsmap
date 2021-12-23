@@ -36,4 +36,9 @@ out/
 ### VS Code ###
 .vscode/
 
-*.yml
+### ETC ###
+application-local.yml
+.DS_Store
+
+### Query DSL ###
+generated/

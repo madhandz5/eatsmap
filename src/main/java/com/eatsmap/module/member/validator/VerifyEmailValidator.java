@@ -1,10 +1,7 @@
 package com.eatsmap.module.member.validator;
 
-import com.eatsmap.infra.common.ErrorCode;
-import com.eatsmap.infra.exception.CommonException;
 import com.eatsmap.module.member.Member;
 import com.eatsmap.module.member.MemberRepository;
-import com.eatsmap.module.member.dto.SignUpRequest;
 import com.eatsmap.module.member.dto.VerifyEmailRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
