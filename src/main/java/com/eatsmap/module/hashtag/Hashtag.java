@@ -1,7 +1,7 @@
 package com.eatsmap.module.hashtag;
 
 import com.eatsmap.module.review.Review;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,14 +10,18 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder(access = AccessLevel.PRIVATE)
+@SequenceGenerator(name = "hashtag_seq", sequenceName = "hashtag_seq", initialValue = 1001, allocationSize = 30)
 public class Hashtag {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hashtag_seq")
     @Column(name = "hashtag_id")
     private Long id;
 
-    @OneToOne(fetch = LAZY)
+    @OneToOne(mappedBy = "hashtag", fetch = LAZY)
     @JoinColumn(name = "review_id")
     private Review review;
 
@@ -34,9 +38,11 @@ public class Hashtag {
     private int pr04 = 0;
     private int pr05 = 0;
 
-    public void setReview(Review review) {
-        this.review = review;
-        review.setHashtag(this);
+
+    public static Hashtag createHashtag(List<String> hashtags) {
+        Hashtag hashtag = new Hashtag();
+        hashtag.updateHashtag(hashtags);
+        return hashtag;
     }
 
     public void updateHashtag(List<String> hashtags) {
@@ -80,4 +86,5 @@ public class Hashtag {
             }
         }
     }
+
 }

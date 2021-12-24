@@ -30,7 +30,7 @@ public class CreateReviewRequest {
     private String category;
 
     @Nullable
-    private Long groupId;
+    private String groupId;
 
     @NotEmpty
     private String privacy;

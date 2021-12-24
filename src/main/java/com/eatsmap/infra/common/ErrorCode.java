@@ -38,9 +38,11 @@ public enum ErrorCode {
     JWT_EXCEPTION_FAIL("1203", "로그인 정보가 유효하지 않습니다.", null),
     ACCESS_DENIED("1204", "접근 권한이 없습니다.", null),
 
-    //    GROUP (1300)
+    // GROUP (1300)
     GROUP_IS_NOT_EXISTS("1301", "그룹이 존재하지 않습니다.", null),
 
+    // REVIEW (1400)
+    REVIEW_IS_NOT_EXISTS("1401", "리뷰가 존재하지 않습니다.", null),
 
     // etc (9000)
     JSON_PROCESS_FAIL("9001", "Failed From Processing Json", null),
