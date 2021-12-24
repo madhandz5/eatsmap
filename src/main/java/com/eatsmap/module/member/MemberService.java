@@ -198,9 +198,9 @@ public class MemberService implements UserDetailsService {
 
     @Transactional
 //    TODO : Response DTO 만들어서 리턴할것.
-    public Member exitService(Member member) {
+    public ExitResponse exitService(Member member) {
         Member findMember = memberRepository.findByEmail(member.getEmail());
         findMember.memberExit();
-        return findMember;
+        return ExitResponse.createResponse(memberRepository.save(findMember));
     }
 }

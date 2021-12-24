@@ -170,7 +170,7 @@ public class MemberController {
 
     @GetMapping(path = "/exit-service")
     public ResponseEntity exitService(@CurrentMember Member member) {
-        Member data = memberService.exitService(member);
+        ExitResponse data = memberService.exitService(member);
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

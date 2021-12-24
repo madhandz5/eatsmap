@@ -89,6 +89,7 @@ public class Member {
                 .email(request.getEmail())
                 .password(request.getPassword())
                 .memberRole(MemberRole.GUEST)
+                .memberType(MemberType.EMAIL)
                 .verified(false)
                 .build();
     }

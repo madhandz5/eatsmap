@@ -1,5 +1,6 @@
 package com.eatsmap.module.member.dto;
 
+import com.eatsmap.module.member.MemberType;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
