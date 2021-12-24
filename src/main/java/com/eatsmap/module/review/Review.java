@@ -81,10 +81,11 @@ public class Review {
         return review;
     }
 
-    public static Review deleteReview(Review review) {
-        review.deleted = true;
-        review.delDate = LocalDateTime.now();
-        return review;
+    public void deleteReview() {
+        this.deleted = true;
+        this.delDate = LocalDateTime.now();
+//        review.deleted = true;
+//        review.delDate = LocalDateTime.now();
     }
 
     public void setMember(Member member) {

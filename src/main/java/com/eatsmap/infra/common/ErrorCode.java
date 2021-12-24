@@ -43,6 +43,10 @@ public enum ErrorCode {
 
     // REVIEW (1400)
     REVIEW_IS_NOT_EXISTS("1401", "리뷰가 존재하지 않습니다.", null),
+    REVIEW_VISIT_DATE_IS_NOT_PAST("1402", "방문날짜는 미래일 수 없습니다.", null),
+
+    CATEGORY_IS_NOT_EXISTS("1403", "카테고리가 존재하지 않습니다.", null),
+    HASHTAG_IS_NOT_EXISTS("1404", "해시태그가 존재하지 않습니다.", null),
 
     // etc (9000)
     JSON_PROCESS_FAIL("9001", "Failed From Processing Json", null),

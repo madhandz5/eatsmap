@@ -12,11 +12,13 @@ import java.time.LocalDateTime;
 @Builder(access = AccessLevel.PRIVATE)
 public class DeleteReviewResponse {
 
+    private Long id;
     private boolean deleted;
     private LocalDateTime delDate;
 
     public static DeleteReviewResponse createResponse(Review review) {
         return DeleteReviewResponse.builder()
+                .id(review.getId())
                 .deleted(review.isDeleted())
                 .delDate(review.getDelDate())
                 .build();

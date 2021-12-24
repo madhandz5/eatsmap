@@ -43,20 +43,21 @@ public class ReviewService {
 
 //        방문날짜가 오늘 이후이면 예외처리
         if (LocalDate.parse(request.getVisitDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")).isAfter(LocalDate.now())) {
-            throw new CommonException(ErrorCode.CONSTRAINT_PROCESS_FAIL);
-        }
-//        카테고리 코드가 없으면 예외처리
-        Category category = categoryService.getCategoryCode(request.getCategory());
-        if (category == null) {
-            throw new CommonException(ErrorCode.CONSTRAINT_PROCESS_FAIL);
+            throw new CommonException(ErrorCode.REVIEW_VISIT_DATE_IS_NOT_PAST);
         }
 //        음식점이 없으면 새로 생성
         Restaurant restaurant = restaurantService.getRestaurant(request.getResName(), request.getAddress());
         if (restaurant == null) {
             restaurant = restaurantService.createNewRestaurant(request.getResName(), request.getAddress(), request.getX(), request.getY());
         }
-//        그룹이 내 피드라면 null
+//        카테고리 코드가 없으면 예외처리
+        Category category = categoryService.getCategoryCode(request.getCategory());
+        if (category == null) {
+            throw new CommonException(ErrorCode.CATEGORY_IS_NOT_EXISTS);
+        }
+//        그룹이 내 피드라면 null 입력
         MemberGroup group = memberGroupService.getMemberGroup(request.getGroupId());
+//        해시태그 생성
         Hashtag hashtag = hashtagService.createHashtag(request.getHashtag());
 
         Review review = Review.createReview(member, restaurant, group, category, hashtag, request);
@@ -68,7 +69,7 @@ public class ReviewService {
     @Transactional
     public DeleteReviewResponse deleteReview(Long reviewId) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(()-> new CommonException(ErrorCode.REVIEW_IS_NOT_EXISTS));
-        reviewRepository.save(Review.deleteReview(review));
+        review.deleteReview();
         return DeleteReviewResponse.createResponse(review);
     }
 }
