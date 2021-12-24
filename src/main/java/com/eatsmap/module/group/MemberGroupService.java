@@ -22,7 +22,8 @@ public class MemberGroupService {
         return CreateMemberGroupResponse.createResponse(memberGroupRepository.save(group));
     }
 
-    public MemberGroup getMemberGroup(Long groupId) {
-        return memberGroupRepository.findById(groupId).orElseThrow(() -> new CommonException(ErrorCode.GROUP_IS_NOT_EXISTS));
+    public MemberGroup getMemberGroup(String groupId) {
+        if(groupId.equals("my")) return null;
+        return memberGroupRepository.findById(Long.parseLong(groupId)).orElseThrow(() -> new CommonException(ErrorCode.GROUP_IS_NOT_EXISTS));
     }
 }

@@ -46,7 +46,7 @@ public class Review {
     @JoinColumn(name = "membergroup_id")
     private MemberGroup group;
 
-    @OneToOne(mappedBy = "review", fetch = LAZY)
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "hashtag_id")
     private Hashtag hashtag;
 
@@ -55,28 +55,37 @@ public class Review {
 
     private LocalDate visitDate;
     private LocalDateTime regDate;
+
     private boolean deleted;
+    private LocalDateTime delDate;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
 
-    public static Review createReview(Member member, Restaurant restaurant, MemberGroup group, Category category, CreateReviewRequest request) {
-//        visitDate
-        String visitDate = request.getVisitDate();
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
+    public static Review createReview(Member member, Restaurant restaurant, MemberGroup group, Category category, Hashtag hashtag, CreateReviewRequest request) {
         Review review = new Review();
         review.setMember(member);
         review.setRestaurant(restaurant);
-        review.setGroup(group);
+        if (group != null) review.setGroup(group);
         review.setCategory(category);
+        review.setHashtag(hashtag);
         review.taste = request.getTaste();
         review.service = request.getService();
         review.clean = request.getClean();
         review.content = request.getContent();
+        review.regDate = LocalDateTime.now();
+        review.visitDate = LocalDate.parse(request.getVisitDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        review.privacy = ReviewPrivacy.valueOf(request.getPrivacy());
         return review;
+    }
+
+    public void deleteReview() {
+        this.deleted = true;
+        this.delDate = LocalDateTime.now();
+//        review.deleted = true;
+//        review.delDate = LocalDateTime.now();
     }
 
     public void setMember(Member member) {
@@ -89,7 +98,6 @@ public class Review {
 
     public void setHashtag(Hashtag hashtag) {
         this.hashtag = hashtag;
-        hashtag.setReview(this);
     }
 
     public void setRestaurant(Restaurant restaurant) {
@@ -100,7 +108,4 @@ public class Review {
         this.group = group;
     }
 
-    public void deleteReview() {
-        this.deleted = true;
-    }
 }
