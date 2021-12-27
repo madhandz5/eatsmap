@@ -28,4 +28,6 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
     Member findMemberByJwtToken(String token);
 
     Member findByIdAndExited(Long memberId, boolean exited);
+
+    Member findMemberByBeforePassword(String password);
 }

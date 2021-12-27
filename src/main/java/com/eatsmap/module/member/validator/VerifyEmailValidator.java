@@ -30,18 +30,18 @@ public class VerifyEmailValidator implements Validator {
 
         //회원이 존재하지 않을 때
         if(member == null){
-            errors.rejectValue("email", "회원이 존재하지 않습니다.");
+            errors.rejectValue("email", "invalid.email", "회원이 존재하지 않습니다.");
         }else if (!passwordEncoder.matches(request.getPassword(), member.getPassword())){
-            errors.rejectValue("password","비밀번호가 틀렸습니다.");
+            errors.rejectValue("password", "invalid.password","비밀번호가 틀렸습니다.");
         }
 
         //token값 불일치
         if(member.getEmailCheckToken() == null || !member.getEmailCheckToken().equals(request.getToken())){
-            errors.rejectValue("token","유효하지 않은 인증입니다.");
+            errors.rejectValue("token","invalid.token","유효하지 않은 인증입니다.");
         }
         //인증시간 만료
         if(!LocalDateTime.now().isBefore(member.getEmailCheckTokenGeneratedAt().plusMinutes(3))){
-            errors.rejectValue("token","토큰이 만료되었습니다.");
+            errors.rejectValue("token","invalid.token","토큰이 만료되었습니다.");
         }
     }
 }

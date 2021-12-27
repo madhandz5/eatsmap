@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 @Component
 @RequiredArgsConstructor
 public class LoginValidator implements Validator {
@@ -29,7 +32,14 @@ public class LoginValidator implements Validator {
         if(member == null){
             errors.rejectValue("email", "회원이 존재하지 않습니다.");
         }else if (!passwordEncoder.matches(request.getPassword(), member.getPassword())){
-            errors.rejectValue("password","비밀번호가 틀렸습니다.");
+
+            if(passwordEncoder.matches(request.getPassword(), member.getBeforePassword())){
+                long duration = Duration.between(LocalDateTime.now(), member.getPasswordModifiedAt()).toDays();
+                errors.rejectValue("password","invalid.password","비밀번호를 변경하신지 " + duration + "일 경과했습니다.");
+            }else{
+                errors.rejectValue("password","비밀번호가 틀렸습니다.");
+            }
+
         }
     }
 }

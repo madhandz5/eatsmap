@@ -44,6 +44,8 @@ public class Member {
     private String email;
     private String password;
 
+    private String beforePassword;
+
     @Lob
     @Type(type = "org.hibernate.type.BinaryType")
     private byte[] profileImage;
@@ -107,8 +109,9 @@ public class Member {
                 .build();
     }
 
-    public void modifyMember(ModifyRequest request) {
+    public void modifyMember(Member member, ModifyRequest request) {
         this.nickname = request.getNickname();
+        this.beforePassword = member.getPassword();
         this.password = request.getPassword();
         this.passwordModifiedAt = LocalDateTime.now();
     }
@@ -132,6 +135,11 @@ public class Member {
     public void completeSignUp() {
         this.memberRole = MemberRole.USER;
         this.regDate = LocalDateTime.now();
+    }
+
+    public void updateToTmpPassword(Member member){
+        this.beforePassword = member.getPassword();
+        this.password = UUID.randomUUID().toString();
     }
 
     public void memberExit() {

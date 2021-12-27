@@ -31,7 +31,7 @@ public class MemberServiceTest {
         Member modifiedMember = null;
         if (member.isPresent()) {
             Member findUser = member.get();
-            findUser.modifyMember(request);
+            findUser.modifyMember(member.get(), request);
             modifiedMember = memberRepository.save(findUser);
         }
 

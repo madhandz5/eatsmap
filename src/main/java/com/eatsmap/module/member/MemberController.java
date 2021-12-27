@@ -7,6 +7,7 @@ import com.eatsmap.infra.jwt.JwtUtil;
 import com.eatsmap.infra.utils.kakao.KakaoAuthDto;
 import com.eatsmap.module.member.dto.*;
 import com.eatsmap.module.member.validator.LoginValidator;
+import com.eatsmap.module.member.validator.MemberByEmailValidator;
 import com.eatsmap.module.member.validator.SignUpValidator;
 import com.eatsmap.module.member.validator.VerifyEmailValidator;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class MemberController {
     private final MemberService memberService;
     private final SignUpValidator signUpValidator;
     private final VerifyEmailValidator verifyEmailValidator;
+    private final MemberByEmailValidator memberByEmailValidator;
     private final JwtUtil jwtUtil;
 
     @InitBinder(value = "SignUpRequest")
@@ -42,6 +44,11 @@ public class MemberController {
     @InitBinder(value = "verifyEmailRequest")
     public void initBindVerifyEmailRequest(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(verifyEmailValidator);
+    }
+
+    @InitBinder(value = "findPasswordRequest")
+    public void initBindFindPasswordRequest(WebDataBinder webDataBinder){
+        webDataBinder.addValidators(memberByEmailValidator);
     }
 
 //    @PostMapping(path = "/sign-up") //토큰 인증유효기간 지난 사용자 동일 이메일로 save하는 과정에서 오류
@@ -146,6 +153,17 @@ public class MemberController {
         memberService.logout(request, response);
         CommonResponse success = CommonResponse.createResponse(true, "success");
         return ResponseEntity.status(HttpStatus.OK).body(success);
+    }
+
+    @GetMapping("find-password")
+    public ResponseEntity findPasswordByEmail(@Valid FindPasswordRequest request, BindingResult result){
+        if(result.hasErrors()){
+            CommonResponse response = CommonResponse.createResponse(false, result.getAllErrors());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+        FindPasswordResponse data = memberService.findPassword(request);
+        CommonResponse response = CommonResponse.createResponse(true, data);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 

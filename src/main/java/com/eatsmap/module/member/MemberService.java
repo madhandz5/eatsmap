@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional(readOnly = true)
@@ -109,7 +110,7 @@ public class MemberService implements UserDetailsService {
 
     @Transactional
     public ModifyResponse updateProfile(Member member, ModifyRequest request) {
-        member.modifyMember(request);
+        member.modifyMember(member, request);
         return ModifyResponse.createResponse(memberRepository.save(member));
     }
 
@@ -126,6 +127,16 @@ public class MemberService implements UserDetailsService {
         List<GetAllResponse> memberList = memberRepository.findToGetAllResponse();
 
         return memberList;
+    }
+
+    public FindPasswordResponse findPassword(FindPasswordRequest request){
+        //update to tmp password
+        Member member = getMember(request.getEmail());
+        member.updateToTmpPassword(member);
+
+        //send email
+
+        return FindPasswordResponse.createResponse(memberRepository.save(member));
     }
 
     public Member getMember(String email) {
