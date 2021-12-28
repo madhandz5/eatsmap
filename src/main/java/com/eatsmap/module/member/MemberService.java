@@ -161,7 +161,7 @@ public class MemberService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Member member = memberRepository.findByEmail(email);
+        Member member = memberRepository.memberForSignUpByEmail(email);
         if (member == null) {
             throw new CommonException(ErrorCode.ACCOUNT_NOT_FOUND);
         }

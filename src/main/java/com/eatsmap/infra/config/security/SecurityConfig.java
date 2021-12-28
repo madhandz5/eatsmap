@@ -4,6 +4,7 @@ import com.eatsmap.infra.config.security.filter.JwtAuthFilter;
 import com.eatsmap.infra.config.security.provider.JwtAuthProvider;
 import com.eatsmap.infra.config.security.setting.NoRedirectStrategy;
 import com.eatsmap.infra.jwt.JwtUtil;
+import com.eatsmap.module.member.MemberRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -73,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .requestMatchers(ROLE_USER_REQUIRED).hasAnyAuthority("ROLE_USER")
+                .requestMatchers(ROLE_USER_REQUIRED).hasAnyAuthority(MemberRole.USER.name())
                 .anyRequest().permitAll();
 
         http

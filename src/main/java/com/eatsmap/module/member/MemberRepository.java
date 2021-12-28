@@ -25,8 +25,6 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
 
     Member findByEmailAndVerified(String email, boolean verified);
 
-    Member findMemberByJwtToken(String token);
-
     Member findByIdAndExited(Long memberId, boolean exited);
 
     Member findMemberByBeforePassword(String password);

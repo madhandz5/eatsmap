@@ -68,7 +68,6 @@ public class Member {
     private LocalDateTime emailCheckTokenGeneratedAt;
     private boolean verified;
 
-    private String jwtToken;
 
     @Builder.Default
     @OneToMany(mappedBy = "member")
