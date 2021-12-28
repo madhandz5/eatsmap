@@ -45,7 +45,6 @@ public class MemberService implements UserDetailsService {
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         Member member = Member.createAccount(request);
         member.generatedEmailCheckToken();
-        log.info("왜안돼!@!@" + member.toString());
 //        TODO : Send Mail
         return SignUpResponse.createResponse(memberRepository.save(member));
     }
