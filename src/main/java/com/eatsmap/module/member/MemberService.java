@@ -114,6 +114,7 @@ public class MemberService implements UserDetailsService {
 
     @Transactional
     public ModifyResponse updateProfile(Member member, ModifyRequest request) {
+        request.setPassword(passwordEncoder.encode(request.getPassword()));
         member.modifyMember(member, request);
         return ModifyResponse.createResponse(memberRepository.save(member));
     }

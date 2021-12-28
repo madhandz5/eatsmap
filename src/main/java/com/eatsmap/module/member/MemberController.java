@@ -34,6 +34,7 @@ public class MemberController {
     private final SignUpValidator signUpValidator;
     private final VerifyEmailValidator verifyEmailValidator;
     private final MemberByEmailValidator memberByEmailValidator;
+    private final LoginValidator loginValidator;
     private final JwtUtil jwtUtil;
 
     @InitBinder(value = "signUpRequest")
@@ -44,6 +45,10 @@ public class MemberController {
     @InitBinder(value = "verifyEmailRequest")
     public void initBindVerifyEmailRequest(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(verifyEmailValidator);
+    }
+    @InitBinder(value = "loginRequest")
+    public void initBindLoginRequest(WebDataBinder webDataBinder){
+        webDataBinder.addValidators(loginValidator);
     }
 
     @InitBinder(value = "findPasswordRequest")

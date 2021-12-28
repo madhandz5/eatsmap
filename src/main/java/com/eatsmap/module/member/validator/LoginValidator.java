@@ -27,17 +27,17 @@ public class LoginValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         LoginRequest request = (LoginRequest) target;
-        Member member = memberRepository.findByEmailAndVerified(request.getEmail(), true);
+        Member member = memberRepository.memberForSignUpByEmail(request.getEmail());
 
         if(member == null){
-            errors.rejectValue("email", "회원이 존재하지 않습니다.");
+            errors.rejectValue("email","invalid.email", "회원이 존재하지 않습니다.");
         }else if (!passwordEncoder.matches(request.getPassword(), member.getPassword())){
 
             if(passwordEncoder.matches(request.getPassword(), member.getBeforePassword())){
                 long duration = Duration.between(LocalDateTime.now(), member.getPasswordModifiedAt()).toDays();
                 errors.rejectValue("password","invalid.password","비밀번호를 변경하신지 " + duration + "일 경과했습니다.");
             }else{
-                errors.rejectValue("password","비밀번호가 틀렸습니다.");
+                errors.rejectValue("password","invalid.password","비밀번호가 틀렸습니다.");
             }
 
         }
