@@ -14,7 +14,7 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
 
     boolean existsByNickname(String nickname);
 
-    Member findByEmail(String email);
+    Member findFirstByEmailOrderByIdDesc(String email);
 
     @Query("select new com.eatsmap.module.member.dto.GetAllResponse(m.id, m.email, m.nickname, r.id) from Member m join m.reviews r")
     List<GetAllResponse> findToGetAllResponse();
@@ -30,4 +30,8 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
     Member findByIdAndExited(Long memberId, boolean exited);
 
     Member findMemberByBeforePassword(String password);
+
+    Member findByEmail(String email);
+
+    Member findMemberByKakaoUserId(String id);
 }

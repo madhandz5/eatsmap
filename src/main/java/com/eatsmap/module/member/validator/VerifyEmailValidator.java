@@ -26,7 +26,7 @@ public class VerifyEmailValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         VerifyEmailRequest request = (VerifyEmailRequest) target;
-        Member member = memberRepository.findByEmail(request.getEmail());
+        Member member = memberRepository.findFirstByEmailOrderByIdDesc(request.getEmail());
 
         //회원이 존재하지 않을 때
         if(member == null){

@@ -23,7 +23,7 @@ public class KakaoAccountInfoDeserializer extends StdDeserializer<KakaoAccountIn
 
         JsonNode root = jsonParser.getCodec().readTree(jsonParser);
 
-        int id = root.get("id").intValue();
+        String id = root.get("id").toString();
         boolean hasEmail = root.get("kakao_account").get("has_email").booleanValue();
         String email = root.get("kakao_account").get("email").toString().replace("\"", "").trim();
         String nickname = root.get("kakao_account").get("profile").get("nickname").toString().replace("\"", "").trim();

@@ -9,6 +9,7 @@ import com.eatsmap.module.member.dto.*;
 import com.eatsmap.module.verification.Verification;
 import com.eatsmap.module.verification.VerificationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -43,6 +45,7 @@ public class MemberService implements UserDetailsService {
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         Member member = Member.createAccount(request);
         member.generatedEmailCheckToken();
+        log.info("왜안돼!@!@" + member.toString());
 //        TODO : Send Mail
         return SignUpResponse.createResponse(memberRepository.save(member));
     }
@@ -50,7 +53,7 @@ public class MemberService implements UserDetailsService {
     //이메일 인증
     @Transactional
     public VerifyEmailResponse verifyByEmailToken(VerifyEmailRequest request) {
-        Member member = memberRepository.findByEmail(request.getEmail());
+        Member member = memberRepository.findFirstByEmailOrderByIdDesc(request.getEmail());
         //중복인증 여부 체크
         if (member.isVerified()) {
             throw new CommonException(ErrorCode.INVALID_VERIFICATION);
@@ -85,7 +88,9 @@ public class MemberService implements UserDetailsService {
         KakaoAccountInfoDto kakaoInfo = kakaoOAuth.getKakaoInfo(accessToken);
 
 //        3. Check Exist Member & Sign Up
-        Member target = memberRepository.findByEmail(kakaoInfo.getEmail());
+//        Member target = memberRepository.findByEmail(kakaoInfo.getEmail());   //email null 인 경우 존재
+        Member target = memberRepository.findMemberByKakaoUserId(kakaoInfo.getId());
+
         if (target == null) {
             KakaoSignUpRequest request = KakaoSignUpRequest.createKakaoSignUpRequest(kakaoInfo);
             target = createNewAccount(request);

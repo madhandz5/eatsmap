@@ -25,6 +25,7 @@ import java.util.UUID;
  **/
 @Entity
 @Getter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(access = AccessLevel.PRIVATE)
@@ -53,8 +54,6 @@ public class Member {
     @Column(unique = true)
     private String kakaoUserId;
 
-
-    @Column(unique = true)
     private String nickname;
 
     private boolean kakaoAuth;

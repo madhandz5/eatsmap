@@ -9,7 +9,7 @@ import lombok.Data;
 @JsonDeserialize(using = KakaoAccountInfoDeserializer.class)
 public class KakaoAccountInfoDto {
 
-    private int id;
+    private String id;
     private boolean hasEmail;
 
     private String email;

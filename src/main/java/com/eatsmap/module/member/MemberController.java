@@ -36,7 +36,7 @@ public class MemberController {
     private final MemberByEmailValidator memberByEmailValidator;
     private final JwtUtil jwtUtil;
 
-    @InitBinder(value = "SignUpRequest")
+    @InitBinder(value = "signUpRequest")
     public void initBindSignUpRequest(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(signUpValidator);
     }

@@ -25,4 +25,30 @@ public class MemberRepositoryExtensionImpl extends QuerydslRepositorySupport imp
                 .where(member.email.eq(email))
                 .fetchFirst();
     }
+
+    //SignUpValidate
+    @Override
+    public Member memberForSignUpByEmail(String email) {
+        return queryFactory
+                .select(member)
+                .from(member)
+                .where(member.verified.isTrue()
+                        , member.exited.isFalse()
+                        , member.email.eq(email))
+                .fetchFirst();
+
+    }
+    @Override
+    public Member memberForSignUpByNickname(String nickname) {
+        return queryFactory
+                .select(member)
+                .from(member)
+                .where(member.verified.isTrue()
+                        , member.exited.isFalse()
+                        , member.email.eq(nickname))
+                .fetchFirst();
+    }
+
+
+
 }
