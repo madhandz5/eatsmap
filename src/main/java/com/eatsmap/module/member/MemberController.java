@@ -56,17 +56,6 @@ public class MemberController {
         webDataBinder.addValidators(memberByEmailValidator);
     }
 
-//    @PostMapping(path = "/sign-up") //토큰 인증유효기간 지난 사용자 동일 이메일로 save하는 과정에서 오류
-//    public ResponseEntity<CommonResponse> signUp(@Valid @RequestBody SignUpRequest request, Errors errors) {
-//        if (errors.hasErrors()) {
-//            CommonResponse response = CommonResponse.createResponse(false, errors.getAllErrors());
-//            return ResponseEntity.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).body(response);
-//        }
-//        SignUpResponse data = memberService.signUp(request);
-//        CommonResponse response = CommonResponse.createResponse(true, data);
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-//    }
 
     @PostMapping(path = "/sign-up")
     public ResponseEntity signup(@RequestBody @Valid SignUpRequest request, BindingResult result) {
@@ -82,9 +71,9 @@ public class MemberController {
 
 
     @PostMapping(path = "/verify-email")
-    public ResponseEntity<CommonResponse> verifyEmailWithToken(@Valid @RequestBody VerifyEmailRequest request, Errors errors) {
-        if (errors.hasErrors()) {
-            CommonResponse response = CommonResponse.createResponse(false, null);
+    public ResponseEntity<CommonResponse> verifyEmailWithToken(@Valid @RequestBody VerifyEmailRequest request, BindingResult result) {
+        if (result.hasErrors()) {
+            CommonResponse response = CommonResponse.createResponse(false, result.getAllErrors());
             return ResponseEntity.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).body(response);
         }
         VerifyEmailResponse data = memberService.verifyByEmailToken(request);
@@ -131,7 +120,7 @@ public class MemberController {
             CommonResponse response = CommonResponse.createResponse(false, result.getAllErrors());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-
+//        memberService.loginByPassword(request);       //verification 등록 후 활성화
         String token = jwtUtil.encodeJwt(request.getEmail());
         CommonResponse response = CommonResponse.createResponse(true, token);
         return ResponseEntity.status(HttpStatus.OK).body(response);

@@ -24,7 +24,7 @@ public class VerificationRepositoryExtensionImpl extends QuerydslRepositorySuppo
     public Verification searchVerification(String key) {
         return queryFactory.selectFrom(verification)
                 .where(
-                        verification.key.eq(key),
+                        verification.secretKey.eq(key),
                         verification.checked.isFalse()
                 ).fetchFirst();
     }
@@ -33,7 +33,7 @@ public class VerificationRepositoryExtensionImpl extends QuerydslRepositorySuppo
     public VerificationResponse searchVerification(String key, LocalDateTime dateTime) {
         return queryFactory
                 .select(Projections.constructor(VerificationResponse.class,
-                                verification.key,
+                                verification.secretKey,
                                 verification.expiredAt,
                                 verification.member
                         )
@@ -41,7 +41,7 @@ public class VerificationRepositoryExtensionImpl extends QuerydslRepositorySuppo
                 .from(verification)
                 .join(verification.member, QMember.member)
                 .where(
-                        verification.key.eq(key),
+                        verification.secretKey.eq(key),
                         verification.checked.isFalse(),
                         verification.expiredAt.after(dateTime))
                 .setHint(QueryHints.READ_ONLY, true)

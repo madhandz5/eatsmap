@@ -25,11 +25,11 @@ public class SignUpValidator implements Validator {
         SignUpRequest request = (SignUpRequest) target;
 
         //verified == true && exited == false 인 회원 중에서만 중복 검증
-        if (memberRepository.memberForSignUpByEmail(request.getEmail()) != null) {
+        if (memberRepository.memberValidateByEmail(request.getEmail()) != null) {
             errors.rejectValue("email", "invalid.email", "이미 사용중인 이메일입니다.");
         }
 
-        if (memberRepository.memberForSignUpByNickname(request.getNickname()) != null) {
+        if (memberRepository.memberValidateByNickname(request.getNickname()) != null) {
             errors.rejectValue("nickname", "invalid.nickname", "이미 사용중인 닉네임입니다.");
         }
 

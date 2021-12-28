@@ -17,13 +17,14 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor
 @Builder(access = PRIVATE)
+@SequenceGenerator(name = "verification_seq", sequenceName = "verification_seq", initialValue = 1001)
 public class Verification {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "verification_seq")
     @Column(name = "verification_id")
     private Long id;
 
-    private String key;
+    private String secretKey;
 
     private boolean checked;
 
@@ -35,7 +36,7 @@ public class Verification {
 
     public static Verification createVerification(String key) {
         return Verification.builder()
-                .key(key)
+                .secretKey(key)
                 .checked(false)
 //                TODO: 개발시 편의를 위하여 토큰 만료시간 임시 지정
                 .expiredAt(LocalDateTime.now().plusDays(1))

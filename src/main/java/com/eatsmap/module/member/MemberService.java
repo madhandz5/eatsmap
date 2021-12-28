@@ -63,16 +63,10 @@ public class MemberService implements UserDetailsService {
 
     @Transactional
     public void loginByPassword(LoginRequest request) {
-        String email = request.getEmail();
-        String password = request.getPassword();
-        Member member = getMember(email);
-//        invalid password
-        if (!passwordEncoder.matches(password, member.getPassword())) {
-            throw new CommonException(ErrorCode.LOGIN_PROCESS_PASSWORD_NOTMATCH);
-        }
+        Member member = getMember(request.getEmail());
 
 //        Check email Not Verified
-        if (checkEmailVerified(email)) {
+        if (checkEmailVerified(request.getEmail())) {
             throw new CommonException(ErrorCode.VERIFICATION_NOT_FOUND);
         }
         login(member, member.getPassword());
@@ -162,7 +156,7 @@ public class MemberService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Member member = memberRepository.memberForSignUpByEmail(email);
+        Member member = memberRepository.memberValidateByEmail(email);
         if (member == null) {
             throw new CommonException(ErrorCode.ACCOUNT_NOT_FOUND);
         }
@@ -202,7 +196,7 @@ public class MemberService implements UserDetailsService {
 //        Verification 존재 및 일치 여부 확인
         if (verify.isEmpty()) {
             throw new CommonException(ErrorCode.VERIFICATION_NOT_FOUND);
-        } else if (!key.equals(verify.get().getKey())) {
+        } else if (!key.equals(verify.get().getSecretKey())) {
             throw new CommonException(ErrorCode.VERIFICATION_NOT_CORRECT);
         }
 

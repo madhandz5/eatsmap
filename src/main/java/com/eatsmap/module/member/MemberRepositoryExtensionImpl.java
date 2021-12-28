@@ -28,7 +28,7 @@ public class MemberRepositoryExtensionImpl extends QuerydslRepositorySupport imp
 
     //SignUpValidate
     @Override
-    public Member memberForSignUpByEmail(String email) {
+    public Member memberValidateByEmail(String email) {
         return queryFactory
                 .select(member)
                 .from(member)
@@ -39,7 +39,7 @@ public class MemberRepositoryExtensionImpl extends QuerydslRepositorySupport imp
 
     }
     @Override
-    public Member memberForSignUpByNickname(String nickname) {
+    public Member memberValidateByNickname(String nickname) {
         return queryFactory
                 .select(member)
                 .from(member)

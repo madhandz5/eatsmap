@@ -27,7 +27,7 @@ public class LoginValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         LoginRequest request = (LoginRequest) target;
-        Member member = memberRepository.memberForSignUpByEmail(request.getEmail());
+        Member member = memberRepository.memberValidateByEmail(request.getEmail());
 
         if(member == null){
             errors.rejectValue("email","invalid.email", "회원이 존재하지 않습니다.");
