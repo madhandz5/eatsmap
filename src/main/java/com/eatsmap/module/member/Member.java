@@ -1,5 +1,6 @@
 package com.eatsmap.module.member;
 
+import com.eatsmap.module.calendar.Calendar;
 import com.eatsmap.module.groupMemberHistory.MemberGroupHistory;
 import com.eatsmap.module.member.dto.KakaoSignUpRequest;
 import com.eatsmap.module.member.dto.ModifyRequest;
@@ -68,6 +69,8 @@ public class Member {
     private LocalDateTime emailCheckTokenGeneratedAt;
     private boolean verified;
 
+    @OneToMany
+    private List<Calendar> calendars = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "member")

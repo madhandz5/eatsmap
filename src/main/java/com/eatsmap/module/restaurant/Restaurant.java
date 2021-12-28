@@ -22,6 +22,7 @@ public class Restaurant {
     @Column(name = "restaurant_id")
     private Long id;
 
+    //삭제해도 될 것 같음! Restaurant에서 Review를 조회할 필요 x (Review 입장에서 단방향이면 되지 않을까요?)
     @OneToMany(mappedBy = "restaurant")
     private List<Review> reviews = new ArrayList<>();
 
