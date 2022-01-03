@@ -69,6 +69,7 @@ public class Member {
     private LocalDateTime emailCheckTokenGeneratedAt;
     private boolean verified;
 
+    @Builder.Default
     @OneToMany
     private List<Calendar> calendars = new ArrayList<>();
 
@@ -76,6 +77,7 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Review> reviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member")   //양방향
     private List<MemberGroupHistory> groups = new ArrayList<>();
 
@@ -150,5 +152,9 @@ public class Member {
     public void setReview(Review review) {
         this.getReviews().add(review);
         review.setMember(this);
+    }
+
+    public void setCalendar(Calendar calendar){
+        this.calendars.add(calendar);
     }
 }

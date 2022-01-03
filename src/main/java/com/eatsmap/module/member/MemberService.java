@@ -24,9 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -207,10 +207,16 @@ public class MemberService implements UserDetailsService {
     }
 
     @Transactional
-//    TODO : Response DTO 만들어서 리턴할것.
     public ExitResponse exitService(Member member) {
         Member findMember = memberRepository.findByEmail(member.getEmail());
         findMember.memberExit();
         return ExitResponse.createResponse(memberRepository.save(findMember));
+    }
+
+    @Transactional
+    public void saveVerification(String token, LoginRequest request) {    //유진 01/03
+//        TODO: checked false 의미파악 및 해결
+        Member member = getMember(request.getEmail());
+        verificationService.saveNewVerification(token, member);
     }
 }

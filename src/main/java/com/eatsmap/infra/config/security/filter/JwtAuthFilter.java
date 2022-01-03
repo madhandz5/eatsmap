@@ -46,7 +46,7 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
     // 이후 비즈니스 로직실행을 위해 chain 연결
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        super.successfulAuthentication(request, response, chain, authResult);
+        super.successfulAuthentication(request, response, chain, authResult);   //Authentication객체 -> Security Context에 저장
         chain.doFilter(request, response);
     }
 

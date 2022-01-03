@@ -21,7 +21,7 @@ public class JwtAuthProvider extends AbstractUserDetailsAuthenticationProvider {
     @Override
     protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         final String targetEmail = String.valueOf(authentication.getCredentials());
-        return memberService.loadUserByUsername(targetEmail);
+        return memberService.loadUserByUsername(targetEmail);   //principal 등록
     }
 
     // retrieveUser 이후 로직 실행 : authentication(입력받은 정보)와 userDetails(DB정보) 비교

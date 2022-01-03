@@ -18,8 +18,6 @@ import java.util.Date;
 
 
 @Component
-//@Service
-// FEEDBACK : 엄밀히 말하면 이아이는 서비스가 아니라서, @Service 보다는 @Component 가 맞습니다.
 @RequiredArgsConstructor
 public class JwtUtil {
 

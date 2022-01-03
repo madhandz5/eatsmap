@@ -120,8 +120,11 @@ public class MemberController {
             CommonResponse response = CommonResponse.createResponse(false, result.getAllErrors());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-//        memberService.loginByPassword(request);       //verification 등록 후 활성화
         String token = jwtUtil.encodeJwt(request.getEmail());
+        memberService.saveVerification(token, request);
+
+        memberService.loginByPassword(request);       //verification 등록 후 활성화
+
         CommonResponse response = CommonResponse.createResponse(true, token);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
