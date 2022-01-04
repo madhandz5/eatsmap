@@ -1,6 +1,6 @@
 package com.eatsmap.module.review;
 
-import com.eatsmap.infra.common.ErrorCode;
+import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
 import com.eatsmap.module.category.Category;
 import com.eatsmap.module.category.CategoryService;
@@ -21,8 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)

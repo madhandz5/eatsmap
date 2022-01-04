@@ -1,4 +1,4 @@
-package com.eatsmap.infra.common;
+package com.eatsmap.infra.common.code;
 
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;

@@ -1,5 +1,6 @@
 package com.eatsmap.infra.common;
 
+import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,6 +1,6 @@
 package com.eatsmap.module.verification;
 
-import com.eatsmap.infra.common.ErrorCode;
+import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
 import com.eatsmap.module.member.Member;
 import com.eatsmap.module.verification.dto.VerificationResponse;

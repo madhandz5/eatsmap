@@ -1,6 +1,6 @@
 package com.eatsmap.infra.config.security.setting;
 
-import com.eatsmap.infra.common.ErrorCode;
+import com.eatsmap.infra.common.code.ErrorCode;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.MediaType;

@@ -1,6 +1,6 @@
 package com.eatsmap.infra.config.security.provider;
 
-import com.eatsmap.infra.common.ErrorCode;
+import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
 import com.eatsmap.module.member.MemberService;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,10 @@
 package com.eatsmap.module.member;
 
-import com.eatsmap.infra.common.ErrorCode;
+import com.eatsmap.infra.common.code.CommonCode;
+import com.eatsmap.infra.common.code.ErrorCode;
+import com.eatsmap.infra.config.AppConfig;
 import com.eatsmap.infra.exception.CommonException;
+import com.eatsmap.infra.mail.EmailSender;
 import com.eatsmap.infra.utils.kakao.KakaoAccountInfoDto;
 import com.eatsmap.infra.utils.kakao.KakaoAuthDto;
 import com.eatsmap.infra.utils.kakao.KakaoOAuth;
@@ -10,6 +13,9 @@ import com.eatsmap.module.verification.Verification;
 import com.eatsmap.module.verification.VerificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,10 +27,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,15 +45,23 @@ public class MemberService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final VerificationService verificationService;
     private final KakaoOAuth kakaoOAuth;
-
+    private final AppConfig config;
+    private final EmailSender emailSender;
 
     @Transactional
     public SignUpResponse signUp(SignUpRequest request) {
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         Member member = Member.createAccount(request);
         member.generatedEmailCheckToken();
-//        TODO : Send Mail
-        return SignUpResponse.createResponse(memberRepository.save(member));
+        SignUpResponse memberResponse = SignUpResponse.createResponse(memberRepository.save(member));
+
+//        TODO : Send Mail(with nickname)
+        HttpEntity<SignUpResponse> mailRequest = new HttpEntity(memberResponse);
+        ResponseEntity<SignUpResponse> response = config.getCustomRestTemplate()
+                .exchange(CommonCode.DOMAIN.getDesc() , HttpMethod.POST, mailRequest, SignUpResponse.class);
+        emailSender.send(member.getEmail(), "[EAT'S MAP] 회원가입을 완료하세요");
+
+        return memberResponse;
     }
 
     //이메일 인증

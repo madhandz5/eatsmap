@@ -1,6 +1,6 @@
 package com.eatsmap.infra.utils.kakao;
 
-import com.eatsmap.infra.common.ErrorCode;
+import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;

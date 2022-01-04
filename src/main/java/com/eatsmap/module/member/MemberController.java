@@ -1,7 +1,7 @@
 package com.eatsmap.module.member;
 
 import com.eatsmap.infra.common.CommonResponse;
-import com.eatsmap.infra.common.ErrorCode;
+import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
 import com.eatsmap.infra.jwt.JwtUtil;
 import com.eatsmap.infra.utils.kakao.KakaoAuthDto;
@@ -13,10 +13,7 @@ import com.eatsmap.module.member.validator.VerifyEmailValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
