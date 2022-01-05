@@ -28,9 +28,9 @@ public class MemberGroupController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
     //초대된 유저 수락
-    @GetMapping(path = "/join")
-    public ResponseEntity<CommonResponse> joinMemberToGroup(@CurrentMember Member member, JoinMemberToGroupRequest request){
-        JoinMemberToGroupResponse data = memberGroupHistoryService.joinMemberToGroup(member, request);
+    @GetMapping (path = "/join/{groupId}")
+    public ResponseEntity<CommonResponse> joinMemberToGroup(@CurrentMember Member member, @PathVariable String groupId){
+        JoinMemberToGroupResponse data = memberGroupHistoryService.joinMemberToGroup(member, groupId);
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
