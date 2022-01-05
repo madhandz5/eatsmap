@@ -2,6 +2,8 @@ package com.eatsmap.module.hashtag;
 
 import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
+import com.eatsmap.module.hashtag.dto.CreateHashtagRequest;
+import com.eatsmap.module.hashtag.dto.CreateHashtagResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,13 +18,13 @@ public class HashtagService {
     private final HashtagRepository hashtagRepository;
 
     @Transactional
-    public Hashtag createHashtag(List<String> tagList) {
-        Hashtag hashtag = Hashtag.createHashtag(tagList);
-        if (hashtag.getMd01()==0 && hashtag.getMd02()==0 && hashtag.getMd03()==0 && hashtag.getMd04()==0 && hashtag.getMd05()==0 && hashtag.getMd06()==0
-                && hashtag.getPr01()==0 && hashtag.getPr02()==0 && hashtag.getPr03()==0 && hashtag.getPr04()==0 && hashtag.getPr05()==0) {
-            throw new CommonException(ErrorCode.HASHTAG_IS_NOT_EXISTS);
-        }
-        return hashtag;
+    public CreateHashtagResponse createHashtag(CreateHashtagRequest request) {
+        Hashtag hashtag = hashtagRepository.save(Hashtag.createHashtag(request));
+        return CreateHashtagResponse.createResponse(hashtag);
+    }
+
+    public Hashtag getHashtagByHashtagCode(String hashtagCode) {
+        return hashtagRepository.findByHashtagCode(hashtagCode);
     }
 
 }

@@ -15,12 +15,15 @@ import com.eatsmap.module.restaurant.RestaurantService;
 import com.eatsmap.module.review.dto.CreateReviewRequest;
 import com.eatsmap.module.review.dto.CreateReviewResponse;
 import com.eatsmap.module.review.dto.DeleteReviewResponse;
+import com.eatsmap.module.reviewHashtagHistory.ReviewHashtagHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,12 +31,12 @@ import java.time.format.DateTimeFormatter;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
-
     private final MemberService memberService;
     private final CategoryService categoryService;
     private final RestaurantService restaurantService;
     private final MemberGroupService memberGroupService;
     private final HashtagService hashtagService;
+    private final ReviewHashtagHistoryService reviewHashtagHistoryService;
 
     @Transactional
     public CreateReviewResponse createReview(CreateReviewRequest request) {
@@ -53,13 +56,21 @@ public class ReviewService {
         if (category == null) {
             throw new CommonException(ErrorCode.CATEGORY_IS_NOT_EXISTS);
         }
+//        해시태그가 없으면 예외처리
+        List<Hashtag> hashtags = new ArrayList<>();
+        for (String hashtag : request.getHashtag()) {
+            Hashtag getHashtag = hashtagService.getHashtagByHashtagCode(hashtag);
+            if (getHashtag == null) {
+                throw new CommonException(ErrorCode.HASHTAG_IS_NOT_EXISTS);
+            }
+            hashtags.add(getHashtag);
+        }
+
 //        그룹이 내 피드라면 null 입력
         MemberGroup group = memberGroupService.getMemberGroup(request.getGroupId());
-//        해시태그 생성
-        Hashtag hashtag = hashtagService.createHashtag(request.getHashtag());
 
-        Review review = Review.createReview(member, restaurant, group, category, hashtag, request);
-        reviewRepository.save(review);
+        Review review = reviewRepository.save(Review.createReview(member, restaurant, group, category, request));
+        reviewHashtagHistoryService.createHistory(review, hashtags);
 
         return CreateReviewResponse.createResponse(review);
     }

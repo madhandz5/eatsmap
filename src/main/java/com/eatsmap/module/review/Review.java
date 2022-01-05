@@ -6,12 +6,14 @@ import com.eatsmap.module.hashtag.Hashtag;
 import com.eatsmap.module.member.Member;
 import com.eatsmap.module.restaurant.Restaurant;
 import com.eatsmap.module.review.dto.CreateReviewRequest;
+import com.eatsmap.module.reviewHashtagHistory.ReviewHashtagHistory;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
@@ -46,9 +48,8 @@ public class Review {
     @JoinColumn(name = "membergroup_id")
     private MemberGroup group;
 
-    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "hashtag_id")
-    private Hashtag hashtag;
+    @OneToMany(mappedBy = "review")
+    private List<ReviewHashtagHistory> reviewHashtagHistories;
 
     @Enumerated(EnumType.STRING)
     private ReviewPrivacy privacy;
@@ -64,13 +65,12 @@ public class Review {
     private Member member;
 
 
-    public static Review createReview(Member member, Restaurant restaurant, MemberGroup group, Category category, Hashtag hashtag, CreateReviewRequest request) {
+    public static Review createReview(Member member, Restaurant restaurant, MemberGroup group, Category category, CreateReviewRequest request) {
         Review review = new Review();
         review.setMember(member);
         review.setRestaurant(restaurant);
         if (group != null) review.setGroup(group);
         review.setCategory(category);
-        review.setHashtag(hashtag);
         review.taste = request.getTaste();
         review.service = request.getService();
         review.clean = request.getClean();
@@ -94,10 +94,6 @@ public class Review {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public void setHashtag(Hashtag hashtag) {
-        this.hashtag = hashtag;
     }
 
     public void setRestaurant(Restaurant restaurant) {
