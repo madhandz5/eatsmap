@@ -13,9 +13,7 @@ import com.eatsmap.module.verification.Verification;
 import com.eatsmap.module.verification.VerificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,12 +25,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -56,9 +57,17 @@ public class MemberService implements UserDetailsService {
         SignUpResponse memberResponse = SignUpResponse.createResponse(memberRepository.save(member));
 
 //        TODO : Send Mail(with nickname)
-        HttpEntity<SignUpResponse> mailRequest = new HttpEntity(memberResponse);
-        ResponseEntity<SignUpResponse> response = config.getCustomRestTemplate()
-                .exchange(CommonCode.DOMAIN.getDesc() , HttpMethod.POST, mailRequest, SignUpResponse.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("mail-template", "join-auth-email");
+        body.add("nickname", memberResponse.getNickname());
+
+        HttpEntity<MultiValueMap<String, String>> mailRequest = new HttpEntity(memberResponse, headers);
+
+        ResponseEntity<String> response = config.getCustomRestTemplate()
+                .exchange(CommonCode.DOMAIN.getDesc() + "/mail" , HttpMethod.POST, mailRequest, String.class);
         emailSender.send(member.getEmail(), "[EAT'S MAP] 회원가입을 완료하세요");
 
         return memberResponse;
