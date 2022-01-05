@@ -3,8 +3,11 @@ package com.eatsmap.module.group;
 import com.eatsmap.infra.common.CommonResponse;
 import com.eatsmap.module.group.dto.CreateMemberGroupRequest;
 import com.eatsmap.module.group.dto.CreateMemberGroupResponse;
+import com.eatsmap.module.group.dto.JoinMemberToGroupRequest;
 import com.eatsmap.module.group.dto.JoinMemberToGroupResponse;
 import com.eatsmap.module.groupMemberHistory.MemberGroupHistoryService;
+import com.eatsmap.module.member.CurrentMember;
+import com.eatsmap.module.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +27,11 @@ public class MemberGroupController {
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+    //초대된 유저 수락
     @GetMapping(path = "/join")
-    public ResponseEntity<CommonResponse> joinMemberToGroup(){
-        JoinMemberToGroupResponse data = memberGroupHistoryService.joinMemberToGroup();
+    public ResponseEntity<CommonResponse> joinMemberToGroup(@CurrentMember Member member, JoinMemberToGroupRequest request){
+        JoinMemberToGroupResponse data = memberGroupHistoryService.joinMemberToGroup(member, request);
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
 }
