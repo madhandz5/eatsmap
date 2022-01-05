@@ -57,18 +57,18 @@ public class MemberService implements UserDetailsService {
         SignUpResponse memberResponse = SignUpResponse.createResponse(memberRepository.save(member));
 
 //        TODO : Send Mail(with nickname)
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("mail-template", "join-auth-email");
-        body.add("nickname", memberResponse.getNickname());
-
-        HttpEntity<MultiValueMap<String, String>> mailRequest = new HttpEntity(memberResponse, headers);
-
-        ResponseEntity<String> response = config.getCustomRestTemplate()
-                .exchange(CommonCode.DOMAIN.getDesc() + "/mail" , HttpMethod.POST, mailRequest, String.class);
-        emailSender.send(member.getEmail(), "[EAT'S MAP] 회원가입을 완료하세요");
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//
+//        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+//        body.add("mail-template", "join-auth-email");
+//        body.add("nickname", member.getNickname());
+//
+//        HttpEntity<MultiValueMap<String, String>> mailRequest = new HttpEntity(body, headers);
+//
+//        ResponseEntity<String> response = config.getCustomRestTemplate()
+//                .exchange(CommonCode.DOMAIN.getDesc() + "/mail" , HttpMethod.POST, mailRequest, String.class);
+//        emailSender.send(member.getEmail(), "[EAT'S MAP] 회원가입을 완료하세요");
 
         return memberResponse;
     }

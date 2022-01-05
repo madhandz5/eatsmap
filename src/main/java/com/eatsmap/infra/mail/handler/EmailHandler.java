@@ -13,6 +13,6 @@ public class EmailHandler {
     @PostMapping("mail")
     public String mailTemplate(@RequestParam Map<String,String> template, Model model) {
         model.addAllAttributes(template);
-        return "mail-template/" + template.get("mail-template");
+        return "mail-template/" + template.get("mail-template");    //front-side?
     }
 }
