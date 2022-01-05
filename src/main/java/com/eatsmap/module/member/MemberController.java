@@ -78,37 +78,6 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-//    //jwt 테스트
-//    @PostMapping("/authenticate")
-//    public String generateToken(@RequestBody AuthRequest authRequest) throws Exception {
-//        try {
-//            authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
-//            );
-//        } catch (Exception ex) {
-//            throw new Exception("invalid email/password");
-//        }
-//        return jwtUtil.generateToken(authRequest.getEmail());
-//    }
-
-//    @PostMapping(path = "/login")
-//    public ResponseEntity<CommonResponse> loginImpl(@Valid @RequestBody LoginRequest request, Errors errors) {
-//        if (errors.hasErrors()) {
-//            CommonResponse response = CommonResponse.createResponse(false, errors.getAllErrors());
-//            return ResponseEntity.status(HttpStatus.NON_AUTHORITATIVE_INFORMATION).body(response);
-//        }
-//        try {
-//            authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-//            );
-//        } catch (Exception ex) {
-//            throw new CommonException(ErrorCode.JWT_EXCEPTION_FAIL, ex);
-//        }
-//        LoginResponse data = memberService.login(request);
-//        CommonResponse response = CommonResponse.createResponse(true, data);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-//    }
-
 
     //    로그인 완료 후 JWT Token 반환, 헤더에 참조시킬것.
     @PostMapping(path = "/login/password")

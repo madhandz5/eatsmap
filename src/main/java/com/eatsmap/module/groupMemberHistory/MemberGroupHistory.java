@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class MemberGroupHistory {
 
     @Id
-    @Column(name = "member_group_history_seq")
+    @Column(name = "member_group_history_id")
     @GeneratedValue
     private Long id;
 

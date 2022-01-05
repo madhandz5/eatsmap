@@ -4,9 +4,14 @@ import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
 import com.eatsmap.module.group.dto.CreateMemberGroupRequest;
 import com.eatsmap.module.group.dto.CreateMemberGroupResponse;
+import com.eatsmap.module.group.dto.JoinMemberToGroupRequest;
+import com.eatsmap.module.member.CurrentMember;
+import com.eatsmap.module.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,4 +31,5 @@ public class MemberGroupService {
         if(groupId.equals("my")) return null;
         return memberGroupRepository.findById(Long.parseLong(groupId)).orElseThrow(() -> new CommonException(ErrorCode.GROUP_IS_NOT_EXISTS));
     }
+
 }
