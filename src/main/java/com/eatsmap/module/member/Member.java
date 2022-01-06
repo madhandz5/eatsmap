@@ -98,6 +98,7 @@ public class Member {
                 .build();
     }
 
+
     //    KAKAO
     public static Member createAccount(KakaoSignUpRequest request) {
 

@@ -23,6 +23,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -47,7 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    Need Authentication URL
 
     private static final RequestMatcher ROLE_USER_REQUIRED = new OrRequestMatcher(
-            new AntPathRequestMatcher("/api/v1/account/update-profile")
+            List.of(new AntPathRequestMatcher("/api/v1/account/update-profile")
+                , new AntPathRequestMatcher("/api/v1/review/create"))
     );
 
     private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(

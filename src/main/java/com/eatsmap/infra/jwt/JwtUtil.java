@@ -41,7 +41,7 @@ public class JwtUtil {
 
     public String encodeJwt(String email) {
         return JWT.create()
-                .withIssuer(jwtProps.getIssur())
+                .withIssuer(jwtProps.getIssuer())
                 .withClaim(jwtProps.getClaimId(), email)
                 .withExpiresAt(Date.from(ZonedDateTime.now(ZoneId.systemDefault()).plusDays(1).toInstant())) // 하루 설정
                 .sign(Algorithm.HMAC256(jwtProps.getSecretkey()));

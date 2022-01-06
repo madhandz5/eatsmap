@@ -31,6 +31,7 @@ public class JwtAuthProvider extends AbstractUserDetailsAuthenticationProvider {
         if(authentication.getCredentials() == null){
             throw new CommonException(ErrorCode.ACCOUNT_NOT_FOUND);
         }
+//        TODO: authentication에 credential로 password를 담고 있는지 확인
 //        if(!passwordEncoder.matches(authentication.getCredentials().toString(), userDetails.getPassword())){
 //            throw new CommonException(ErrorCode.JWT_EXCEPTION_FAIL);
 //        }

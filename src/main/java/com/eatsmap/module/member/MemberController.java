@@ -134,10 +134,7 @@ public class MemberController {
     public ResponseEntity<CommonResponse> updateProfile(@RequestBody @Valid ModifyRequest request, @CurrentMember Member member, BindingResult result) {
         if (result.hasErrors()) {
             CommonResponse response = CommonResponse.createResponse(false, result.getAllErrors());
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-//            FEEDBACK : NOT_FOUND 보다는 BAD_REQUEST 가 맞을 것 같아요.
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-
         }
         ModifyResponse data = memberService.updateProfile(member, request);
         CommonResponse response = CommonResponse.createResponse(true, data);
