@@ -84,8 +84,6 @@ public class Review {
     public void deleteReview() {
         this.deleted = true;
         this.delDate = LocalDateTime.now();
-//        review.deleted = true;
-//        review.delDate = LocalDateTime.now();
     }
 
     public void setMember(Member member) {
