@@ -17,7 +17,7 @@ public class MemberGroupHistory {
 
     @Id
     @Column(name = "member_group_history_id")
-    @GeneratedValue
+    @GeneratedValue(generator = "member_group_history_seq")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

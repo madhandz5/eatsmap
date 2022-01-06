@@ -3,6 +3,7 @@ package com.eatsmap.module.groupMemberHistory;
 import com.eatsmap.module.group.MemberGroup;
 import com.eatsmap.module.group.MemberGroupRepository;
 import com.eatsmap.module.group.dto.JoinMemberToGroupResponse;
+import com.eatsmap.module.group.dto.MemberGroupDTO;
 import com.eatsmap.module.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,14 +23,16 @@ public class MemberGroupHistoryService {
     @Transactional
     public JoinMemberToGroupResponse joinMemberToGroup(Member member, String groupId){
 
-        Optional<MemberGroup> findGroup = memberGroupRepository.findById(Long.parseLong(groupId));
+        MemberGroup findGroup = memberGroupRepository.findById(Long.parseLong(groupId)).get();
         MemberGroupHistory memberGroupHistory = MemberGroupHistory.createMemberGroupHistory();
         //join
-        memberGroupHistory.joinMemberToGroup(member, findGroup.get());
+        memberGroupHistory.joinMemberToGroup(member, findGroup);
+        //group_member_cnt ++
+        findGroup.joinMemberToGroup(memberGroupHistoryRepository.countByMemberGroup_Id(Long.parseLong(groupId)));
         return JoinMemberToGroupResponse.createResponse(memberGroupHistoryRepository.save(memberGroupHistory));
     }
 
-    public List<MemberGroup> getAllMemberGroup(Member member){
+    public List<MemberGroupDTO> getAllMemberGroup(Member member){
 
         //MemberGroupHistory와 MemberGroup 조인 -> MemberGroup정보 가져오기
         return memberGroupRepository.getAllMemberGroup(member);

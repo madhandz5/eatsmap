@@ -8,4 +8,7 @@ import org.springframework.stereotype.Repository;
 public interface MemberGroupHistoryRepository extends JpaRepository<MemberGroupHistory, Long>, MemberGroupHistoryRepositoryExtension {
 
     MemberGroupHistory findByMemberGroup(MemberGroup findGroup);
+
+    int countByMemberGroup_Id(Long id);
+
 }
