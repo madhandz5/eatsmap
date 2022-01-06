@@ -31,9 +31,9 @@ public class JwtAuthProvider extends AbstractUserDetailsAuthenticationProvider {
         if(authentication.getCredentials() == null){
             throw new CommonException(ErrorCode.ACCOUNT_NOT_FOUND);
         }
-        if(!passwordEncoder.matches(authentication.getCredentials().toString(), userDetails.getPassword())){
-            throw new CommonException(ErrorCode.JWT_EXCEPTION_FAIL);
-        }
+//        if(!passwordEncoder.matches(authentication.getCredentials().toString(), userDetails.getPassword())){
+//            throw new CommonException(ErrorCode.JWT_EXCEPTION_FAIL);
+//        }
 
     }
 

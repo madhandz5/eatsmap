@@ -2,11 +2,8 @@ package com.eatsmap.module.groupMemberHistory;
 
 import com.eatsmap.module.group.MemberGroup;
 import com.eatsmap.module.group.MemberGroupRepository;
-import com.eatsmap.module.group.dto.JoinMemberToGroupRequest;
 import com.eatsmap.module.group.dto.JoinMemberToGroupResponse;
-import com.eatsmap.module.member.CurrentMember;
 import com.eatsmap.module.member.Member;
-import com.eatsmap.module.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,14 +17,12 @@ import java.util.Optional;
 public class MemberGroupHistoryService {
 
     private final MemberGroupHistoryRepository memberGroupHistoryRepository;
-    private final MemberRepository memberRepository;
     private final MemberGroupRepository memberGroupRepository;
 
     @Transactional
-    public JoinMemberToGroupResponse joinMemberToGroup(Member member, JoinMemberToGroupRequest request){
-        //test
-        Optional<Member> findMember = memberRepository.findById(1001L);
-        Optional<MemberGroup> findGroup = memberGroupRepository.findById(request.getGroupId());
+    public JoinMemberToGroupResponse joinMemberToGroup(Member member, String groupId){
+
+        Optional<MemberGroup> findGroup = memberGroupRepository.findById(Long.parseLong(groupId));
         MemberGroupHistory memberGroupHistory = MemberGroupHistory.createMemberGroupHistory();
         //join
         memberGroupHistory.joinMemberToGroup(member, findGroup.get());
@@ -35,7 +30,9 @@ public class MemberGroupHistoryService {
     }
 
     public List<MemberGroup> getAllMemberGroup(Member member){
-        return null;
+
+        //MemberGroupHistory와 MemberGroup 조인 -> MemberGroup정보 가져오기
+        return memberGroupRepository.getAllMemberGroup(member);
     }
 
 }
