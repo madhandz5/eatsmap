@@ -1,6 +1,8 @@
 package com.eatsmap.module.review;
 
 import com.eatsmap.infra.common.CommonResponse;
+import com.eatsmap.module.member.CurrentMember;
+import com.eatsmap.module.member.Member;
 import com.eatsmap.module.review.dto.CreateReviewRequest;
 import com.eatsmap.module.review.dto.CreateReviewResponse;
 import com.eatsmap.module.review.dto.DeleteReviewResponse;
@@ -23,8 +25,8 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping(path = "/create")
-    public ResponseEntity<CommonResponse> createReview(@Valid @RequestBody CreateReviewRequest request) {
-        CreateReviewResponse data = reviewService.createReview(request);
+    public ResponseEntity<CommonResponse> createReview(@Valid @RequestBody CreateReviewRequest request, @CurrentMember Member member) {
+        CreateReviewResponse data = reviewService.createReview(request, member);
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

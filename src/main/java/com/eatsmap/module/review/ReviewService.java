@@ -39,9 +39,7 @@ public class ReviewService {
     private final ReviewHashtagHistoryService reviewHashtagHistoryService;
 
     @Transactional
-    public CreateReviewResponse createReview(CreateReviewRequest request) {
-        Member member = memberService.getMember("alpaca@naver.com");
-
+    public CreateReviewResponse createReview(CreateReviewRequest request, Member member) {
 //        방문날짜가 오늘 이후이면 예외처리
         if (LocalDate.parse(request.getVisitDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")).isAfter(LocalDate.now())) {
             throw new CommonException(ErrorCode.REVIEW_VISIT_DATE_IS_NOT_PAST);
@@ -65,7 +63,6 @@ public class ReviewService {
             }
             hashtags.add(getHashtag);
         }
-
 //        그룹이 내 피드라면 null 입력
         MemberGroup group = memberGroupService.getMemberGroup(request.getGroupId());
 

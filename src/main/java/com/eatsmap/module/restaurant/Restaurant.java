@@ -22,20 +22,9 @@ public class Restaurant {
     @Column(name = "restaurant_id")
     private Long id;
 
-    //삭제해도 될 것 같음! Restaurant에서 Review를 조회할 필요 x (Review 입장에서 단방향이면 되지 않을까요?)
-    @OneToMany(mappedBy = "restaurant")
-    private List<Review> reviews = new ArrayList<>();
-
     private String resName;
     private String address;
     private Point location;
-
-
-//    public void createRestaurant(CreateReviewRequest request) {
-//        this.resName = request.getResName();
-//        this.address = request.getAddress();
-//        this.location = new Point(request.getX(), request.getY());
-//    }
 
     public static Restaurant createRestaurant(String resName, String address, double x, double y) {
         return Restaurant.builder()
@@ -43,10 +32,5 @@ public class Restaurant {
                 .address(address)
                 .location(new Point(x, y))
                 .build();
-    }
-
-    public void setReview(Review review) {
-        this.getReviews().add(review);
-        review.setRestaurant(this);
     }
 }
