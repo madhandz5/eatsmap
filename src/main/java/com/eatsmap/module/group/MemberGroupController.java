@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/v1/group")
@@ -31,6 +33,14 @@ public class MemberGroupController {
     @GetMapping (path = "/join/{groupId}")
     public ResponseEntity<CommonResponse> joinMemberToGroup(@CurrentMember Member member, @PathVariable String groupId){
         JoinMemberToGroupResponse data = memberGroupHistoryService.joinMemberToGroup(member, groupId);
+        CommonResponse response = CommonResponse.createResponse(true, data);
+//        TODO: body null check
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping(path = "/all")
+    public ResponseEntity<CommonResponse> getAllMemberGroup(@CurrentMember Member member){
+        List<MemberGroup> data = memberGroupHistoryService.getAllMemberGroup(member);
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

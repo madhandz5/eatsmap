@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties("app.props.jwt")
 public class JwtProps {
     private String secretkey;
-    private String issur;
+    private String issuer;
     private String claimId;
 }

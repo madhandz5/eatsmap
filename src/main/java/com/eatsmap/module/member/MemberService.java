@@ -128,6 +128,7 @@ public class MemberService implements UserDetailsService {
     public ModifyResponse updateProfile(Member member, ModifyRequest request) {
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         member.modifyMember(member, request);
+        log.info("멤버 : " + member.getEmail());
         return ModifyResponse.createResponse(memberRepository.save(member));
     }
 

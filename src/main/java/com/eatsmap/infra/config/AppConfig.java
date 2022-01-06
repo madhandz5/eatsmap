@@ -49,7 +49,7 @@ public class AppConfig {
     public JWTVerifier jwtVerifier(JwtProps jwtProps) {
         return JWT
                 .require(Algorithm.HMAC256(jwtProps.getSecretkey()))
-                .withIssuer(jwtProps.getIssur())
+                .withIssuer(jwtProps.getIssuer())
                 .build();
     }
 

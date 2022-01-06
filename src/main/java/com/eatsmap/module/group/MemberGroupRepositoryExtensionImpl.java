@@ -1,6 +1,7 @@
 package com.eatsmap.module.group;
 
 import com.eatsmap.module.member.Member;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
@@ -20,9 +21,14 @@ public class MemberGroupRepositoryExtensionImpl extends QuerydslRepositorySuppor
 
     @Override
     public List<MemberGroup> getAllMemberGroup(Member member){
-        return queryFactory.select(memberGroup)
+        return queryFactory
+                .select(Projections.fields(MemberGroup.class,
+                        memberGroup.id,
+                        memberGroup.createdBy,
+                        memberGroup.groupName,
+                        memberGroup.groupMembers))
                 .from(memberGroupHistory)
-                .leftJoin(memberGroup)
+                .join(memberGroup.groupMembers, memberGroupHistory)
                 .where(memberGroupHistory.member.eq(member))
                 .fetch();
     }
