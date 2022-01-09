@@ -30,7 +30,8 @@ public class MemberGroup {
     private String groupName;
     private LocalDateTime regDate;
     private Integer views;
-    private Integer groupMemberCnt;
+    private Integer joinedGroupMemberCnt;
+    private Integer totalGroupMemberCnt;
     private boolean deleted;
 
     @OneToMany(mappedBy = "memberGroup")  //다대다 -> 일대다 - 다대일
@@ -41,7 +42,8 @@ public class MemberGroup {
         return MemberGroup.builder()
                 .createdBy(member.getId())
                 .groupName(request.getGroupName())
-                .groupMemberCnt(0)
+                .joinedGroupMemberCnt(0)
+                .totalGroupMemberCnt(request.getGroupMembers().size())
                 .views(0)
                 .regDate(LocalDateTime.now())
                 .deleted(false)
@@ -54,6 +56,6 @@ public class MemberGroup {
     }
 
     public void joinMemberToGroup(int i) {
-        this.groupMemberCnt = i;
+        this.joinedGroupMemberCnt = i;
     }
 }

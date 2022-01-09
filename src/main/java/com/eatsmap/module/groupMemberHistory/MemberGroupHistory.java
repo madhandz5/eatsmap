@@ -1,6 +1,7 @@
 package com.eatsmap.module.groupMemberHistory;
 
 import com.eatsmap.module.group.MemberGroup;
+import com.eatsmap.module.group.dto.CreateMemberGroupRequest;
 import com.eatsmap.module.member.Member;
 import lombok.*;
 
@@ -31,8 +32,10 @@ public class MemberGroupHistory {
     private boolean acceptInvitation;
     private LocalDateTime joinedAt;
 
-    public static MemberGroupHistory createMemberGroupHistory(){
+    public static MemberGroupHistory createMemberGroupHistory(Member member, MemberGroup memberGroup){
         return MemberGroupHistory.builder()
+                .member(member)
+                .memberGroup(memberGroup)
                 .acceptInvitation(false)
                 .build();
     }

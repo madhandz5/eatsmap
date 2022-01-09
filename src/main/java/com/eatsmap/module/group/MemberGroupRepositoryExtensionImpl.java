@@ -23,7 +23,7 @@ public class MemberGroupRepositoryExtensionImpl extends QuerydslRepositorySuppor
     @Override
     public List<MemberGroupDTO> getAllMemberGroup(Member member){
         return queryFactory
-                .select(new QMemberGroupDTO(memberGroup.id, memberGroup.groupName, memberGroup.groupMemberCnt))
+                .select(new QMemberGroupDTO(memberGroup.id, memberGroup.groupName, memberGroup.totalGroupMemberCnt, memberGroup.joinedGroupMemberCnt))
                 .from(memberGroupHistory)
                 .join(memberGroupHistory.memberGroup, memberGroup)
                 .where(memberGroupHistory.member.id.eq(member.getId()))

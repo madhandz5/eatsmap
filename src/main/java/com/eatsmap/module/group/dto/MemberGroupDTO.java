@@ -3,18 +3,20 @@ package com.eatsmap.module.group.dto;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
-import com.eatsmap.module.groupMemberHistory.MemberGroupHistory;
-
 @Data
 public class MemberGroupDTO {
     private Long id;
     private String groupName;
-    private Integer groupMemberCnt;
+
+    private Integer joinedGroupMemberCnt;
+    private Integer totalGroupMemberCnt;
+
 
     @QueryProjection
-    public MemberGroupDTO(Long id, String groupName, Integer groupMemberCnt){
+    public MemberGroupDTO(Long id, String groupName, Integer totalGroupMemberCnt, Integer joinedGroupMemberCnt) {
         this.id = id;
         this.groupName = groupName;
-        this.groupMemberCnt = groupMemberCnt;
+        this.totalGroupMemberCnt = totalGroupMemberCnt;
+        this.joinedGroupMemberCnt = joinedGroupMemberCnt;
     }
 }
