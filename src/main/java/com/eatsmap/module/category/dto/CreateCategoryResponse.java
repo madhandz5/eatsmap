@@ -11,10 +11,7 @@ import javax.validation.constraints.NotEmpty;
 @Builder(access = AccessLevel.PRIVATE)
 public class CreateCategoryResponse {
 
-    @NotEmpty
     private String categoryCode;
-
-    @NotEmpty
     private String categoryName;
 
     public static CreateCategoryResponse createResponse(Category category) {

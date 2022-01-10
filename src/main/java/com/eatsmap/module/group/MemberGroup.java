@@ -2,6 +2,7 @@ package com.eatsmap.module.group;
 
 import com.eatsmap.module.group.dto.CreateMemberGroupRequest;
 import com.eatsmap.module.groupMemberHistory.MemberGroupHistory;
+import com.eatsmap.module.member.Member;
 import com.eatsmap.module.review.Review;
 import lombok.*;
 
@@ -29,20 +30,20 @@ public class MemberGroup {
     private String groupName;
     private LocalDateTime regDate;
     private Integer views;
-    private Integer groupMemberCnt;
+    private Integer joinedGroupMemberCnt;
+    private Integer totalGroupMemberCnt;
     private boolean deleted;
 
     @OneToMany(mappedBy = "memberGroup")  //다대다 -> 일대다 - 다대일
     private List<MemberGroupHistory> groupMembers = new ArrayList<>();
 
-//    public void changeGroupMembers(List<MemberGroupHistory> members){
-//        this.groupMembers = members;
-//    }
 
-    public static MemberGroup createMemberGroup(CreateMemberGroupRequest request) {
+    public static MemberGroup createMemberGroup(CreateMemberGroupRequest request, Member member) {
         return MemberGroup.builder()
-                .createdBy(request.getCreatedBy())
+                .createdBy(member.getId())
                 .groupName(request.getGroupName())
+                .joinedGroupMemberCnt(0)
+                .totalGroupMemberCnt(request.getGroupMembers().size())
                 .views(0)
                 .regDate(LocalDateTime.now())
                 .deleted(false)
@@ -52,5 +53,9 @@ public class MemberGroup {
     public void setReview(Review review) {
         this.getReviews().add(review);
         review.setGroup(this);
+    }
+
+    public void joinMemberToGroup(int i) {
+        this.joinedGroupMemberCnt = i;
     }
 }

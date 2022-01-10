@@ -84,8 +84,6 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Verification> verificationGroup = new ArrayList<>();
 
-
-
     //    EMAIL
     public static Member createAccount(SignUpRequest request) {
 

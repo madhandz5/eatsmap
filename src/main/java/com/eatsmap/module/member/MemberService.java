@@ -1,7 +1,10 @@
 package com.eatsmap.module.member;
 
-import com.eatsmap.infra.common.ErrorCode;
+import com.eatsmap.infra.common.code.CommonCode;
+import com.eatsmap.infra.common.code.ErrorCode;
+import com.eatsmap.infra.config.AppConfig;
 import com.eatsmap.infra.exception.CommonException;
+import com.eatsmap.infra.mail.EmailSender;
 import com.eatsmap.infra.utils.kakao.KakaoAccountInfoDto;
 import com.eatsmap.infra.utils.kakao.KakaoAuthDto;
 import com.eatsmap.infra.utils.kakao.KakaoOAuth;
@@ -26,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -38,15 +40,31 @@ public class MemberService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final VerificationService verificationService;
     private final KakaoOAuth kakaoOAuth;
-
+    private final AppConfig config;
+    private final EmailSender emailSender;
 
     @Transactional
     public SignUpResponse signUp(SignUpRequest request) {
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         Member member = Member.createAccount(request);
         member.generatedEmailCheckToken();
-//        TODO : Send Mail
-        return SignUpResponse.createResponse(memberRepository.save(member));
+        SignUpResponse memberResponse = SignUpResponse.createResponse(memberRepository.save(member));
+
+//        TODO : Send Mail(with nickname)
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//
+//        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+//        body.add("mail-template", "join-auth-email");
+//        body.add("nickname", member.getNickname());
+//
+//        HttpEntity<MultiValueMap<String, String>> mailRequest = new HttpEntity(body, headers);
+//
+//        ResponseEntity<String> response = config.getCustomRestTemplate()
+//                .exchange(CommonCode.DOMAIN.getDesc() + "/mail" , HttpMethod.POST, mailRequest, String.class);
+//        emailSender.send(member.getEmail(), "[EAT'S MAP] 회원가입을 완료하세요");
+
+        return memberResponse;
     }
 
     //이메일 인증
@@ -110,6 +128,7 @@ public class MemberService implements UserDetailsService {
     public ModifyResponse updateProfile(Member member, ModifyRequest request) {
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         member.modifyMember(member, request);
+        log.info("멤버 : " + member.getEmail());
         return ModifyResponse.createResponse(memberRepository.save(member));
     }
 
@@ -207,10 +226,16 @@ public class MemberService implements UserDetailsService {
     }
 
     @Transactional
-//    TODO : Response DTO 만들어서 리턴할것.
     public ExitResponse exitService(Member member) {
         Member findMember = memberRepository.findByEmail(member.getEmail());
         findMember.memberExit();
         return ExitResponse.createResponse(memberRepository.save(findMember));
+    }
+
+    @Transactional
+    public void saveVerification(String token, LoginRequest request) {    //유진 01/03
+//        TODO: checked false 의미파악 및 해결
+        Member member = getMember(request.getEmail());
+        verificationService.saveNewVerification(token, member);
     }
 }

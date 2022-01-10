@@ -1,4 +1,4 @@
-package com.eatsmap.infra.common;
+package com.eatsmap.infra.common.code;
 
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -47,6 +47,9 @@ public enum ErrorCode {
 
     CATEGORY_IS_NOT_EXISTS("1403", "카테고리가 존재하지 않습니다.", null),
     HASHTAG_IS_NOT_EXISTS("1404", "해시태그가 존재하지 않습니다.", null),
+
+    // FILE (1500)
+    FILE_UPLOAD_ERROR("1501", "Failed to upload file ", null),
 
     // etc (9000)
     JSON_PROCESS_FAIL("9001", "Failed From Processing Json", null),

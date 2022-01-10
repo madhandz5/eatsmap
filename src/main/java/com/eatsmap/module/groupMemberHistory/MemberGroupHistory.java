@@ -1,6 +1,7 @@
 package com.eatsmap.module.groupMemberHistory;
 
 import com.eatsmap.module.group.MemberGroup;
+import com.eatsmap.module.group.dto.CreateMemberGroupRequest;
 import com.eatsmap.module.member.Member;
 import lombok.*;
 
@@ -16,8 +17,8 @@ import java.time.LocalDateTime;
 public class MemberGroupHistory {
 
     @Id
-    @Column(name = "member_group_history_seq")
-    @GeneratedValue
+    @Column(name = "member_group_history_id")
+    @GeneratedValue(generator = "member_group_history_seq")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,8 +32,10 @@ public class MemberGroupHistory {
     private boolean acceptInvitation;
     private LocalDateTime joinedAt;
 
-    public static MemberGroupHistory createMemberGroupHistory(){
+    public static MemberGroupHistory createMemberGroupHistory(Member member, MemberGroup memberGroup){
         return MemberGroupHistory.builder()
+                .member(member)
+                .memberGroup(memberGroup)
                 .acceptInvitation(false)
                 .build();
     }

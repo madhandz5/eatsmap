@@ -1,7 +1,8 @@
 package com.eatsmap.module.verification;
 
-import com.eatsmap.infra.common.ErrorCode;
+import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
+import com.eatsmap.module.member.Member;
 import com.eatsmap.module.verification.dto.VerificationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,13 @@ public class VerificationService {
     public Verification createNewVerification() {
         String makeKey = UUID.randomUUID().toString();
         Verification newVerification = Verification.createVerification(makeKey);
+        return verificationRepository.save(newVerification);
+    }
+
+    @Transactional
+    public Verification saveNewVerification(String key, Member member){  //유진 01/03
+        Verification newVerification = Verification.createVerification(key);
+        newVerification.setMember(member);
         return verificationRepository.save(newVerification);
     }
 

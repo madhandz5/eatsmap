@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.eatsmap.infra.common.ErrorCode;
+import com.eatsmap.infra.common.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,8 +18,6 @@ import java.util.Date;
 
 
 @Component
-//@Service
-// FEEDBACK : 엄밀히 말하면 이아이는 서비스가 아니라서, @Service 보다는 @Component 가 맞습니다.
 @RequiredArgsConstructor
 public class JwtUtil {
 
@@ -43,7 +41,7 @@ public class JwtUtil {
 
     public String encodeJwt(String email) {
         return JWT.create()
-                .withIssuer(jwtProps.getIssur())
+                .withIssuer(jwtProps.getIssuer())
                 .withClaim(jwtProps.getClaimId(), email)
                 .withExpiresAt(Date.from(ZonedDateTime.now(ZoneId.systemDefault()).plusDays(1).toInstant())) // 하루 설정
                 .sign(Algorithm.HMAC256(jwtProps.getSecretkey()));

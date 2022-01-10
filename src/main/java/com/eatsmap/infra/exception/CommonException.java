@@ -1,6 +1,6 @@
 package com.eatsmap.infra.exception;
 
-import com.eatsmap.infra.common.ErrorCode;
+import com.eatsmap.infra.common.code.ErrorCode;
 import lombok.Getter;
 
 import java.io.PrintWriter;
