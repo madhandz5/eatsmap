@@ -69,7 +69,8 @@ public class Member {
     private LocalDateTime emailCheckTokenGeneratedAt;
     private boolean verified;
 
-    @OneToMany
+    @Builder.Default
+    @OneToMany(mappedBy = "member")
     private List<Calendar> calendars = new ArrayList<>();
 
     @Builder.Default
@@ -82,6 +83,8 @@ public class Member {
     @Builder.Default
     @OneToMany(mappedBy = "member")
     private List<Verification> verificationGroup = new ArrayList<>();
+
+
 
     //    EMAIL
     public static Member createAccount(SignUpRequest request) {
