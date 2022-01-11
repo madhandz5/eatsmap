@@ -1,21 +1,21 @@
 package com.eatsmap.module.review;
 
+import com.eatsmap.infra.utils.file.Fileinfo;
 import com.eatsmap.module.category.Category;
 import com.eatsmap.module.group.MemberGroup;
-import com.eatsmap.module.hashtag.Hashtag;
 import com.eatsmap.module.member.Member;
 import com.eatsmap.module.restaurant.Restaurant;
 import com.eatsmap.module.review.dto.CreateReviewRequest;
-import com.eatsmap.module.reviewHashtagHistory.ReviewHashtagHistory;
+import com.eatsmap.module.review.reviewHashtagHistory.ReviewHashtagHistory;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -64,10 +64,13 @@ public class Review {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @OneToMany(mappedBy = "review")
+    private List<Fileinfo> reviewFiles = new ArrayList<>();
 
-    public static Review createReview(Member member, Restaurant restaurant, MemberGroup group, Category category, CreateReviewRequest request) {
+    public static Review createReview(Member member, List<Fileinfo> reviewFiles, Restaurant restaurant, MemberGroup group, Category category, CreateReviewRequest request) {
         Review review = new Review();
         review.setMember(member);
+        review.setReviewFiles(reviewFiles);
         review.setRestaurant(restaurant);
         if (group != null) review.setGroup(group);
         review.setCategory(category);
@@ -102,4 +105,10 @@ public class Review {
         this.group = group;
     }
 
+    private void setReviewFiles(List<Fileinfo> reviewFiles) {
+        this.reviewFiles = reviewFiles;
+        for (Fileinfo reviewFile : reviewFiles) {
+            reviewFile.setReview(this);
+        }
+    }
 }

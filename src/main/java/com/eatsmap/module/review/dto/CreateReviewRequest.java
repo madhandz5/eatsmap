@@ -2,6 +2,7 @@ package com.eatsmap.module.review.dto;
 
 import com.sun.istack.Nullable;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 import java.util.List;

@@ -49,8 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    Need Authentication URL
 
     private static final RequestMatcher ROLE_USER_REQUIRED = new OrRequestMatcher(
-            List.of(new AntPathRequestMatcher("/api/v1/account/update-profile")
-                , new AntPathRequestMatcher("/api/v1/review/create"))
+            new AntPathRequestMatcher("/api/v1/account/update-profile"),
+            new AntPathRequestMatcher("/api/v1/review/create")
     );
 
     private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(
