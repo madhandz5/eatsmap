@@ -126,7 +126,7 @@ public class MemberController {
     }
 
     @ApiOperation(value = "비밀번호 찾기 및 초기화")
-    @GetMapping("/find-password")
+    @GetMapping("/init/password")
     public ResponseEntity findPasswordByEmail(@Valid FindPasswordRequest request, BindingResult result){
         if(result.hasErrors()){
             CommonResponse response = CommonResponse.createResponse(false, result.getAllErrors());
@@ -139,7 +139,7 @@ public class MemberController {
 
 
     @ApiOperation(value = "회원정보 수정", notes = "프로필 이미지 제외")
-    @PostMapping(path = "/update-profile")
+    @PutMapping(path = "/profile")
     public ResponseEntity<CommonResponse> updateProfile(@RequestBody @Valid ModifyRequest request, @CurrentMember Member member, BindingResult result) {
         if (result.hasErrors()) {
             CommonResponse response = CommonResponse.createResponse(false, result.getAllErrors());
@@ -156,7 +156,8 @@ public class MemberController {
         return memberService.getAllMembers();
     }
 
-    @GetMapping(path = "/exit-service")
+    @ApiOperation(value = "회원 탈퇴")
+    @DeleteMapping(path = "/member")
     public ResponseEntity exitService(@CurrentMember Member member) {
         ExitResponse data = memberService.exitService(member);
         CommonResponse response = CommonResponse.createResponse(true, data);
