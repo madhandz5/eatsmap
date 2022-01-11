@@ -78,7 +78,7 @@ public class Member {
     private List<Review> reviews = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "member")   //양방향
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)   //양방향
     private List<MemberGroupHistory> groups = new ArrayList<>();
 
     @Builder.Default
