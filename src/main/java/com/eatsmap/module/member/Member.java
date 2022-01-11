@@ -70,15 +70,14 @@ public class Member {
     private boolean verified;
 
     @Builder.Default
-    @OneToMany
+    @OneToMany(mappedBy = "member")
     private List<Calendar> calendars = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "member")
     private List<Review> reviews = new ArrayList<>();
 
-    @Builder.Default
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)   //양방향
+    @OneToMany(mappedBy = "member")   //양방향
     private List<MemberGroupHistory> groups = new ArrayList<>();
 
     @Builder.Default
@@ -97,7 +96,6 @@ public class Member {
                 .verified(false)
                 .build();
     }
-
 
     //    KAKAO
     public static Member createAccount(KakaoSignUpRequest request) {
@@ -153,9 +151,5 @@ public class Member {
     public void setReview(Review review) {
         this.getReviews().add(review);
         review.setMember(this);
-    }
-
-    public void setCalendar(Calendar calendar){
-        this.calendars.add(calendar);
     }
 }
