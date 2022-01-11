@@ -14,8 +14,8 @@ import java.time.LocalTime;
 public class CreateCalendarResponse {
 
     private String title;
-    private LocalDate date;
-    private LocalTime time;
+    private String date;
+    private String time;
     private String resName;
 
     public static CreateCalendarResponse createResponse(Calendar calendar) {
@@ -23,7 +23,7 @@ public class CreateCalendarResponse {
                 .title(calendar.getTitle())
                 .date(calendar.getDate())
                 .time(calendar.getTime())
-                .resName(calendar.getRestaurant().getResName())
+
                 .build();
     }
 }

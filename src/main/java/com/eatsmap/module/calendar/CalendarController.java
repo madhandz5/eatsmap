@@ -21,10 +21,16 @@ public class CalendarController {
     private final CalendarService calenderService;
 
     @PostMapping("/schedule-create")
-    public ResponseEntity scheduleCreation(@Valid @RequestBody CreateCalendarRequest request) {
+    public ResponseEntity scheduleCreation(@RequestBody CreateCalendarRequest request) {
+        System.out.println(request);
         CreateCalendarResponse data = calenderService.createSchedule(request);
+        System.out.println("데이터");
+        System.out.println(data);
         CommonResponse response = CommonResponse.createResponse(true, data);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+
 
 }

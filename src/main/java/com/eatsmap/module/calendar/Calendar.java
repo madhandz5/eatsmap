@@ -30,8 +30,8 @@ public class Calendar {
     private Long id;
 
     private String title;
-    private LocalDate date;
-    private LocalTime time;
+    private String date;
+    private String time;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")

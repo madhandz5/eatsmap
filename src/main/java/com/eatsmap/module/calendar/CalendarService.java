@@ -21,10 +21,16 @@ public class CalendarService {
 
 
     @Transactional
-    public CreateCalendarResponse createSchedule(@Valid @RequestBody CreateCalendarRequest request) {
+    public CreateCalendarResponse createSchedule(@RequestBody CreateCalendarRequest request) {
 
         Calendar calender = calendarRepository.save(Calendar.createCalendar(request));
-        return CreateCalendarResponse.createResponse(calender);
+        System.out.println(calender.getTitle());
+        CreateCalendarResponse result = CreateCalendarResponse.createResponse(calender);
+
+        System.out.println("확인");
+        System.out.println(result);
+        System.out.println("확인");
+        return result;
 
     }
 

@@ -9,13 +9,9 @@ import java.time.LocalTime;
 @Data
 public class CreateCalendarRequest {
 
-    @NotEmpty
     private String title;
-    @NotEmpty
-    private LocalDate date;
-    @NotEmpty
-    private LocalTime time;
-    @NotEmpty
-    private String resName;
+    private String date;
+    private String time;
+
 
 }
