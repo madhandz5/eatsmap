@@ -1,11 +1,10 @@
-package com.eatsmap.module.reviewHashtagHistory;
+package com.eatsmap.module.review.reviewHashtagHistory;
 
 import com.eatsmap.module.hashtag.Hashtag;
 import com.eatsmap.module.review.Review;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
