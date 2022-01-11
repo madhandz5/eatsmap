@@ -10,6 +10,9 @@ import com.eatsmap.module.member.validator.LoginValidator;
 import com.eatsmap.module.member.validator.MemberByEmailValidator;
 import com.eatsmap.module.member.validator.SignUpValidator;
 import com.eatsmap.module.member.validator.VerifyEmailValidator;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
+@Api(tags = "01. Member")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/v1/account")
@@ -54,6 +58,7 @@ public class MemberController {
     }
 
 
+    @ApiOperation(value = "최초 회원가입", notes = "이메일 인증 이전 회원 정보 저장")
     @PostMapping(path = "/sign-up")
     public ResponseEntity signup(@RequestBody @Valid SignUpRequest request, BindingResult result) {
         if (result.hasErrors()) {
@@ -66,7 +71,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-
+    @ApiOperation(value = "이메일 인증", notes = "이메일 인증 및 토큰 발급")
     @PostMapping(path = "/verify-email")
     public ResponseEntity<CommonResponse> verifyEmailWithToken(@Valid @RequestBody VerifyEmailRequest request, BindingResult result) {
         if (result.hasErrors()) {
@@ -80,6 +85,7 @@ public class MemberController {
 
 
     //    로그인 완료 후 JWT Token 반환, 헤더에 참조시킬것.
+    @ApiOperation(value = "일반 유저 로그인")
     @PostMapping(path = "/login/password")
     public ResponseEntity loginByPassword(@RequestBody @Valid LoginRequest request, BindingResult result) {
         if (result.hasErrors()) {
@@ -111,6 +117,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @ApiOperation(value = "로그아웃")
     @GetMapping("/logout")
     public ResponseEntity logout(@CurrentMember Member member, HttpServletRequest request, HttpServletResponse response) {
         memberService.logout(request, response);
@@ -118,7 +125,8 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(success);
     }
 
-    @GetMapping("find-password")
+    @ApiOperation(value = "비밀번호 찾기 및 초기화")
+    @GetMapping("/find-password")
     public ResponseEntity findPasswordByEmail(@Valid FindPasswordRequest request, BindingResult result){
         if(result.hasErrors()){
             CommonResponse response = CommonResponse.createResponse(false, result.getAllErrors());
@@ -130,6 +138,7 @@ public class MemberController {
     }
 
 
+    @ApiOperation(value = "회원정보 수정", notes = "프로필 이미지 제외")
     @PostMapping(path = "/update-profile")
     public ResponseEntity<CommonResponse> updateProfile(@RequestBody @Valid ModifyRequest request, @CurrentMember Member member, BindingResult result) {
         if (result.hasErrors()) {
@@ -141,6 +150,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @ApiOperation(value = "모든 정보 조회")
     @GetMapping(path = "/all")
     public List<GetAllResponse> getAllMembers() {
         return memberService.getAllMembers();
