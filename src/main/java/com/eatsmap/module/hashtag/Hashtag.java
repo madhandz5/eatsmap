@@ -1,14 +1,11 @@
 package com.eatsmap.module.hashtag;
 
 import com.eatsmap.module.hashtag.dto.CreateHashtagRequest;
-import com.eatsmap.module.review.Review;
-import com.eatsmap.module.reviewHashtagHistory.ReviewHashtagHistory;
+import com.eatsmap.module.review.reviewHashtagHistory.ReviewHashtagHistory;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
-
-import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter

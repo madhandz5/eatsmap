@@ -23,6 +23,7 @@ public class MemberGroup {
     @Column(name = "membergroup_id")
     private Long id;
 
+    @Builder.Default
     @OneToMany(mappedBy = "group")
     private List<Review> reviews = new ArrayList<>();
 
@@ -34,6 +35,7 @@ public class MemberGroup {
     private Integer totalGroupMemberCnt;
     private boolean deleted;
 
+    @Builder.Default
     @OneToMany(mappedBy = "memberGroup")  //다대다 -> 일대다 - 다대일
     private List<MemberGroupHistory> groupMembers = new ArrayList<>();
 
