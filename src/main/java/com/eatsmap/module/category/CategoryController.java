@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/v1/category")
@@ -24,6 +26,11 @@ public class CategoryController {
         CommonResponse response = CommonResponse.createResponse(true, data);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping(path = "/update")
+    public void deleteCategory(@RequestBody HashMap<String, Long> categoryId) {
+        categoryService.deleteCategory(categoryId.get(categoryId));
     }
 
 }
