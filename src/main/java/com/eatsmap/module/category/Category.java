@@ -1,6 +1,7 @@
 package com.eatsmap.module.category;
 
 import com.eatsmap.module.category.dto.CreateCategoryRequest;
+import com.eatsmap.module.category.dto.UpdateCategoryRequest;
 import com.eatsmap.module.review.Review;
 import lombok.*;
 
@@ -28,15 +29,27 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Review> reviews = new ArrayList<>();
 
+    private boolean deleted;
+
     public static Category createCategory(CreateCategoryRequest request) {
         return Category.builder()
                 .categoryCode(request.getCategoryCode())
                 .categoryName(request.getCategoryName())
+                .deleted(false)
                 .build();
     }
 
     public void setReview(Review review) {
         this.getReviews().add(review);
         review.setCategory(this);
+    }
+
+    public void deleteCategory() {
+        this.deleted = true;
+    }
+
+    public void updateCategory(UpdateCategoryRequest request) {
+        this.categoryCode = request.getCategoryCode();
+        this.categoryName = request.getCategoryName();
     }
 }

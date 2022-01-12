@@ -91,7 +91,7 @@ public class Review {
 
     public void setMember(Member member) {
         this.member = member;
-//        member.setReview(this);
+//        member.getReviews().add(this);
     }
 
     public void setCategory(Category category) {
