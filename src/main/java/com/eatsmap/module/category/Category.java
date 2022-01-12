@@ -1,6 +1,7 @@
 package com.eatsmap.module.category;
 
 import com.eatsmap.module.category.dto.CreateCategoryRequest;
+import com.eatsmap.module.category.dto.UpdateCategoryRequest;
 import com.eatsmap.module.review.Review;
 import lombok.*;
 
@@ -45,5 +46,10 @@ public class Category {
 
     public void deleteCategory() {
         this.deleted = true;
+    }
+
+    public void updateCategory(UpdateCategoryRequest request) {
+        this.categoryCode = request.getCategoryCode();
+        this.categoryName = request.getCategoryName();
     }
 }

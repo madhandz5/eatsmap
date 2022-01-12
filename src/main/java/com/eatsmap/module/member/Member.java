@@ -150,6 +150,6 @@ public class Member {
 
     public void setReview(Review review) {
         this.getReviews().add(review);
-        review.setMember(this);
+//        review.setMember(this);
     }
 }

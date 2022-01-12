@@ -1,8 +1,7 @@
 package com.eatsmap.module.category;
 
 import com.eatsmap.infra.common.CommonResponse;
-import com.eatsmap.module.category.dto.CreateCategoryRequest;
-import com.eatsmap.module.category.dto.CreateCategoryResponse;
+import com.eatsmap.module.category.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +28,19 @@ public class CategoryController {
     }
 
     @PostMapping(path = "/update")
-    public void deleteCategory(@RequestBody HashMap<String, Long> categoryId) {
-        categoryService.deleteCategory(categoryId.get(categoryId));
+    public ResponseEntity<CommonResponse> updateCategory(@RequestBody UpdateCategoryRequest request) {
+        UpdateCategoryResponse data = categoryService.updateCategory(request);
+        CommonResponse response = CommonResponse.createResponse(true, data);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping(path = "/delete")
+    public ResponseEntity<CommonResponse> deleteCategory(@RequestBody HashMap<String, Long> categoryId) {
+        DeleteCategoryResponse data = categoryService.deleteCategory(categoryId.get(categoryId));
+        CommonResponse response = CommonResponse.createResponse(true, data);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 }
