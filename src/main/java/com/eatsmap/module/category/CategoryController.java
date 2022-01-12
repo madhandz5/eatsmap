@@ -37,7 +37,7 @@ public class CategoryController {
 
     @PostMapping(path = "/delete")
     public ResponseEntity<CommonResponse> deleteCategory(@RequestBody HashMap<String, Long> categoryId) {
-        DeleteCategoryResponse data = categoryService.deleteCategory(categoryId.get(categoryId));
+        DeleteCategoryResponse data = categoryService.deleteCategory(categoryId.get("categoryId"));
         CommonResponse response = CommonResponse.createResponse(true, data);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
