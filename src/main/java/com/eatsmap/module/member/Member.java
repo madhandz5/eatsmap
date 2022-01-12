@@ -77,6 +77,7 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Review> reviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member")   //양방향
     private List<MemberGroupHistory> groups = new ArrayList<>();
 
@@ -110,11 +111,12 @@ public class Member {
                 .build();
     }
 
-    public void modifyMember(Member member, ModifyRequest request) {
+    public void modifyMember(Member member, ModifyRequest request, byte[] file) {
         this.nickname = request.getNickname();
         this.beforePassword = member.getPassword();
         this.password = request.getPassword();
         this.passwordModifiedAt = LocalDateTime.now();
+        this.profileImage = file;
     }
 
     public void verifiedMemberByEmail() {
@@ -150,6 +152,6 @@ public class Member {
 
     public void setReview(Review review) {
         this.getReviews().add(review);
-        review.setMember(this);
+//        review.setMember(this);
     }
 }

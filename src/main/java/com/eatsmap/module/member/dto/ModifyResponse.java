@@ -17,12 +17,15 @@ public class ModifyResponse {
     private String nickname;
     private LocalDateTime passwordModifiedAt;
 
+    private byte[] profileImg;
+
     public static ModifyResponse createResponse(Member member){
         return ModifyResponse.builder()
                 .id(member.getId())
                 .email(member.getEmail())
                 .nickname(member.getNickname())
                 .passwordModifiedAt(member.getPasswordModifiedAt())
+                .profileImg(member.getProfileImage())
                 .build();
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -140,12 +141,14 @@ public class MemberController {
 
     @ApiOperation(value = "회원정보 수정", notes = "프로필 이미지 제외")
     @PutMapping(path = "/profile")
-    public ResponseEntity<CommonResponse> updateProfile(@RequestBody @Valid ModifyRequest request, @CurrentMember Member member, BindingResult result) {
+    public ResponseEntity<CommonResponse> updateProfile(@RequestBody @Valid ModifyRequest request
+                                                    , @CurrentMember Member member, BindingResult result
+                                                    , MultipartFile multipartFile) {
         if (result.hasErrors()) {
             CommonResponse response = CommonResponse.createResponse(false, result.getAllErrors());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-        ModifyResponse data = memberService.updateProfile(member, request);
+        ModifyResponse data = memberService.updateProfile(member, request, multipartFile);
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

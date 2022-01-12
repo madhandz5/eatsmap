@@ -1,6 +1,5 @@
 package com.eatsmap.module.member;
 
-import com.eatsmap.infra.common.code.CommonCode;
 import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.config.AppConfig;
 import com.eatsmap.infra.exception.CommonException;
@@ -24,9 +23,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -125,10 +131,11 @@ public class MemberService implements UserDetailsService {
 
 
     @Transactional
-    public ModifyResponse updateProfile(Member member, ModifyRequest request) {
+    public ModifyResponse updateProfile(Member member, ModifyRequest request, MultipartFile multipartFile) {
         request.setPassword(passwordEncoder.encode(request.getPassword()));
-        member.modifyMember(member, request);
-        log.info("멤버 : " + member.getEmail());
+        byte[] fileToBinary = convertToBinary(multipartFile);
+
+        member.modifyMember(member, request, fileToBinary);
         return ModifyResponse.createResponse(memberRepository.save(member));
     }
 
@@ -237,5 +244,31 @@ public class MemberService implements UserDetailsService {
 //        TODO: checked false 의미파악 및 해결
         Member member = getMember(request.getEmail());
         verificationService.saveNewVerification(token, member);
+    }
+
+    //FILE -> binary 변환
+    public byte[] convertToBinary(MultipartFile file){
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte[] byteImage = null;
+
+        try {
+            BufferedImage image = ImageIO.read(file.getInputStream());
+            ImageIO.write(image, fileName.substring(fileName.lastIndexOf(".") + 1), baos);
+            baos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (baos != null) {
+                    baos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        byteImage = baos.toByteArray();
+        return byteImage;
+
     }
 }
