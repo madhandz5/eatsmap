@@ -3,14 +3,13 @@ package com.eatsmap.module.calendar;
 
 import com.eatsmap.module.calendar.dto.CreateCalendarRequest;
 import com.eatsmap.module.calendar.dto.CreateCalendarResponse;
-import com.eatsmap.module.category.Category;
-import com.eatsmap.module.category.dto.CreateCategoryResponse;
+import com.eatsmap.module.calendarReviewHistory.CalendarMemberHistoryService;
+import com.eatsmap.module.group.dto.CreateMemberGroupResponse;
+import com.eatsmap.module.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.validation.Valid;
 
 @Service
 @Transactional(readOnly = true)
@@ -18,19 +17,18 @@ import javax.validation.Valid;
 public class CalendarService {
 
     private final CalendarRepository calendarRepository;
+    private final CalendarMemberHistoryService calendarMemberHistoryService;
 
 
     @Transactional
-    public CreateCalendarResponse createSchedule(@RequestBody CreateCalendarRequest request) {
+    public CreateCalendarResponse createSchedule(@RequestBody CreateCalendarRequest request, Member member) {
 
-        Calendar calender = calendarRepository.save(Calendar.createCalendar(request));
-        System.out.println(calender.getTitle());
-        CreateCalendarResponse result = CreateCalendarResponse.createResponse(calender);
+        Calendar calender = Calendar.createCalendar(request,member);
 
-        System.out.println("확인");
-        System.out.println(result);
-        System.out.println("확인");
-        return result;
+        for (Long followMember : request.getFollowMember()) {
+            calendarMemberHistoryService.createCalendar(followMember, calender);
+        }
+        return CreateCalendarResponse.createResponse(calendarRepository.save(calender));
 
     }
 
