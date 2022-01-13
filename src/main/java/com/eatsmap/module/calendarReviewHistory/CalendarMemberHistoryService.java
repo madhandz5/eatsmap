@@ -24,10 +24,10 @@ import java.util.Optional;
 public class CalendarMemberHistoryService {
 
     private final CalendarMemberHistoryRepository calendarMemberHistoryRepository;
-    private final CalendarRepository memberGroupRepository;
+    private final CalendarRepository calendarRepository;
     private final MemberService memberService;
 
-    //초대받은 유저 최초 등록
+    //캘린더 등록
     @Transactional
     public void createCalendar(Long followMember, Calendar calendar) {
         Member member = memberService.getMember(followMember);
