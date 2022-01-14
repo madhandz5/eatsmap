@@ -1,6 +1,7 @@
 package com.eatsmap.module.hashtag;
 
 import com.eatsmap.module.hashtag.dto.CreateHashtagRequest;
+import com.eatsmap.module.hashtag.dto.UpdateHashtagRequest;
 import com.eatsmap.module.reviewHashtagHistory.ReviewHashtagHistory;
 import lombok.*;
 
@@ -25,6 +26,8 @@ public class Hashtag {
 
     private String hashtagName;
 
+    private boolean deleted;
+
     @OneToMany(mappedBy = "hashtag")
     private List<ReviewHashtagHistory> reviewHashtagHistories = new ArrayList<>();
 
@@ -32,6 +35,16 @@ public class Hashtag {
         return Hashtag.builder()
                 .hashtagCode(request.getHashtagCode())
                 .hashtagName(request.getHashtagName())
+                .deleted(false)
                 .build();
+    }
+
+    public void updateHashtag(UpdateHashtagRequest request) {
+        this.hashtagCode = request.getHashtagCode();
+        this.hashtagName = request.getHashtagName();
+    }
+
+    public void deleteHashtag() {
+        this.deleted = true;
     }
 }

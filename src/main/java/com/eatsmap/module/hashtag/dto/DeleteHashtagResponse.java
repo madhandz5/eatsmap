@@ -11,11 +11,13 @@ public class DeleteHashtagResponse {
 
     private String hashtagCode;
     private String hashtagName;
+    private boolean deleted;
 
     public static DeleteHashtagResponse createResponse(Hashtag hashtag) {
         return DeleteHashtagResponse.builder()
                 .hashtagCode(hashtag.getHashtagCode())
                 .hashtagName(hashtag.getHashtagName())
+                .deleted(true)
                 .build();
     }
 }

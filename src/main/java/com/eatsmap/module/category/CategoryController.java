@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 
 @RestController
@@ -20,7 +21,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping(path = "/create")
-    public ResponseEntity<CommonResponse> createCategory(@RequestBody CreateCategoryRequest request) {
+    public ResponseEntity<CommonResponse> createCategory(@RequestBody @Valid CreateCategoryRequest request) {
         CreateCategoryResponse data = categoryService.createCategory(request);
         CommonResponse response = CommonResponse.createResponse(true, data);
 
@@ -28,7 +29,7 @@ public class CategoryController {
     }
 
     @PostMapping(path = "/update")
-    public ResponseEntity<CommonResponse> updateCategory(@RequestBody UpdateCategoryRequest request) {
+    public ResponseEntity<CommonResponse> updateCategory(@RequestBody @Valid UpdateCategoryRequest request) {
         UpdateCategoryResponse data = categoryService.updateCategory(request);
         CommonResponse response = CommonResponse.createResponse(true, data);
 
