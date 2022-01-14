@@ -1,6 +1,7 @@
 package com.eatsmap.module.member;
 
 import com.eatsmap.module.calendar.Calendar;
+import com.eatsmap.module.calendarReviewHistory.CalendarMemberHistory;
 import com.eatsmap.module.groupMemberHistory.MemberGroupHistory;
 import com.eatsmap.module.member.dto.KakaoSignUpRequest;
 import com.eatsmap.module.member.dto.ModifyRequest;
@@ -77,12 +78,17 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Review> reviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member")   //양방향
     private List<MemberGroupHistory> groups = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "member")
     private List<Verification> verificationGroup = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "member")
+    private List<CalendarMemberHistory> calendarMembers = new ArrayList<>();
 
     //    EMAIL
     public static Member createAccount(SignUpRequest request) {
@@ -110,11 +116,12 @@ public class Member {
                 .build();
     }
 
-    public void modifyMember(Member member, ModifyRequest request) {
+    public void modifyMember(Member member, ModifyRequest request, byte[] file) {
         this.nickname = request.getNickname();
         this.beforePassword = member.getPassword();
         this.password = request.getPassword();
         this.passwordModifiedAt = LocalDateTime.now();
+        this.profileImage = file;
     }
 
     public void verifiedMemberByEmail() {

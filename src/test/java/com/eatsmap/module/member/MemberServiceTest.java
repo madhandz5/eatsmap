@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -28,17 +29,19 @@ public class MemberServiceTest {
         request.setPassword("nick123@");
         request.setPasswordConfirm("nick123@");
 
+        byte[] fileToBinary = null;
+
         Member modifiedMember = null;
         if (member.isPresent()) {
             Member findUser = member.get();
-            findUser.modifyMember(member.get(), request);
+            findUser.modifyMember(member.get(), request, fileToBinary );
             modifiedMember = memberRepository.save(findUser);
         }
 
         //WHEN
-        Member memberByToken = memberRepository.findMemberByJwtToken(token);
+        Member memberByEmail = memberRepository.findByEmail(member.get().getEmail());
 
         //THEN
-        assertEquals(modifiedMember.getEmail(), memberByToken.getEmail());
+        assertEquals(modifiedMember.getEmail(), memberByEmail.getEmail());
     }
 }

@@ -1,18 +1,14 @@
 package com.eatsmap.module.calendar;
 
 import com.eatsmap.module.calendar.dto.CreateCalendarRequest;
-import com.eatsmap.module.category.Category;
-import com.eatsmap.module.category.dto.CreateCategoryRequest;
-import com.eatsmap.module.group.MemberGroup;
-import com.eatsmap.module.hashtag.Hashtag;
+import com.eatsmap.module.calendarReviewHistory.CalendarMemberHistory;
 import com.eatsmap.module.member.Member;
 import com.eatsmap.module.restaurant.Restaurant;
-import com.eatsmap.module.review.Review;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -26,7 +22,7 @@ public class Calendar {
 
     @Id
     @GeneratedValue(generator = "calendar_seq")
-    @Column(name = "calendar_seq")
+    @Column(name = "calendar_id")
     private Long id;
 
     private String title;
@@ -41,19 +37,18 @@ public class Calendar {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    public static Calendar createCalendar(CreateCalendarRequest request) {
+    @Builder.Default
+    @OneToMany(mappedBy = "calendar_id")  //다대다 -> 일대다 - 다대일
+    private List<CalendarMemberHistory> calendarMembers = new ArrayList<>();
+
+    public static Calendar createCalendar(CreateCalendarRequest request,Member member) {
         return Calendar.builder()
                 .title(request.getTitle())
                 .date(request.getDate())
                 .time(request.getTime())
+                .member(member)
                 .build();
     }
-
-
-
-
-
-
 
 
 
