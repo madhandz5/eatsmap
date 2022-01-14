@@ -26,6 +26,9 @@ public class Restaurant {
     private String address;
     private Point location;
 
+    @OneToMany(mappedBy = "restaurant")
+    private List<Review> reviews;
+
     public static Restaurant createRestaurant(String resName, String address, double x, double y) {
         return Restaurant.builder()
                 .resName(resName)
@@ -33,4 +36,5 @@ public class Restaurant {
                 .location(new Point(x, y))
                 .build();
     }
+
 }

@@ -6,7 +6,7 @@ import com.eatsmap.module.group.MemberGroup;
 import com.eatsmap.module.member.Member;
 import com.eatsmap.module.restaurant.Restaurant;
 import com.eatsmap.module.review.dto.CreateReviewRequest;
-import com.eatsmap.module.review.reviewHashtagHistory.ReviewHashtagHistory;
+import com.eatsmap.module.reviewHashtagHistory.ReviewHashtagHistory;
 import lombok.*;
 
 import javax.persistence.*;
@@ -96,14 +96,17 @@ public class Review {
 
     public void setCategory(Category category) {
         this.category = category;
+        category.getReviews().add(this);
     }
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+        restaurant.getReviews().add(this);
     }
 
     public void setGroup(MemberGroup group) {
         this.group = group;
+//        group.setReview(this);
     }
 
     private void setReviewFiles(List<Fileinfo> reviewFiles) {

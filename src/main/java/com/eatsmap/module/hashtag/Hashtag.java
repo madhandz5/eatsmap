@@ -1,10 +1,11 @@
 package com.eatsmap.module.hashtag;
 
 import com.eatsmap.module.hashtag.dto.CreateHashtagRequest;
-import com.eatsmap.module.review.reviewHashtagHistory.ReviewHashtagHistory;
+import com.eatsmap.module.reviewHashtagHistory.ReviewHashtagHistory;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,7 +26,7 @@ public class Hashtag {
     private String hashtagName;
 
     @OneToMany(mappedBy = "hashtag")
-    private List<ReviewHashtagHistory> reviewHashtagHistories;
+    private List<ReviewHashtagHistory> reviewHashtagHistories = new ArrayList<>();
 
     public static Hashtag createHashtag(CreateHashtagRequest request) {
         return Hashtag.builder()

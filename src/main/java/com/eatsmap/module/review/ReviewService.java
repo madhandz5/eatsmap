@@ -17,7 +17,7 @@ import com.eatsmap.module.restaurant.RestaurantService;
 import com.eatsmap.module.review.dto.CreateReviewRequest;
 import com.eatsmap.module.review.dto.CreateReviewResponse;
 import com.eatsmap.module.review.dto.DeleteReviewResponse;
-import com.eatsmap.module.review.reviewHashtagHistory.ReviewHashtagHistoryService;
+import com.eatsmap.module.reviewHashtagHistory.ReviewHashtagHistoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

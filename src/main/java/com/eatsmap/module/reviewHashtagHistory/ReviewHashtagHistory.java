@@ -1,4 +1,4 @@
-package com.eatsmap.module.review.reviewHashtagHistory;
+package com.eatsmap.module.reviewHashtagHistory;
 
 import com.eatsmap.module.hashtag.Hashtag;
 import com.eatsmap.module.review.Review;

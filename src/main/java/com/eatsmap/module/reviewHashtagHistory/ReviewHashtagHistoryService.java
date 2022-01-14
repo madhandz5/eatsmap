@@ -1,4 +1,4 @@
-package com.eatsmap.module.review.reviewHashtagHistory;
+package com.eatsmap.module.reviewHashtagHistory;
 
 import com.eatsmap.module.hashtag.Hashtag;
 import com.eatsmap.module.review.Review;
@@ -20,6 +20,7 @@ public class ReviewHashtagHistoryService {
         for (Hashtag hashtag : hashtags) {
             ReviewHashtagHistory reviewHashtagHistory = ReviewHashtagHistory.createHistory(review, hashtag);
             reviewHashtagHistoryRepository.save(reviewHashtagHistory);
+            hashtag.setReview(review);
         }
     }
 
