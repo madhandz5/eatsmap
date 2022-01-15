@@ -8,10 +8,7 @@ import com.eatsmap.module.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -22,7 +19,7 @@ public class CalendarController {
 
     private final CalendarService calenderService;
 
-    @PostMapping("/schedule-create")
+    @PostMapping(path ="/schedule/create")
     public ResponseEntity scheduleCreation(@RequestBody CreateCalendarRequest request, @CurrentMember Member member) {
 
         CreateCalendarResponse data = calenderService.createSchedule(request,member);

@@ -52,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             new AntPathRequestMatcher("/api/v1/account/logout"),
             new AntPathRequestMatcher("/api/v1/group/create"),
             new AntPathRequestMatcher("/api/v1/group/all"),
-            new AntPathRequestMatcher("/api/v1/group/join/{groupId}")
+            new AntPathRequestMatcher("/api/v1/group/join/{groupId}"),
+            new AntPathRequestMatcher("/api/v1/calendar/schedule/create")
     );
 
     private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(

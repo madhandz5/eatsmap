@@ -51,6 +51,9 @@ public enum ErrorCode {
     // FILE (1500)
     FILE_UPLOAD_ERROR("1501", "Failed to upload file ", null),
 
+    // NOTICE (1600)
+    NOTICE_IS_NOT_EXISTS("1601", "요청하신 알림은 존재하지 않습니다.", null),
+
     // etc (9000)
     JSON_PROCESS_FAIL("9001", "Failed From Processing Json", null),
     WRONG_PATH("9002", "Wrong Path", null),

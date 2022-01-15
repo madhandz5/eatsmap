@@ -20,7 +20,7 @@ public class ReviewHashtagHistoryService {
         for (Hashtag hashtag : hashtags) {
             ReviewHashtagHistory reviewHashtagHistory = ReviewHashtagHistory.createHistory(review, hashtag);
             reviewHashtagHistoryRepository.save(reviewHashtagHistory);
-            hashtag.setReview(review);
+//            hashtag.setReview(review);
         }
     }
 

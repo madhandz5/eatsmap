@@ -38,7 +38,7 @@ public class Calendar {
     private Restaurant restaurant;
 
     @Builder.Default
-    @OneToMany(mappedBy = "calendar_id")  //다대다 -> 일대다 - 다대일
+    @OneToMany(mappedBy = "calendar")  //다대다 -> 일대다 - 다대일
     private List<CalendarMemberHistory> calendarMembers = new ArrayList<>();
 
     public static Calendar createCalendar(CreateCalendarRequest request,Member member) {

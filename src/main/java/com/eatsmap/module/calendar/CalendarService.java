@@ -21,7 +21,7 @@ public class CalendarService {
 
 
     @Transactional
-    public CreateCalendarResponse createSchedule(@RequestBody CreateCalendarRequest request, Member member) {
+    public CreateCalendarResponse createSchedule(CreateCalendarRequest request, Member member) {
 
         Calendar calender = Calendar.createCalendar(request,member);
 
