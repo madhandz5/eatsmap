@@ -25,14 +25,14 @@ public class CategoryService {
 
     @Transactional
     public UpdateCategoryResponse updateCategory(UpdateCategoryRequest request) {
-        Category category = categoryRepository.findById(Long.parseLong(request.getCategoryId())).orElseThrow(() -> new CommonException(ErrorCode.CATEGORY_IS_NOT_EXISTS));
+        Category category = categoryRepository.findById(Long.parseLong(request.getCategoryId())).orElseThrow(() -> new CommonException(ErrorCode.CATEGORY_NOT_FOUND));
         category.updateCategory(request);
         return UpdateCategoryResponse.updateResponse(category);
     }
 
     @Transactional
     public DeleteCategoryResponse deleteCategory(Long categoryId) {
-        Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new CommonException(ErrorCode.CATEGORY_IS_NOT_EXISTS));
+        Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new CommonException(ErrorCode.CATEGORY_NOT_FOUND));
         category.deleteCategory();
         return DeleteCategoryResponse.createResponse(category);
     }

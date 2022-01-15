@@ -1,10 +1,7 @@
 package com.eatsmap.module.follow;
 
 import com.eatsmap.module.member.Member;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +9,7 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder(access = AccessLevel.PRIVATE)
 @SequenceGenerator(name = "follow_seq", sequenceName = "follow_seq", initialValue = 1001, allocationSize = 10)
 public class Follow {
 
@@ -22,10 +20,16 @@ public class Follow {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "to_member_id")
-    private Member toMemberId;
+    private Member toMember;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "from_member_id")
-    private Member fromMemberId;
+    private Member fromMember;
 
+    public static Follow createFollow(Member toMember, Member fromMember){
+        return Follow.builder()
+                .toMember(toMember)
+                .fromMember(fromMember)
+                .build();
+    }
 }

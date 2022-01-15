@@ -47,13 +47,13 @@ public class MemberGroupHistoryService {
 
     private MemberGroupHistory getGroupHistoryByMemberGroup(MemberGroup group) {
         MemberGroupHistory memberGroupHistory = memberGroupHistoryRepository.findByMemberGroup(group);
-        if(memberGroupHistory == null) throw new CommonException(ErrorCode.GROUP_IS_NOT_EXISTS);
+        if(memberGroupHistory == null) throw new CommonException(ErrorCode.GROUP_NOT_FOUND);
         return memberGroupHistory;
     }
 
     private MemberGroup getGroupById(String groupId) {
         Optional<MemberGroup> memberGroup = memberGroupRepository.findById(Long.parseLong(groupId));
-        if(memberGroup.isEmpty()) throw new CommonException(ErrorCode.GROUP_IS_NOT_EXISTS);
+        if(memberGroup.isEmpty()) throw new CommonException(ErrorCode.GROUP_NOT_FOUND);
 
         return memberGroup.get();
     }

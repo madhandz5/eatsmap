@@ -24,7 +24,7 @@ public class NoticeAdminService {
     @Transactional
     public void modifyNotice(NoticeDTO noticeDTO){
         if(!noticeRepository.existsById(noticeDTO.getId())){
-            throw new CommonException(ErrorCode.NOTICE_IS_NOT_EXISTS);
+            throw new CommonException(ErrorCode.NOTICE_NOT_FOUND);
         }
         Notice notice = noticeRepository.findById(noticeDTO.getId()).get();
         notice.modifyNotice(noticeDTO);

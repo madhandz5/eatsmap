@@ -24,14 +24,14 @@ public class HashtagService {
 
     @Transactional
     public UpdateHashtagResponse updateHashtag(UpdateHashtagRequest request) {
-        Hashtag hashtag = hashtagRepository.findById(Long.parseLong(request.getHashtagId())).orElseThrow(() -> new CommonException(ErrorCode.HASHTAG_IS_NOT_EXISTS));
+        Hashtag hashtag = hashtagRepository.findById(Long.parseLong(request.getHashtagId())).orElseThrow(() -> new CommonException(ErrorCode.HASHTAG_NOT_FOUND));
         hashtag.updateHashtag(request);
         return UpdateHashtagResponse.createResponse(hashtag);
     }
 
     @Transactional
     public DeleteHashtagResponse deleteHashtag(Long hashtagId) {
-        Hashtag hashtag = hashtagRepository.findById(hashtagId).orElseThrow(() -> new CommonException(ErrorCode.HASHTAG_IS_NOT_EXISTS));
+        Hashtag hashtag = hashtagRepository.findById(hashtagId).orElseThrow(() -> new CommonException(ErrorCode.HASHTAG_NOT_FOUND));
         hashtag.deleteHashtag();
         return DeleteHashtagResponse.createResponse(hashtag);
     }

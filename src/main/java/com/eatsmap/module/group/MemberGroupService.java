@@ -42,7 +42,7 @@ public class MemberGroupService {
 
     public MemberGroup getMemberGroup(String groupId) {
         if(groupId.equals("my")) return null;
-        return memberGroupRepository.findById(Long.parseLong(groupId)).orElseThrow(() -> new CommonException(ErrorCode.GROUP_IS_NOT_EXISTS));
+        return memberGroupRepository.findById(Long.parseLong(groupId)).orElseThrow(() -> new CommonException(ErrorCode.GROUP_NOT_FOUND));
     }
 
 }

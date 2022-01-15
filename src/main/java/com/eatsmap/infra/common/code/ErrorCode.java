@@ -39,20 +39,23 @@ public enum ErrorCode {
     ACCESS_DENIED("1204", "접근 권한이 없습니다.", null),
 
     // GROUP (1300)
-    GROUP_IS_NOT_EXISTS("1301", "그룹이 존재하지 않습니다.", null),
+    GROUP_NOT_FOUND("1301", "그룹이 존재하지 않습니다.", null),
 
     // REVIEW (1400)
-    REVIEW_IS_NOT_EXISTS("1401", "리뷰가 존재하지 않습니다.", null),
+    REVIEW_NOT_FOUND("1401", "리뷰가 존재하지 않습니다.", null),
     REVIEW_VISIT_DATE_IS_NOT_PAST("1402", "방문날짜는 미래일 수 없습니다.", null),
 
-    CATEGORY_IS_NOT_EXISTS("1403", "카테고리가 존재하지 않습니다.", null),
-    HASHTAG_IS_NOT_EXISTS("1404", "해시태그가 존재하지 않습니다.", null),
+    CATEGORY_NOT_FOUND("1403", "카테고리가 존재하지 않습니다.", null),
+    HASHTAG_NOT_FOUND("1404", "해시태그가 존재하지 않습니다.", null),
 
     // FILE (1500)
     FILE_UPLOAD_ERROR("1501", "Failed to upload file ", null),
 
-    // NOTICE (1600)
-    NOTICE_IS_NOT_EXISTS("1601", "요청하신 알림은 존재하지 않습니다.", null),
+    // FOLLOW (1600)
+    FOLLOW_NOT_FOUND("1601", "잇친 정보가 존재하지 않습니다.", null),
+
+    // NOTICE (1700)
+    NOTICE_NOT_FOUND("1701", "요청하신 알림은 존재하지 않습니다.", null),
 
     // etc (9000)
     JSON_PROCESS_FAIL("9001", "Failed From Processing Json", null),

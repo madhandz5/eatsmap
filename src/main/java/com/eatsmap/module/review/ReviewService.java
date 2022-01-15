@@ -58,14 +58,14 @@ public class ReviewService {
 //        카테고리 코드가 없으면 예외처리
         Category category = categoryService.getCategoryCode(request.getCategory());
         if (category == null) {
-            throw new CommonException(ErrorCode.CATEGORY_IS_NOT_EXISTS);
+            throw new CommonException(ErrorCode.CATEGORY_NOT_FOUND);
         }
 //        해시태그가 없으면 예외처리
         List<Hashtag> hashtags = new ArrayList<>();
         for (String hashtag : request.getHashtag()) {
             Hashtag getHashtag = hashtagService.getHashtagByHashtagCode(hashtag);
             if (getHashtag == null) {
-                throw new CommonException(ErrorCode.HASHTAG_IS_NOT_EXISTS);
+                throw new CommonException(ErrorCode.HASHTAG_NOT_FOUND);
             }
             hashtags.add(getHashtag);
         }
@@ -82,7 +82,7 @@ public class ReviewService {
 
     @Transactional
     public DeleteReviewResponse deleteReview(Long reviewId) {
-        Review review = reviewRepository.findById(reviewId).orElseThrow(()-> new CommonException(ErrorCode.REVIEW_IS_NOT_EXISTS));
+        Review review = reviewRepository.findById(reviewId).orElseThrow(()-> new CommonException(ErrorCode.REVIEW_NOT_FOUND));
         review.deleteReview();
         return DeleteReviewResponse.createResponse(review);
     }

@@ -49,7 +49,7 @@ public class Review {
     private MemberGroup group;
 
     @OneToMany(mappedBy = "review")
-    private List<ReviewHashtagHistory> reviewHashtagHistories;
+    private List<ReviewHashtagHistory> reviewHashtagHistories = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private ReviewPrivacy privacy;
