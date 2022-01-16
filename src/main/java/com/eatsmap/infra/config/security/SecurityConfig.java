@@ -47,13 +47,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    Need Authentication URL
     private static final RequestMatcher ROLE_USER_REQUIRED = new OrRequestMatcher(
             new AntPathRequestMatcher("/api/v1/account/profile"),
-            new AntPathRequestMatcher("/api/v1/review/create"),
             new AntPathRequestMatcher("/api/v1/account/member"),
             new AntPathRequestMatcher("/api/v1/account/logout"),
+            new AntPathRequestMatcher("/api/v1/review/create"),
             new AntPathRequestMatcher("/api/v1/group/create"),
             new AntPathRequestMatcher("/api/v1/group/all"),
             new AntPathRequestMatcher("/api/v1/group/join/{groupId}"),
-            new AntPathRequestMatcher("/api/v1/calendar/schedule/create")
+            new AntPathRequestMatcher("/api/v1/calendar/schedule/create"),
+            new AntPathRequestMatcher("/api/v1/follow/{toMemberId}")
     );
 
     private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(

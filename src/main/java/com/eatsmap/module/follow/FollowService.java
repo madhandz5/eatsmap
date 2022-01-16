@@ -2,33 +2,40 @@ package com.eatsmap.module.follow;
 
 import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
+import com.eatsmap.module.follow.dto.FollowDTO;
 import com.eatsmap.module.member.Member;
+import com.eatsmap.module.member.MemberService;
 import com.eatsmap.module.memberNoticeHistory.MemberNoticeHistory;
 import com.eatsmap.module.memberNoticeHistory.MemberNoticeHistoryService;
 import com.eatsmap.module.notice.Notice;
 import com.eatsmap.module.notice.NoticeService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class FollowService {
 
     private final FollowRepository followRepository;
+    private final MemberService memberService;
     private final NoticeService noticeService;
     private final MemberNoticeHistoryService memberNoticeHistoryService;
 
 //    follow 맺기
     @Transactional
-    public void followMember(Member toMember,Member fromMember){
+    public FollowDTO followMember(Long toMemberId, Member fromMember){
+        Member toMember = memberService.getMember(toMemberId);
         Follow follow = Follow.createFollow(toMember, fromMember);
         //notice
-        Notice notice = noticeService.getNoticeByCode("NF");
-        memberNoticeHistoryService.saveMemberNoticeHistory(MemberNoticeHistory.createMemberNoticeHistory(toMember.getId(), notice));
+//        Notice notice = noticeService.getNoticeByCode("NF");
+//        memberNoticeHistoryService.saveMemberNoticeHistory(MemberNoticeHistory.createMemberNoticeHistory(toMember.getId(), notice));
 
-        followRepository.save(follow);
+        return FollowDTO.createResponse(followRepository.save(follow));
     }
 
 //    follow 취소
