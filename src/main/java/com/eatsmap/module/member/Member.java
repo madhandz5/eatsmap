@@ -70,9 +70,6 @@ public class Member {
     private LocalDateTime emailCheckTokenGeneratedAt;
     private boolean verified;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "member")
-    private List<Calendar> calendars = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "member")
