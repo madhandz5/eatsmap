@@ -1,8 +1,8 @@
 package com.eatsmap.infra.config.security.setting;
 
 import com.eatsmap.infra.common.code.ErrorCode;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;

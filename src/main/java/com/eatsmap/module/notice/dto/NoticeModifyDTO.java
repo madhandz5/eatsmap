@@ -1,10 +1,11 @@
 package com.eatsmap.module.notice.dto;
 
 import lombok.Data;
-import org.springframework.lang.Nullable;
 
 @Data
-public class NoticeDTO {
+public class NoticeModifyDTO {
+
+    private Long id;
 
     private String noticeName;
 

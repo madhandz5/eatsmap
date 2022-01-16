@@ -87,7 +87,7 @@ public class MemberService implements UserDetailsService {
 
     @Transactional
     public void loginByPassword(LoginRequest request) {
-        Member member = getMember(request.getEmail());
+        Member member = getUserValidateByEmail(request.getEmail());
 
 //        Check email Not Verified
         if (checkEmailVerified(request.getEmail())) {
@@ -180,9 +180,17 @@ public class MemberService implements UserDetailsService {
         return member;
     }
 
+    private Member getUserValidateByEmail(String email) {
+        Member member = memberRepository.userValidateByEmail(email);
+        if (member == null) {
+            throw new CommonException(ErrorCode.ACCOUNT_NOT_FOUND);
+        }
+        return member;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Member member = memberRepository.memberValidateByEmail(email);
+        Member member = memberRepository.userValidateByEmail(email);
         if (member == null) {
             throw new CommonException(ErrorCode.ACCOUNT_NOT_FOUND);
         }
@@ -242,9 +250,10 @@ public class MemberService implements UserDetailsService {
     @Transactional
     public void saveVerification(String token, LoginRequest request) {    //유진 01/03
 //        TODO: checked false 의미파악 및 해결
-        Member member = getMember(request.getEmail());
+        Member member = getUserValidateByEmail(request.getEmail());
         verificationService.saveNewVerification(token, member);
     }
+
 
     //FILE -> binary 변환
     public byte[] convertToBinary(MultipartFile file){
