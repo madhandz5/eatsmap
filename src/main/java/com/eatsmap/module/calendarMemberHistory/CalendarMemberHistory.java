@@ -1,8 +1,7 @@
-package com.eatsmap.module.calendarReviewHistory;
+package com.eatsmap.module.calendarMemberHistory;
 
 import com.eatsmap.module.calendar.Calendar;
 import com.eatsmap.module.member.Member;
-import com.eatsmap.module.review.Review;
 import lombok.*;
 
 import javax.persistence.*;
@@ -55,6 +54,5 @@ public class CalendarMemberHistory {
 
         member.getCalendarMembers().remove(this);
     }
-
 
 }

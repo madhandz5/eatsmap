@@ -1,8 +1,6 @@
-package com.eatsmap.module.calendarReviewHistory;
+package com.eatsmap.module.calendarMemberHistory;
 
-import com.eatsmap.module.group.MemberGroup;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 public interface CalendarMemberHistoryRepository extends JpaRepository<CalendarMemberHistory, Long>, CalendarMemberHistoryRepositoryExtension {
 }

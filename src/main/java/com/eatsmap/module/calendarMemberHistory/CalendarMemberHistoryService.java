@@ -1,22 +1,12 @@
-package com.eatsmap.module.calendarReviewHistory;
+package com.eatsmap.module.calendarMemberHistory;
 
-import com.eatsmap.infra.common.code.ErrorCode;
-import com.eatsmap.infra.exception.CommonException;
 import com.eatsmap.module.calendar.Calendar;
 import com.eatsmap.module.calendar.CalendarRepository;
-import com.eatsmap.module.calendar.CalendarService;
-import com.eatsmap.module.group.MemberGroup;
-import com.eatsmap.module.group.MemberGroupRepository;
-import com.eatsmap.module.group.dto.JoinMemberToGroupResponse;
-import com.eatsmap.module.group.dto.MemberGroupDTO;
 import com.eatsmap.module.member.Member;
 import com.eatsmap.module.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +25,7 @@ public class CalendarMemberHistoryService {
         calendarMemberHistoryRepository.save(calendarMemberHistory);
     }
 
+    //캘린더 일정 불러오기
 
 
 }
