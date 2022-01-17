@@ -35,9 +35,9 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping(path = "/delete")
-    public ResponseEntity<CommonResponse> deleteReview(@RequestBody HashMap<String, Long> reviewId) {
-        DeleteReviewResponse data = reviewService.deleteReview(reviewId.get("reviewId"));
+    @DeleteMapping(path = "/delete")
+    public ResponseEntity<CommonResponse> deleteReview(@RequestBody HashMap<String, Long> reviewId, @CurrentMember Member member) {
+        DeleteReviewResponse data = reviewService.deleteReview(reviewId.get("reviewId"), member);
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

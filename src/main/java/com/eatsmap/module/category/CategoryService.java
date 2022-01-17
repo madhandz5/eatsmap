@@ -3,6 +3,8 @@ package com.eatsmap.module.category;
 import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
 import com.eatsmap.module.category.dto.*;
+import com.eatsmap.module.member.Member;
+import com.eatsmap.module.member.MemberRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

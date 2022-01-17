@@ -81,8 +81,11 @@ public class ReviewService {
     }
 
     @Transactional
-    public DeleteReviewResponse deleteReview(Long reviewId) {
+    public DeleteReviewResponse deleteReview(Long reviewId, Member member) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(()-> new CommonException(ErrorCode.REVIEW_NOT_FOUND));
+        if (review.getMember().getId() != member.getId()) {
+            throw new CommonException(ErrorCode.ACCESS_DENIED);
+        }
         review.deleteReview();
         return DeleteReviewResponse.createResponse(review);
     }

@@ -2,6 +2,7 @@ package com.eatsmap.module.category;
 
 import com.eatsmap.module.category.dto.CreateCategoryRequest;
 import com.eatsmap.module.category.dto.UpdateCategoryRequest;
+import com.eatsmap.module.member.Member;
 import com.eatsmap.module.review.Review;
 import lombok.*;
 
