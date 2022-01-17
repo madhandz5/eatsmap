@@ -1,4 +1,4 @@
-package com.eatsmap.module.calendarReviewHistory;
+package com.eatsmap.module.calendarMemberHistory;
 
 public interface CalendarMemberHistoryRepositoryExtension {
 

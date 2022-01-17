@@ -1,4 +1,4 @@
-package com.eatsmap.module.calendarReviewHistory;
+package com.eatsmap.module.calendarMemberHistory;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;

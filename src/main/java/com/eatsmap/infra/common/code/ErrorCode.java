@@ -3,6 +3,7 @@ package com.eatsmap.infra.common.code;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 
+import javax.validation.constraints.Null;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +41,7 @@ public enum ErrorCode {
 
     // GROUP (1300)
     GROUP_NOT_FOUND("1301", "그룹이 존재하지 않습니다.", null),
+    GROUP_MEMBER_NULL("1302", "그룹 멤버가 등록되지 않았습니다.", null),
 
     // REVIEW (1400)
     REVIEW_NOT_FOUND("1401", "리뷰가 존재하지 않습니다.", null),
@@ -56,6 +58,9 @@ public enum ErrorCode {
 
     // NOTICE (1700)
     NOTICE_NOT_FOUND("1701", "요청하신 알림은 존재하지 않습니다.", null),
+
+    // CALENDAR (1800)
+    CANNOT_INVITE_SELF("1801","자기 자신을 초대할수 없습니다.", null),
 
     // etc (9000)
     JSON_PROCESS_FAIL("9001", "Failed From Processing Json", null),

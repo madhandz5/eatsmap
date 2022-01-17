@@ -1,16 +1,19 @@
 package com.eatsmap.module.calendar.dto;
 
+import com.eatsmap.module.calendar.Calendar;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
+
 
 @Data
-public class CreateCalendarRequest {
+@Builder(access = AccessLevel.PRIVATE)
+public class GetCalendarResponse {
 
     private String title;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -18,8 +21,12 @@ public class CreateCalendarRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
     private LocalTime time;
 
-
-    private List<Long> followMember;
-
+    public static GetCalendarResponse createResponse(Calendar calendar) {
+        return GetCalendarResponse.builder()
+                .title(calendar.getTitle())
+                .date(calendar.getDate())
+                .time(calendar.getTime())
+                .build();
+    }
 
 }

@@ -1,12 +1,15 @@
 package com.eatsmap.module.calendar;
 
 import com.eatsmap.module.calendar.dto.CreateCalendarRequest;
-import com.eatsmap.module.calendarReviewHistory.CalendarMemberHistory;
+import com.eatsmap.module.calendarMemberHistory.CalendarMemberHistory;
 import com.eatsmap.module.member.Member;
 import com.eatsmap.module.restaurant.Restaurant;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @AllArgsConstructor
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(access = AccessLevel.PRIVATE)
 @SequenceGenerator(name = "calendar_seq", sequenceName = "calendar_seq", initialValue = 1001)
@@ -26,12 +30,12 @@ public class Calendar {
     private Long id;
 
     private String title;
-    private String date;
-    private String time;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private LocalDate date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
+    private LocalTime time;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    private Long createdBy;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "restaurant_id")
@@ -46,7 +50,7 @@ public class Calendar {
                 .title(request.getTitle())
                 .date(request.getDate())
                 .time(request.getTime())
-                .member(member)
+                .createdBy(member.getId())
                 .build();
     }
 
