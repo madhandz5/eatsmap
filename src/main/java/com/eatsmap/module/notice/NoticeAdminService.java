@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class NoticeAdminService {
 
-    private NoticeRepository noticeRepository;
+    private final NoticeRepository noticeRepository;
 
     @Transactional
     public Notice addNotice(NoticeDTO noticeDTO){
@@ -31,6 +31,14 @@ public class NoticeAdminService {
         notice.modifyNotice(noticeModifyDTO);
         return noticeRepository.save(notice);
     }
+    //관리자의 삭제 가능 여부는 검토 필요!
+    @Transactional
+    public void deleteNotice(Long noticeId){
+        if(!noticeRepository.existsById(noticeId)){
+            throw new CommonException(ErrorCode.NOTICE_NOT_FOUND);
+        }
+        noticeRepository.delete(noticeRepository.findById(noticeId).get());
+    }
 
-    //관리자의 삭제 가능 여부는 일단 보류!
+
 }

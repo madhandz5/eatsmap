@@ -22,13 +22,31 @@ public class NoticeAdminController {
     @PostMapping(path = "/")
     public ResponseEntity addNotice(@RequestBody NoticeDTO noticeDTO){
         Notice notice = noticeAdminService.addNotice(noticeDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(notice);
+        if(notice == null){
+            CommonResponse response = CommonResponse.createResponse(false, null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+        CommonResponse response = CommonResponse.createResponse(true, notice);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @ApiOperation(value = "관리자 Notice 수정")
     @PutMapping(path = "/")
     public ResponseEntity modifyNotice(@RequestBody NoticeModifyDTO noticeModifyDTO){
         Notice notice = noticeAdminService.modifyNotice(noticeModifyDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(notice);
+        if(notice == null){
+            CommonResponse response = CommonResponse.createResponse(false, null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+        CommonResponse response = CommonResponse.createResponse(true, notice);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @ApiOperation(value = "관리자 Notice 삭제")
+    @DeleteMapping(path = "/{noticeId}")
+    public ResponseEntity deleteNotice(@PathVariable String noticeId){
+        noticeAdminService.deleteNotice(Long.parseLong(noticeId));
+        CommonResponse response = CommonResponse.createResponse(true, noticeId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

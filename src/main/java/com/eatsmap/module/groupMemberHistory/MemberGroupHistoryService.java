@@ -26,10 +26,10 @@ public class MemberGroupHistoryService {
 
     //초대받은 유저 최초 등록
     @Transactional
-    public void createMemberHistory(Long groupMember, MemberGroup group) {
-        Member member = memberService.getMember(groupMember);
+    public MemberGroupHistory createMemberHistory(Long groupMemberId, MemberGroup group) {
+        Member member = memberService.getMember(groupMemberId);
         MemberGroupHistory memberGroupHistory = MemberGroupHistory.createMemberGroupHistory(member, group);
-        memberGroupHistoryRepository.save(memberGroupHistory);
+        return memberGroupHistoryRepository.save(memberGroupHistory);
     }
 
     //초대받은 유저 수락

@@ -1,5 +1,6 @@
 package com.eatsmap.infra.exception;
 
+import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.module.member.exception.UserNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,13 +15,13 @@ import java.util.Date;
 
 
 /**
-* @package : com.eatsmap.infra.exception
-* @name : CustomExceptionHandler.java
-* @date : 2021/12/17 1:56 오후
-* @author : ryan
-* @version : 1.0.0
-* @modifyed :
-**/
+ * @package : com.eatsmap.infra.exception
+ * @name : CustomExceptionHandler.java
+ * @date : 2021/12/17 1:56 오후
+ * @author : ryan
+ * @version : 1.0.0
+ * @modifyed :
+ **/
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -34,6 +35,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity<Object> handleUserNotFoundExceptions(Exception ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CommonException.class)
+    public final ResponseEntity<Object> handleCommonExceptions(CommonException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getErrorCode().getErrorMsg(), request.getDescription(false));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override

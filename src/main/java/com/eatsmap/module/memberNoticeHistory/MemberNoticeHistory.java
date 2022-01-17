@@ -1,15 +1,13 @@
 package com.eatsmap.module.memberNoticeHistory;
 
 import com.eatsmap.module.notice.Notice;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 @Builder(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,5 +33,9 @@ public class MemberNoticeHistory {
                 .notice(notice)
                 .regDate(LocalDateTime.now())
                 .build();
+    }
+
+    public void setNotice(Notice notice){
+        this.notice = notice;
     }
 }
