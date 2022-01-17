@@ -1,6 +1,7 @@
 package com.eatsmap.module.notice;
 
 import com.eatsmap.module.notice.dto.NoticeDTO;
+import com.eatsmap.module.notice.dto.NoticeModifyDTO;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,12 +47,12 @@ public class Notice {   //추가, 수정, 삭제 => 관리자 권한
                 .build();
     }
 
-    public void modifyNotice(NoticeDTO noticeDTO){
-        this.noticeName = noticeDTO.getNoticeName();
-        this.noticeCode = noticeDTO.getNoticeCode();
-        this.text = noticeDTO.getText();
-        this.link = noticeDTO.getLink();
-        this.state = noticeDTO.isState();
+    public void modifyNotice(NoticeModifyDTO noticeModifyDTO){
+        this.noticeName = noticeModifyDTO.getNoticeName();
+        this.noticeCode = noticeModifyDTO.getNoticeCode();
+        this.text = noticeModifyDTO.getText();
+        this.link = noticeModifyDTO.getLink();
+        this.state = noticeModifyDTO.isState();
         this.modifiedAt = LocalDateTime.now();
     }
 }

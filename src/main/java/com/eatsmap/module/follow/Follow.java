@@ -10,7 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(access = AccessLevel.PRIVATE)
-@SequenceGenerator(name = "follow_seq", sequenceName = "follow_seq", initialValue = 1001, allocationSize = 10)
+@SequenceGenerator(name = "follow_seq", sequenceName = "follow_seq", initialValue = 1001, allocationSize = 1)
 public class Follow {
 
     @Id

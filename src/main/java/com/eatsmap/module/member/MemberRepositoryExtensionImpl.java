@@ -28,7 +28,7 @@ public class MemberRepositoryExtensionImpl extends QuerydslRepositorySupport imp
 
     //SignUpValidate
     @Override
-    public Member memberValidateByEmail(String email) {
+    public Member guestValidateByEmail(String email) {
         return queryFactory
                 .select(member)
                 .from(member)
@@ -36,8 +36,23 @@ public class MemberRepositoryExtensionImpl extends QuerydslRepositorySupport imp
                         , member.exited.isFalse()
                         , member.email.eq(email))
                 .fetchFirst();
-
     }
+    //MemberRole = USER 인 사람 중 이메일 검증(LoginValidate)
+    @Override
+    public Member userValidateByEmail(String email) {
+        return queryFactory
+                .select(member)
+                .from(member)
+                .where(member.verified.isTrue()
+                        , member.memberRole.eq(MemberRole.USER)
+                        , member.exited.isFalse()
+                        , member.email.eq(email))
+                .fetchOne();
+    }
+
+    //LoginValidation
+
+
     @Override
     public Member memberValidateByNickname(String nickname) {
         return queryFactory
