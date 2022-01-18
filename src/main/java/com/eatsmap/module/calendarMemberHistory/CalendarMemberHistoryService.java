@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -25,7 +27,13 @@ public class CalendarMemberHistoryService {
         calendarMemberHistoryRepository.save(calendarMemberHistory);
     }
 
-    //캘린더 일정 불러오기
+    @Transactional
+    public void deleteHistory(Long calendarId) {
+        int result = calendarMemberHistoryRepository.deleteByCalendarId(calendarId);
+
+    }
+
+
 
 
 }

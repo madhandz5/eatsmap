@@ -61,6 +61,7 @@ public enum ErrorCode {
 
     // CALENDAR (1800)
     CANNOT_INVITE_SELF("1801","자기 자신을 초대할수 없습니다.", null),
+    CALENDAR_NOT_FOUND("1802","캘린더가 존재하지 않습니다.",null),
 
     // etc (9000)
     JSON_PROCESS_FAIL("9001", "Failed From Processing Json", null),
