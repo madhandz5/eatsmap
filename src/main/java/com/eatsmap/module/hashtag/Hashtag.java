@@ -26,6 +26,8 @@ public class Hashtag {
 
     private String hashtagName;
 
+    private boolean state;
+
     private boolean deleted;
 
     @OneToMany(mappedBy = "hashtag")
@@ -35,6 +37,7 @@ public class Hashtag {
         return Hashtag.builder()
                 .hashtagCode(request.getHashtagCode())
                 .hashtagName(request.getHashtagName())
+                .state(request.isState())
                 .deleted(false)
                 .build();
     }
@@ -42,6 +45,7 @@ public class Hashtag {
     public void updateHashtag(UpdateHashtagRequest request) {
         this.hashtagCode = request.getHashtagCode();
         this.hashtagName = request.getHashtagName();
+        this.state = request.isState();
     }
 
     public void deleteHashtag() {

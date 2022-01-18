@@ -40,4 +40,8 @@ public class HashtagService {
         return hashtagRepository.findByHashtagCode(hashtagCode);
     }
 
+    public Hashtag getHashtagByHashtagCodeNotDeleted(String hashtagCode) {
+        return hashtagRepository.findByHashtagCodeAndDeleted(hashtagCode, false);
+    }
+
 }

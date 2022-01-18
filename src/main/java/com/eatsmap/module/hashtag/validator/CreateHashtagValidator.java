@@ -15,7 +15,7 @@ public class CreateHashtagValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return false;
+        return CreateHashtagRequest.class.isAssignableFrom(clazz);
     }
 
     @Override

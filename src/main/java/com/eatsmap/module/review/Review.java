@@ -56,9 +56,9 @@ public class Review {
 
     private LocalDate visitDate;
     private LocalDateTime regDate;
-
-    private boolean deleted;
+//    private LocalDateTime modifiedAt;
     private LocalDateTime delDate;
+    private boolean deleted;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")

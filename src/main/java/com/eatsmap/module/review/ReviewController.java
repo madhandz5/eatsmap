@@ -6,6 +6,7 @@ import com.eatsmap.module.member.Member;
 import com.eatsmap.module.review.dto.CreateReviewRequest;
 import com.eatsmap.module.review.dto.CreateReviewResponse;
 import com.eatsmap.module.review.dto.DeleteReviewResponse;
+import com.eatsmap.module.review.dto.UpdateReviewRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,8 +30,16 @@ public class ReviewController {
     public ResponseEntity<CommonResponse> createReview(@RequestPart @Valid CreateReviewRequest request,
                                                        @RequestPart List<MultipartFile> photos,
                                                        @CurrentMember Member member) {
-        log.info(photos.get(0).getOriginalFilename());
         CreateReviewResponse data = reviewService.createReview(request, photos, member);
+        CommonResponse response = CommonResponse.createResponse(true, data);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping(path = "/update")
+    public ResponseEntity<CommonResponse> updateReview(@RequestPart @Valid UpdateReviewRequest request,
+                                                       @RequestPart List<MultipartFile> photos,
+                                                       @CurrentMember Member member) {
+        CreateReviewResponse data = reviewService.updateReview(request, photos, member);
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

@@ -16,7 +16,7 @@ public class CreateCategoryValidator implements Validator{
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return false;
+        return CreateCategoryRequest.class.isAssignableFrom(clazz);
     }
 
     @Override

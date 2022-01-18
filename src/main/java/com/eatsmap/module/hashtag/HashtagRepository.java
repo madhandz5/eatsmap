@@ -10,4 +10,6 @@ public interface HashtagRepository extends JpaRepository<Hashtag, Long>, Hashtag
     boolean existsByHashtagCode(String hashtagCode);
 
     boolean existsByHashtagName(String hashtagName);
+
+    Hashtag findByHashtagCodeAndDeleted(String hashtagCode, boolean b);
 }
