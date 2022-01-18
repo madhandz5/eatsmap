@@ -36,14 +36,11 @@ public class MemberGroupService {
 //        TODO: groupForm Validation
         if(request.getGroupMembers().size() == 0) throw new CommonException(ErrorCode.GROUP_MEMBER_NULL);
         for (Long groupMemberId : request.getGroupMembers()) {
-            log.info("그룹원 아이디 : " + groupMemberId);
             //그룹원 history 생성
             MemberGroupHistory history = memberGroupHistoryService.createMemberHistory(groupMemberId, group);
-            log.info("멤버 그룹원 등록 : " + history.getId());
             //그룹 멤버에게 초대 알림 전송(notice 객체 필요)
             MemberNoticeHistory memberNotice = MemberNoticeHistory.createMemberNoticeHistory(groupMemberId, notice);
             MemberNoticeHistory saveHistory = memberNoticeHistoryRepository.save(memberNotice);
-            log.info("멤버 알림 저장? : " + saveHistory.getId());
         }
         return CreateMemberGroupResponse.createResponse(memberGroupRepository.save(group));
     }
