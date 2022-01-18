@@ -17,6 +17,7 @@ import com.eatsmap.module.restaurant.RestaurantService;
 import com.eatsmap.module.review.dto.CreateReviewRequest;
 import com.eatsmap.module.review.dto.CreateReviewResponse;
 import com.eatsmap.module.review.dto.DeleteReviewResponse;
+import com.eatsmap.module.review.dto.UpdateReviewRequest;
 import com.eatsmap.module.reviewHashtagHistory.ReviewHashtagHistoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -74,10 +75,11 @@ public class ReviewService {
 //        파일 저장
         List<Fileinfo> reviewFiles = fileService.createReviewFiles(photos);
 
-        Review review = reviewRepository.save(Review.createReview(member, reviewFiles, restaurant, group, category, request));
+        Review review = Review.createReview(member, reviewFiles, restaurant, group, category, request);
+        reviewRepository.save(review);
         reviewHashtagHistoryService.createHistory(review, hashtags);
 
-        return CreateReviewResponse.createResponse(review);
+        return CreateReviewResponse.createResponse(review, hashtags);
     }
 
     @Transactional
@@ -88,6 +90,11 @@ public class ReviewService {
         }
         review.deleteReview();
         return DeleteReviewResponse.createResponse(review);
+    }
+
+    @Transactional
+    public CreateReviewResponse updateReview(UpdateReviewRequest request, List<MultipartFile> photos, Member member) {
+        return null;
     }
 
 }

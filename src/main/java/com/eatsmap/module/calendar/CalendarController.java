@@ -1,9 +1,7 @@
 package com.eatsmap.module.calendar;
 
 import com.eatsmap.infra.common.CommonResponse;
-import com.eatsmap.module.calendar.dto.CreateCalendarRequest;
-import com.eatsmap.module.calendar.dto.CreateCalendarResponse;
-import com.eatsmap.module.calendar.dto.ReturnCalendars;
+import com.eatsmap.module.calendar.dto.*;
 import com.eatsmap.module.member.CurrentMember;
 import com.eatsmap.module.member.Member;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +31,16 @@ public class CalendarController {
         ReturnCalendars data = calenderService.getCalendar(member);
 
         System.out.println(data.toString());
+        CommonResponse response = CommonResponse.createResponse(true,data);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PutMapping(path = "/schedule/modify")
+    public ResponseEntity calendarModify(@RequestBody ModifyCalendarRequest request, @CurrentMember Member member){
+        System.out.println("동작 확인1");
+        ModifyCalendarResponse data = calenderService.calendarUpdate(request,member);
+
         CommonResponse response = CommonResponse.createResponse(true,data);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);

@@ -13,4 +13,6 @@ public class CreateHashtagRequest {
     @NotEmpty
     private String hashtagName;
 
+    private boolean state;
+
 }

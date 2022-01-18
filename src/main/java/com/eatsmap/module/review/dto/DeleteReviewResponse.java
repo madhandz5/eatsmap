@@ -1,5 +1,6 @@
 package com.eatsmap.module.review.dto;
 
+import com.eatsmap.module.hashtag.Hashtag;
 import com.eatsmap.module.restaurant.Restaurant;
 import com.eatsmap.module.review.Review;
 import lombok.AccessLevel;
@@ -7,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder(access = AccessLevel.PRIVATE)

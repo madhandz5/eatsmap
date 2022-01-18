@@ -13,4 +13,6 @@ public class CreateCategoryRequest {
     @NotEmpty
     private String categoryName;
 
+    private boolean state;
+
 }

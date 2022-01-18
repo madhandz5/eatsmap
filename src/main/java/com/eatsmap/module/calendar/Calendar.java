@@ -1,6 +1,7 @@
 package com.eatsmap.module.calendar;
 
 import com.eatsmap.module.calendar.dto.CreateCalendarRequest;
+import com.eatsmap.module.calendar.dto.ModifyCalendarRequest;
 import com.eatsmap.module.calendarMemberHistory.CalendarMemberHistory;
 import com.eatsmap.module.member.Member;
 import com.eatsmap.module.restaurant.Restaurant;
@@ -52,6 +53,13 @@ public class Calendar {
                 .time(request.getTime())
                 .createdBy(member.getId())
                 .build();
+    }
+
+    public void calendarModify(ModifyCalendarRequest request){
+        this.title = request.getTitle();
+        this.date = request.getDate();
+        this.time = request.getTime();
+        this.calendarMembers = new ArrayList<>();
     }
 
 

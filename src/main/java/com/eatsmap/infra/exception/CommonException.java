@@ -19,6 +19,8 @@ public class CommonException extends RuntimeException{
     private ErrorCode errorCode;
     private String errorDetailMsg;
 
+
+
     public CommonException(ErrorCode errorcode) {
         this.errorCode = errorcode;
         this.errorDetailMsg = getStackTraceMsg(this);

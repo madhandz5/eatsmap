@@ -11,11 +11,13 @@ public class UpdateHashtagResponse {
 
     private String hashtagCode;
     private String hashtagName;
+    private boolean state;
 
     public static UpdateHashtagResponse createResponse(Hashtag hashtag) {
         return UpdateHashtagResponse.builder()
                 .hashtagCode(hashtag.getHashtagCode())
                 .hashtagName(hashtag.getHashtagName())
+                .state(hashtag.isState())
                 .build();
     }
 }

@@ -17,4 +17,6 @@ public class UpdateCategoryRequest {
     @NotEmpty
     private String categoryName;
 
+    private boolean state;
+
 }

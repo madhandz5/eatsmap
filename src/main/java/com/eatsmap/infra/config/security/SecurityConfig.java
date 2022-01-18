@@ -48,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final RequestMatcher ROLE_USER_REQUIRED = new OrRequestMatcher(
             new AntPathRequestMatcher("/api/v1/account/profile"),
             new AntPathRequestMatcher("/api/v1/review/create"),
+            new AntPathRequestMatcher("/api/v1/review/delete"),
             new AntPathRequestMatcher("/api/v1/account/member"),
             new AntPathRequestMatcher("/api/v1/account/logout"),
             new AntPathRequestMatcher("/api/v1/group/create"),
@@ -56,7 +57,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             new AntPathRequestMatcher("/api/v1/calendar/schedule/create"),
             new AntPathRequestMatcher("/api/v1/follow/{toMemberId}"),
             new AntPathRequestMatcher("/api/v1/calendar/schedule/create"),
+            new AntPathRequestMatcher("/api/v1/calendar/schedule/modify"),
             new AntPathRequestMatcher("/api/v1/calendar/")
+
     );
 
     private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(
