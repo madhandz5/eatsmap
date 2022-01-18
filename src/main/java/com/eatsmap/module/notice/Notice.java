@@ -2,15 +2,13 @@ package com.eatsmap.module.notice;
 
 import com.eatsmap.module.notice.dto.NoticeDTO;
 import com.eatsmap.module.notice.dto.NoticeModifyDTO;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder(access = AccessLevel.PRIVATE)

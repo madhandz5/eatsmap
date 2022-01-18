@@ -27,6 +27,10 @@ public class MemberGroupController {
     @PostMapping(path = "/create")
     public ResponseEntity<CommonResponse> createMemberGroup(@RequestBody CreateMemberGroupRequest request, @CurrentMember Member member){
         CreateMemberGroupResponse data = memberGroupService.createMemberGroup(request, member);
+        if(data == null){
+            CommonResponse response = CommonResponse.createResponse(false, null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
