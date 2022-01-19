@@ -151,8 +151,4 @@ public class Member {
         this.exitedAt = LocalDateTime.now();
     }
 
-    public void setReview(Review review) {
-        this.getReviews().add(review);
-//        review.setMember(this);
-    }
 }

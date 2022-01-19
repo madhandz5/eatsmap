@@ -3,10 +3,7 @@ package com.eatsmap.module.review;
 import com.eatsmap.infra.common.CommonResponse;
 import com.eatsmap.module.member.CurrentMember;
 import com.eatsmap.module.member.Member;
-import com.eatsmap.module.review.dto.CreateReviewRequest;
-import com.eatsmap.module.review.dto.CreateReviewResponse;
-import com.eatsmap.module.review.dto.DeleteReviewResponse;
-import com.eatsmap.module.review.dto.UpdateReviewRequest;
+import com.eatsmap.module.review.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -47,6 +44,13 @@ public class ReviewController {
     @DeleteMapping(path = "/delete")
     public ResponseEntity<CommonResponse> deleteReview(@RequestBody HashMap<String, Long> reviewId, @CurrentMember Member member) {
         DeleteReviewResponse data = reviewService.deleteReview(reviewId.get("reviewId"), member);
+        CommonResponse response = CommonResponse.createResponse(true, data);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/find/allReviews")
+    public ResponseEntity<CommonResponse> getAllReviews() {
+        List<GetReviewResponse> data = reviewService.getAllReviews();
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

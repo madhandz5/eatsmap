@@ -14,7 +14,7 @@ public class RestaurantService {
     @Transactional
     public Restaurant createNewRestaurant(String resName, String address, double x, double y) {
         Restaurant restaurant = Restaurant.createRestaurant(resName, address, x, y);
-        return restaurantRepository.save(restaurant);
+        return restaurantRepository.saveAndFlush(restaurant);
     }
 
     public Restaurant getRestaurant(String resName, String address) {

@@ -52,11 +52,6 @@ public class MemberGroup {
                 .build();
     }
 
-    public void setReview(Review review) {
-        this.getReviews().add(review);
-        review.setGroup(this);
-    }
-
     public void joinMemberToGroup(int i) {
         this.joinedGroupMemberCnt = i;
     }
