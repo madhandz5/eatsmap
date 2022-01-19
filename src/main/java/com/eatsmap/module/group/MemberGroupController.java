@@ -43,7 +43,7 @@ public class MemberGroupController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @ApiOperation(value = "전체 그룹 목록 조회")
+    @ApiOperation(value = "내가 그룹원인 그룹 목록 조회")
     @GetMapping(path = "/groups")
     public ResponseEntity<CommonResponse> getAllMemberGroup(@CurrentMember Member member){
         List<MemberGroupDTO> data = memberGroupHistoryService.getAllMemberGroup(member);

@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Description;
+
 import static org.junit.jupiter.api.Assertions.*;
 import javax.persistence.EntityManager;
 
@@ -57,4 +59,6 @@ public class MemberQuerydslTest {
         //THEN
         assertEquals(member.getEmail(), findMember.getEmail());
     }
+
+
 }
