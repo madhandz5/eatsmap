@@ -101,8 +101,10 @@ public class CalendarService {
             System.out.println("에러 확인");
             throw new CommonException(ErrorCode.CALENDAR_NOT_FOUND);
         }
-        calendarRepository.deleteById(calendarId);
-        calendarMemberHistoryService.deleteHistory(calendarId);
+        System.out.println(calendar.getId());
+        calendarMemberHistoryService.deleteHistory(calendar.getId());
+        calendarRepository.deleteById(calendar.getId());
+
 
         return DeleteCalendarResponse.createResponse(calendar);
 

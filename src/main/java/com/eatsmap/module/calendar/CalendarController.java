@@ -46,8 +46,9 @@ public class CalendarController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @DeleteMapping(path = "/schedule/delete")
-    public ResponseEntity calendarDelete(Long calendarId,@CurrentMember Member member){
+    @DeleteMapping(path = "/schedule/delete/{idx}")
+    public ResponseEntity calendarDelete(@PathVariable("idx")Long calendarId,@CurrentMember Member member){
+        System.out.println("캘린더id : " + calendarId);
         DeleteCalendarResponse data = calenderService.calendarDelete(calendarId,member);
 
         CommonResponse response = CommonResponse.createResponse(true,data);

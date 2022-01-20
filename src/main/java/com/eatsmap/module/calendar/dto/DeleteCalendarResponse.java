@@ -24,7 +24,7 @@ public class DeleteCalendarResponse {
 
     private LocalDateTime invitedAt;
 
-    private List<CalendarMemberHistory> calendarMembers;
+    //private List<CalendarMemberHistory> calendarMembers;
 
     public static DeleteCalendarResponse createResponse(Calendar calendar) {
         return DeleteCalendarResponse.builder()
@@ -32,7 +32,7 @@ public class DeleteCalendarResponse {
                 .date(calendar.getDate())
                 .time(calendar.getTime())
                 .invitedAt(LocalDateTime.now())
-                .calendarMembers(calendar.getCalendarMembers())
+
                 .build();
     }
 }
