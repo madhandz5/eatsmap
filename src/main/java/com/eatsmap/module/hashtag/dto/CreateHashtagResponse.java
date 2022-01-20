@@ -13,11 +13,13 @@ public class CreateHashtagResponse {
 
     private String hashtagCode;
     private String hashtagName;
+    private boolean state;
 
     public static CreateHashtagResponse createResponse(Hashtag hashtag) {
         return CreateHashtagResponse.builder()
                 .hashtagCode(hashtag.getHashtagCode())
                 .hashtagName(hashtag.getHashtagName())
+                .state(hashtag.isState())
                 .build();
     }
 }

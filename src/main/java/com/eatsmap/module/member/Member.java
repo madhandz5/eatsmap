@@ -1,7 +1,6 @@
 package com.eatsmap.module.member;
 
-import com.eatsmap.module.calendar.Calendar;
-import com.eatsmap.module.calendarReviewHistory.CalendarMemberHistory;
+import com.eatsmap.module.calendarMemberHistory.CalendarMemberHistory;
 import com.eatsmap.module.groupMemberHistory.MemberGroupHistory;
 import com.eatsmap.module.member.dto.KakaoSignUpRequest;
 import com.eatsmap.module.member.dto.ModifyRequest;
@@ -152,8 +151,4 @@ public class Member {
         this.exitedAt = LocalDateTime.now();
     }
 
-    public void setReview(Review review) {
-        this.getReviews().add(review);
-//        review.setMember(this);
-    }
 }

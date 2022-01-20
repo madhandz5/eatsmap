@@ -51,4 +51,8 @@ public class CategoryService {
         return categoryRepository.findByCategoryCode(categoryCode);
     }
 
+    public Category getCategoryCodeNotDeleted(String categoryCode) {
+        return categoryRepository.findByCategoryCodeAndDeleted(categoryCode, false);
+    }
+
 }

@@ -3,7 +3,7 @@ package com.eatsmap.module.review.dto;
 import com.eatsmap.module.hashtag.Hashtag;
 import com.eatsmap.module.review.Review;
 import com.eatsmap.module.review.ReviewPrivacy;
-import lombok.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class CreateReviewResponse {
+public class GetReviewResponse {
 
     private String category;
 
@@ -26,8 +26,8 @@ public class CreateReviewResponse {
     private LocalDate visitDate;
     private LocalDateTime regDate;
 
-    public static CreateReviewResponse createResponse(Review review) {
-        CreateReviewResponse createReviewResponse = new CreateReviewResponse();
+    public static GetReviewResponse createResponse(Review review) {
+        GetReviewResponse createReviewResponse = new GetReviewResponse();
         createReviewResponse.category = review.getCategory().getCategoryName();
         createReviewResponse.taste = review.getTaste();
         createReviewResponse.clean = review.getClean();
@@ -36,8 +36,7 @@ public class CreateReviewResponse {
         createReviewResponse.privacy = review.getPrivacy();
         createReviewResponse.visitDate = review.getVisitDate();
         createReviewResponse.regDate = review.getRegDate();
-        List<Hashtag> hashtagList = review.getHashtags();
-        for (Hashtag hashtag : hashtagList) {
+        for (Hashtag hashtag : review.getHashtags()) {
             createReviewResponse.hashtagNames.add(hashtag.getHashtagName());
         }
         return createReviewResponse;

@@ -11,12 +11,9 @@ import com.eatsmap.module.group.MemberGroupService;
 import com.eatsmap.module.hashtag.Hashtag;
 import com.eatsmap.module.hashtag.HashtagService;
 import com.eatsmap.module.member.Member;
-import com.eatsmap.module.member.MemberService;
 import com.eatsmap.module.restaurant.Restaurant;
 import com.eatsmap.module.restaurant.RestaurantService;
-import com.eatsmap.module.review.dto.CreateReviewRequest;
-import com.eatsmap.module.review.dto.CreateReviewResponse;
-import com.eatsmap.module.review.dto.DeleteReviewResponse;
+import com.eatsmap.module.review.dto.*;
 import com.eatsmap.module.reviewHashtagHistory.ReviewHashtagHistoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +33,6 @@ import java.util.List;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final MemberService memberService;
     private final CategoryService categoryService;
     private final RestaurantService restaurantService;
     private final MemberGroupService memberGroupService;
@@ -74,7 +70,8 @@ public class ReviewService {
 //        파일 저장
         List<Fileinfo> reviewFiles = fileService.createReviewFiles(photos);
 
-        Review review = reviewRepository.save(Review.createReview(member, reviewFiles, restaurant, group, category, request));
+        Review review = Review.createReview(member, reviewFiles, restaurant, group, category, hashtags, request);
+        reviewRepository.save(review);
         reviewHashtagHistoryService.createHistory(review, hashtags);
 
         return CreateReviewResponse.createResponse(review);
@@ -83,11 +80,45 @@ public class ReviewService {
     @Transactional
     public DeleteReviewResponse deleteReview(Long reviewId, Member member) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(()-> new CommonException(ErrorCode.REVIEW_NOT_FOUND));
-        if (review.getMember().getId() != member.getId()) {
-            throw new CommonException(ErrorCode.ACCESS_DENIED);
-        }
+
+        if (!review.getMember().getId().equals(member.getId())) throw new CommonException(ErrorCode.ACCESS_DENIED);
+        if (review.isDeleted() == true) throw new CommonException(ErrorCode.REVIEW_IS_ALREADY_DELETED); //error message 안뜸 ※ 확인
+        
         review.deleteReview();
         return DeleteReviewResponse.createResponse(review);
     }
 
+    @Transactional
+    public CreateReviewResponse updateReview(UpdateReviewRequest request, List<MultipartFile> photos, Member member) {
+        return null;
+    }
+
+//    삭제되지 않은 모든 리뷰
+    public List<GetReviewResponse> getAllReviews() {
+        List<GetReviewResponse> reviewsResponses = new ArrayList<>();
+        List<Review> reviews = reviewRepository.findByDeleted(false);
+        for (Review review : reviews) {
+            List<Hashtag> hashtags = hashtagService.getHashtagByReview(review);
+            review.setHashtags(hashtags);
+            GetReviewResponse response = GetReviewResponse.createResponse(review);
+            reviewsResponses.add(response);
+        }
+        return reviewsResponses;
+    }
+
+//    1. PRIVACY -> PUBLIC OK
+//    2. MY FOLLOWINGS -> FOLLOW OK
+//    3. MY REVIEWS -> PRIVATE OK
+//    4. NOT DELETED
+//    public List<GetReviewResponse> getTimelineReviews() {
+//        List<GetReviewResponse> reviewsResponses = new ArrayList<>();
+//        List<Review> reviews = reviewRepository.findTimeline();
+//        for (Review review : reviews) {
+//            List<Hashtag> hashtags = hashtagService.getHashtagByReview(review);
+//            review.setHashtags(hashtags);
+//            GetReviewResponse response = GetReviewResponse.createResponse(review);
+//            reviewsResponses.add(response);
+//        }
+//        return reviewsResponses;
+//    }
 }

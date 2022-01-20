@@ -11,12 +11,14 @@ public class DeleteCategoryResponse {
 
     private String categoryCode;
     private String categoryName;
+    private boolean state;
     private boolean deleted;
 
     public static DeleteCategoryResponse createResponse(Category category) {
         return DeleteCategoryResponse.builder()
                 .categoryCode(category.getCategoryCode())
                 .categoryName(category.getCategoryName())
+                .state(category.isState())
                 .deleted(category.isDeleted())
                 .build();
     }

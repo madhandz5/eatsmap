@@ -3,6 +3,7 @@ package com.eatsmap.module.review;
 import com.eatsmap.infra.utils.file.Fileinfo;
 import com.eatsmap.module.category.Category;
 import com.eatsmap.module.group.MemberGroup;
+import com.eatsmap.module.hashtag.Hashtag;
 import com.eatsmap.module.member.Member;
 import com.eatsmap.module.restaurant.Restaurant;
 import com.eatsmap.module.review.dto.CreateReviewRequest;
@@ -51,14 +52,17 @@ public class Review {
     @OneToMany(mappedBy = "review")
     private List<ReviewHashtagHistory> reviewHashtagHistories = new ArrayList<>();
 
+    @Transient
+    private List<Hashtag> hashtags;
+
     @Enumerated(EnumType.STRING)
     private ReviewPrivacy privacy;
 
     private LocalDate visitDate;
     private LocalDateTime regDate;
-
-    private boolean deleted;
+    private LocalDateTime modifiedAt;
     private LocalDateTime delDate;
+    private boolean deleted;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
@@ -67,13 +71,14 @@ public class Review {
     @OneToMany(mappedBy = "review")
     private List<Fileinfo> reviewFiles = new ArrayList<>();
 
-    public static Review createReview(Member member, List<Fileinfo> reviewFiles, Restaurant restaurant, MemberGroup group, Category category, CreateReviewRequest request) {
+    public static Review createReview(Member member, List<Fileinfo> reviewFiles, Restaurant restaurant, MemberGroup group, Category category, List<Hashtag> hashtags, CreateReviewRequest request) {
         Review review = new Review();
         review.setMember(member);
         review.setReviewFiles(reviewFiles);
         review.setRestaurant(restaurant);
         if (group != null) review.setGroup(group);
         review.setCategory(category);
+        review.setHashtags(hashtags);
         review.taste = request.getTaste();
         review.service = request.getService();
         review.clean = request.getClean();
@@ -106,10 +111,14 @@ public class Review {
 
     public void setGroup(MemberGroup group) {
         this.group = group;
-//        group.setReview(this);
+//        group.getReviews().add(this);
     }
 
-    private void setReviewFiles(List<Fileinfo> reviewFiles) {
+    public void setHashtags(List<Hashtag> hashtags) {
+        this.hashtags = hashtags;
+    }
+
+    public void setReviewFiles(List<Fileinfo> reviewFiles) {
         this.reviewFiles = reviewFiles;
         for (Fileinfo reviewFile : reviewFiles) {
             reviewFile.setReview(this);

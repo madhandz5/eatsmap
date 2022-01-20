@@ -3,10 +3,14 @@ package com.eatsmap.module.hashtag;
 import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
 import com.eatsmap.module.hashtag.dto.*;
+import com.eatsmap.module.review.Review;
+import com.eatsmap.module.reviewHashtagHistory.ReviewHashtagHistory;
+import com.eatsmap.module.reviewHashtagHistory.ReviewHashtagHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,6 +19,7 @@ import java.util.List;
 public class HashtagService {
 
     private final HashtagRepository hashtagRepository;
+    private final ReviewHashtagHistoryService reviewHashtagHistoryService;
 
     @Transactional
     public CreateHashtagResponse createHashtag(CreateHashtagRequest request) {
@@ -40,4 +45,16 @@ public class HashtagService {
         return hashtagRepository.findByHashtagCode(hashtagCode);
     }
 
+    public Hashtag getHashtagByHashtagCodeNotDeleted(String hashtagCode) {
+        return hashtagRepository.findByHashtagCodeAndDeleted(hashtagCode, false);
+    }
+
+    public List<Hashtag> getHashtagByReview(Review review) {
+        List<ReviewHashtagHistory> reviewHashtagHistories = reviewHashtagHistoryService.getHistoryByReview(review);
+        List<Hashtag> hashtags = new ArrayList<>();
+        for (ReviewHashtagHistory reviewHashtagHistory : reviewHashtagHistories) {
+            hashtags.add(reviewHashtagHistory.getHashtag());
+        }
+        return hashtags;
+    }
 }

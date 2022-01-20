@@ -1,7 +1,10 @@
 package com.eatsmap.module.group.dto;
 
+import com.eatsmap.module.member.dto.MemberInfoDTO;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class MemberGroupDTO {
@@ -11,6 +14,7 @@ public class MemberGroupDTO {
     private Integer joinedGroupMemberCnt;
     private Integer totalGroupMemberCnt;
 
+    private List<MemberInfoDTO> groupMembers;
 
     @QueryProjection
     public MemberGroupDTO(Long id, String groupName, Integer totalGroupMemberCnt, Integer joinedGroupMemberCnt) {
@@ -19,4 +23,5 @@ public class MemberGroupDTO {
         this.totalGroupMemberCnt = totalGroupMemberCnt;
         this.joinedGroupMemberCnt = joinedGroupMemberCnt;
     }
+
 }

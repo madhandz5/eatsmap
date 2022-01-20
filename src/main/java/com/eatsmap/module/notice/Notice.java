@@ -28,7 +28,8 @@ public class Notice {   //추가, 수정, 삭제 => 관리자 권한
 
     private String link;
 
-    private boolean state;
+    private boolean state;      //사용자 보여주기
+    private boolean deleted;    //관리자 보여주기
 
     private LocalDateTime regDate;
 
@@ -41,6 +42,7 @@ public class Notice {   //추가, 수정, 삭제 => 관리자 권한
                 .text(noticeDTO.getText())
                 .link(noticeDTO.getLink())
                 .state(noticeDTO.isState())
+                .deleted(noticeDTO.isDeleted())
                 .regDate(LocalDateTime.now())
                 .build();
     }
@@ -51,6 +53,7 @@ public class Notice {   //추가, 수정, 삭제 => 관리자 권한
         this.text = noticeModifyDTO.getText();
         this.link = noticeModifyDTO.getLink();
         this.state = noticeModifyDTO.isState();
+        this.deleted = noticeModifyDTO.isDeleted();
         this.modifiedAt = LocalDateTime.now();
     }
 }

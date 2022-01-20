@@ -16,4 +16,6 @@ public class UpdateHashtagRequest {
     @NotEmpty
     private String hashtagName;
 
+    private boolean state;
+
 }

@@ -34,10 +34,13 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     implementation group: 'org.json', name: 'json', version: '20211205'
+
     //junit5
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-
+    //lombok-for-test
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 
 //    JWT
     implementation group: 'com.auth0', name: 'java-jwt', version: '3.18.2'

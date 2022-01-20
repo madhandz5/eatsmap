@@ -46,6 +46,7 @@ public enum ErrorCode {
     // REVIEW (1400)
     REVIEW_NOT_FOUND("1401", "리뷰가 존재하지 않습니다.", null),
     REVIEW_VISIT_DATE_IS_NOT_PAST("1402", "방문날짜는 미래일 수 없습니다.", null),
+    REVIEW_IS_ALREADY_DELETED("1403", "이미 삭제된 리뷰입니다.", null),
 
     CATEGORY_NOT_FOUND("1403", "카테고리가 존재하지 않습니다.", null),
     HASHTAG_NOT_FOUND("1404", "해시태그가 존재하지 않습니다.", null),

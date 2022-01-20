@@ -9,6 +9,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Getter
@@ -30,12 +31,15 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Review> reviews = new ArrayList<>();
 
+    private boolean state;
+
     private boolean deleted;
 
     public static Category createCategory(CreateCategoryRequest request) {
         return Category.builder()
                 .categoryCode(request.getCategoryCode())
                 .categoryName(request.getCategoryName())
+                .state(request.isState())
                 .deleted(false)
                 .build();
     }
@@ -52,5 +56,6 @@ public class Category {
     public void updateCategory(UpdateCategoryRequest request) {
         this.categoryCode = request.getCategoryCode();
         this.categoryName = request.getCategoryName();
+        this.state = request.isState();
     }
 }
