@@ -40,7 +40,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(CommonException.class)
     public final ResponseEntity<Object> handleCommonExceptions(CommonException ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(),ex.getErrorCode().getCode() + " : " + ex.getErrorCode().getErrorMsg(), request.getDescription(false));
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
 

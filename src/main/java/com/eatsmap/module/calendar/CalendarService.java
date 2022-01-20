@@ -4,6 +4,7 @@ package com.eatsmap.module.calendar;
 import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
 import com.eatsmap.module.calendar.dto.*;
+import com.eatsmap.module.calendarMemberHistory.CalendarMemberHistory;
 import com.eatsmap.module.calendarMemberHistory.CalendarMemberHistoryService;
 import com.eatsmap.module.member.Member;
 import lombok.RequiredArgsConstructor;
@@ -62,8 +63,10 @@ public class CalendarService {
     public ModifyCalendarResponse calendarUpdate(ModifyCalendarRequest request, Member member) {
         System.out.println("test");
         Calendar calendar = calendarRepository.findByIdAndCreatedBy(request.getCalendarId(),member.getId());
-
-        System.out.println(calendar.getCalendarMembers().toString());
+        for (CalendarMemberHistory cal:calendar.getCalendarMembers()) {
+            System.out.println(cal.getId());
+        }
+        //System.out.println(calendar.getCalendarMembers().toString());
 
         System.out.println("동작 확인");
         if (calendar.equals(null)){
@@ -88,6 +91,20 @@ public class CalendarService {
         System.out.println(" 확인");
         return ModifyCalendarResponse.createResponse(calendarRepository.save(calendar));
 
+
+    }
+
+    @Transactional
+    public DeleteCalendarResponse calendarDelete(Long calendarId, Member member) {
+        Calendar calendar = calendarRepository.findByIdAndCreatedBy(calendarId,member.getId());
+        if (calendar.equals(null)){
+            System.out.println("에러 확인");
+            throw new CommonException(ErrorCode.CALENDAR_NOT_FOUND);
+        }
+        calendarRepository.deleteById(calendarId);
+        calendarMemberHistoryService.deleteHistory(calendarId);
+
+        return DeleteCalendarResponse.createResponse(calendar);
 
     }
 }
