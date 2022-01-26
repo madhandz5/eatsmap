@@ -1,7 +1,7 @@
 package com.eatsmap.module.group.dto;
 
 import com.eatsmap.module.group.MemberGroup;
-import com.eatsmap.module.groupMemberHistory.MemberGroupHistory;
+import com.eatsmap.module.member.dto.MemberInfoDTO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -22,16 +22,16 @@ public class CreateMemberGroupResponse {
     private Integer totalGroupMemberCnt;
     private Integer joinedGroupMemberCnt;
 
-    private List<MemberGroupHistory> groupMembers;
+    private List<MemberInfoDTO> groupMembers;   //그룹원 정보
 
-    public static CreateMemberGroupResponse createResponse(MemberGroup group){
+    public static CreateMemberGroupResponse createResponse(MemberGroup group, List<MemberInfoDTO> memberInfoDTOList){
         return CreateMemberGroupResponse.builder()
                 .id(group.getId())
                 .createdBy(group.getCreatedBy())
                 .groupName(group.getGroupName())
                 .totalGroupMemberCnt(group.getTotalGroupMemberCnt())
                 .joinedGroupMemberCnt(group.getJoinedGroupMemberCnt())
-                .groupMembers(group.getGroupMembers())
+                .groupMembers(memberInfoDTOList)
                 .regDate(group.getRegDate())
                 .build();
     }

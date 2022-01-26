@@ -46,7 +46,6 @@ public class MemberService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final VerificationService verificationService;
     private final KakaoOAuth kakaoOAuth;
-    private final AppConfig config;
     private final EmailSender emailSender;
 
     @Transactional
