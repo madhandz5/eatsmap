@@ -1,9 +1,8 @@
 package com.eatsmap.module.member;
 
 import com.eatsmap.infra.common.code.ErrorCode;
-import com.eatsmap.infra.config.AppConfig;
 import com.eatsmap.infra.exception.CommonException;
-import com.eatsmap.infra.mail.EmailSender;
+import com.eatsmap.infra.mail.MailProps;
 import com.eatsmap.infra.utils.kakao.KakaoAccountInfoDto;
 import com.eatsmap.infra.utils.kakao.KakaoAuthDto;
 import com.eatsmap.infra.utils.kakao.KakaoOAuth;
@@ -12,6 +11,7 @@ import com.eatsmap.module.verification.Verification;
 import com.eatsmap.module.verification.VerificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,14 +27,18 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 
 @Slf4j
 @Service
@@ -46,7 +50,7 @@ public class MemberService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final VerificationService verificationService;
     private final KakaoOAuth kakaoOAuth;
-    private final EmailSender emailSender;
+    private final JavaMailSender mailSender;
 
     @Transactional
     public SignUpResponse signUp(SignUpRequest request) {
@@ -55,19 +59,18 @@ public class MemberService implements UserDetailsService {
         member.generatedEmailCheckToken();
         SignUpResponse memberResponse = SignUpResponse.createResponse(memberRepository.save(member));
 
-//        TODO : Send Mail(with nickname)
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-//
-//        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-//        body.add("mail-template", "join-auth-email");
-//        body.add("nickname", member.getNickname());
-//
-//        HttpEntity<MultiValueMap<String, String>> mailRequest = new HttpEntity(body, headers);
-//
-//        ResponseEntity<String> response = config.getCustomRestTemplate()
-//                .exchange(CommonCode.DOMAIN.getDesc() + "/mail" , HttpMethod.POST, mailRequest, String.class);
-//        emailSender.send(member.getEmail(), "[EAT'S MAP] 회원가입을 완료하세요");
+        MimeMessage message = mailSender.createMimeMessage();
+        try {
+            String content = "<h1>"+ member.getNickname() +"님 환영합니다.</h1>" +
+                            "<div><a href='http://localhost:8088/api/v1/account/verify/email" + member.getEmailCheckToken() +
+                            "' style=\"padding:20px; background-color:gold; font-weight:700; font-size:20px; outline:none; border:none; cursor:pointer; border-radius:10px; text-decoration:none; font-style:normal; color:#666; display: inline-block;\">잇츠맵 바로가기</a><div>";
+            message.setSubject("[EAT'S MAP] 회원가입을 완료하세요", "UTF-8");
+            message.setContent(content, "text/html; charset=utf-8");
+            message.setRecipients(Message.RecipientType.TO, member.getEmail());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        mailSender.send(message);
 
         return memberResponse;
     }

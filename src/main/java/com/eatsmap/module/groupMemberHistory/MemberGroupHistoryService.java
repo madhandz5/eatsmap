@@ -9,12 +9,14 @@ import com.eatsmap.module.group.dto.MemberGroupDTO;
 import com.eatsmap.module.member.Member;
 import com.eatsmap.module.member.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -34,15 +36,25 @@ public class MemberGroupHistoryService {
 
     //초대받은 유저 수락
     @Transactional
-    public JoinMemberToGroupResponse joinMemberToGroup(Member member, String groupId){
+    public JoinMemberToGroupResponse joinMemberToGroup(Member member, Long groupId){
 
         MemberGroup findGroup = getGroupById(groupId);
-        MemberGroupHistory memberGroupHistory = getGroupHistoryByMemberGroup(findGroup);
+        MemberGroupHistory memberGroupHistory = getHistoryByMemberAndGroup(member, findGroup);
+        log.info("find 히스토리: {}", memberGroupHistory.getId());
         //join
         memberGroupHistory.joinMemberToGroup(member, findGroup);
+        MemberGroupHistory savedHistory = memberGroupHistoryRepository.save(memberGroupHistory);
+
         //group_member_cnt ++
-        findGroup.joinMemberToGroup(memberGroupHistoryRepository.countByMemberGroup_Id(Long.parseLong(groupId)));
-        return JoinMemberToGroupResponse.createResponse(memberGroupHistoryRepository.save(memberGroupHistory));
+        findGroup.setJoinedGroupMemberCnt(memberGroupHistoryRepository.countByMemberGroupAndAcceptInvitationIsTrue(groupId));
+        memberGroupRepository.save(findGroup);
+        return JoinMemberToGroupResponse.createResponse(savedHistory);
+    }
+
+    private MemberGroupHistory getHistoryByMemberAndGroup(Member member, MemberGroup group) {
+        MemberGroupHistory memberGroupHistory = memberGroupHistoryRepository.findByMemberAndMemberGroup(member, group);
+        if(memberGroupHistory == null) throw new CommonException(ErrorCode.GROUP_NOT_FOUND);
+        return memberGroupHistory;
     }
 
     private MemberGroupHistory getGroupHistoryByMemberGroup(MemberGroup group) {
@@ -51,8 +63,8 @@ public class MemberGroupHistoryService {
         return memberGroupHistory;
     }
 
-    private MemberGroup getGroupById(String groupId) {
-        Optional<MemberGroup> memberGroup = memberGroupRepository.findById(Long.parseLong(groupId));
+    private MemberGroup getGroupById(Long groupId) {
+        Optional<MemberGroup> memberGroup = memberGroupRepository.findById(groupId);
         if(memberGroup.isEmpty()) throw new CommonException(ErrorCode.GROUP_NOT_FOUND);
 
         return memberGroup.get();
@@ -63,6 +75,4 @@ public class MemberGroupHistoryService {
         //MemberGroupHistory와 MemberGroup 조인 -> MemberGroup정보 가져오기
         return memberGroupRepository.getAllMemberGroup(member);
     }
-
-
 }

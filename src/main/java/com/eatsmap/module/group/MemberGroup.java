@@ -52,7 +52,7 @@ public class MemberGroup {
                 .build();
     }
 
-    public void joinMemberToGroup(int i) {
+    public void setJoinedGroupMemberCnt(int i) {
         this.joinedGroupMemberCnt = i;
     }
 }

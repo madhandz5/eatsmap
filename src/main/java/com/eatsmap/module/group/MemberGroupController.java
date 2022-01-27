@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class MemberGroupController {
     //초대된 유저 수락
     @ApiOperation(value = "그룹원 그룹 가입", notes = "그룹원으로 초대된 유저 수락 및 그룹 가입")
     @GetMapping (path = "/join/{groupId}")
-    public ResponseEntity<CommonResponse> joinMemberToGroup(@CurrentMember Member member, @PathVariable String groupId){
+    public ResponseEntity<CommonResponse> joinMemberToGroup(@ApiIgnore @CurrentMember Member member, @PathVariable Long groupId){
         JoinMemberToGroupResponse data = memberGroupHistoryService.joinMemberToGroup(member, groupId);
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

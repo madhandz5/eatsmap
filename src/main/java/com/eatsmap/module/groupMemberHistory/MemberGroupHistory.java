@@ -41,10 +41,10 @@ public class MemberGroupHistory {
     }
 
     public void joinMemberToGroup(Member member, MemberGroup memberGroup){
-        this.member = member;
+//        this.member = member;
         member.getGroups().add(this);
 
-        this.memberGroup = memberGroup;
+//        this.memberGroup = memberGroup;
         memberGroup.getGroupMembers().add(this);
 
         this.joinedAt = LocalDateTime.now();
