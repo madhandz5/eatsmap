@@ -10,7 +10,7 @@ public interface MemberGroupHistoryRepository extends JpaRepository<MemberGroupH
 
     MemberGroupHistory findByMemberGroup(MemberGroup findGroup);
 
-    int countByMemberGroupAndAcceptInvitationIsTrue(Long id);
+    int countByMemberGroupAndAcceptInvitation(MemberGroup memberGroup, Boolean b);
 
     MemberGroupHistory findByMemberAndMemberGroup(Member member, MemberGroup group);
 }

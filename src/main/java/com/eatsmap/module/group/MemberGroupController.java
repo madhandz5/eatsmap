@@ -26,7 +26,7 @@ public class MemberGroupController {
 
     @ApiOperation(value = "그룹 최초 생성")
     @PostMapping(path = "/create")
-    public ResponseEntity<CommonResponse> createMemberGroup(@RequestBody CreateMemberGroupRequest request, @CurrentMember Member member){
+    public ResponseEntity<CommonResponse> createMemberGroup(@RequestBody CreateMemberGroupRequest request, @ApiIgnore @CurrentMember Member member){
         CreateMemberGroupResponse data = memberGroupService.createMemberGroup(request, member);
         if(data == null){
             CommonResponse response = CommonResponse.createResponse(false, null);

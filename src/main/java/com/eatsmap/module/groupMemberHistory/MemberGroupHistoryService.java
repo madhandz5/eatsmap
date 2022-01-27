@@ -44,9 +44,11 @@ public class MemberGroupHistoryService {
         //join
         memberGroupHistory.joinMemberToGroup(member, findGroup);
         MemberGroupHistory savedHistory = memberGroupHistoryRepository.save(memberGroupHistory);
-
+        log.info("join 히스토리: {}", savedHistory.isAcceptInvitation());
         //group_member_cnt ++
-        findGroup.setJoinedGroupMemberCnt(memberGroupHistoryRepository.countByMemberGroupAndAcceptInvitationIsTrue(groupId));
+        int cnt = memberGroupHistoryRepository.countByMemberGroupAndAcceptInvitation(findGroup, true);
+        log.info("초대 수락cnt:{}", cnt);
+        findGroup.setJoinedGroupMemberCnt(cnt);
         memberGroupRepository.save(findGroup);
         return JoinMemberToGroupResponse.createResponse(savedHistory);
     }
