@@ -61,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             new AntPathRequestMatcher("/api/v1/follow/{toMemberId}"),
             new AntPathRequestMatcher("/api/v1/calendar/schedule/create"),
             new AntPathRequestMatcher("/api/v1/calendar/schedule/modify"),
+            new AntPathRequestMatcher("/api/v1/calendar/schedule/delete/{idx}"),
             new AntPathRequestMatcher("/api/v1/calendar/")
 
     );

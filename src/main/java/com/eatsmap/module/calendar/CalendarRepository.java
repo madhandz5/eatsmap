@@ -16,5 +16,5 @@ public interface CalendarRepository extends JpaRepository <Calendar, Long>, Cale
     Calendar findByIdAndCreatedBy(Long id, Long createdBy);
 
 
-
+    void deleteById(Long calendarId);
 }

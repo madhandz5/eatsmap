@@ -14,4 +14,5 @@ public interface MemberGroupRepositoryExtension {
 
     List<Tuple> getAllGroupMembers();
     List<Tuple> getAllGroup();
+
 }
