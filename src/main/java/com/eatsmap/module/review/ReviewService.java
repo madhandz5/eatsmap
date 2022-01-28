@@ -80,17 +80,50 @@ public class ReviewService {
     @Transactional
     public DeleteReviewResponse deleteReview(Long reviewId, Member member) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(()-> new CommonException(ErrorCode.REVIEW_NOT_FOUND));
-
         if (!review.getMember().getId().equals(member.getId())) throw new CommonException(ErrorCode.ACCESS_DENIED);
-        if (review.isDeleted() == true) throw new CommonException(ErrorCode.REVIEW_IS_ALREADY_DELETED); //error message 안뜸 ※ 확인
-        
+
         review.deleteReview();
         return DeleteReviewResponse.createResponse(review);
     }
 
     @Transactional
-    public CreateReviewResponse updateReview(UpdateReviewRequest request, List<MultipartFile> photos, Member member) {
-        return null;
+    public UpdateReviewResponse updateReview(UpdateReviewRequest request, List<MultipartFile> photos, Member member) {
+        Review review = reviewRepository.findById(Long.parseLong(request.getId())).orElseThrow(()-> new CommonException(ErrorCode.REVIEW_NOT_FOUND));
+        if (!review.getMember().getId().equals(member.getId())) throw new CommonException(ErrorCode.ACCESS_DENIED);
+
+//        방문날짜가 오늘 이후이면 예외처리
+        if (LocalDate.parse(request.getVisitDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")).isAfter(LocalDate.now())) {
+            throw new CommonException(ErrorCode.REVIEW_VISIT_DATE_IS_NOT_PAST);
+        }
+//        음식점이 없으면 새로 생성
+        Restaurant restaurant = restaurantService.getRestaurant(request.getResName(), request.getAddress());
+        if (restaurant == null) {
+            restaurant = restaurantService.createNewRestaurant(request.getResName(), request.getAddress(), request.getX(), request.getY());
+        }
+//        카테고리 코드가 없으면 예외처리
+        Category category = categoryService.getCategoryCode(request.getCategory());
+        if (category == null) {
+            throw new CommonException(ErrorCode.CATEGORY_NOT_FOUND);
+        }
+//        해시태그가 없으면 예외처리
+        List<Hashtag> hashtags = new ArrayList<>();
+        for (String hashtag : request.getHashtag()) {
+            Hashtag getHashtag = hashtagService.getHashtagByHashtagCode(hashtag);
+            if (getHashtag == null) {
+                throw new CommonException(ErrorCode.HASHTAG_NOT_FOUND);
+            }
+            hashtags.add(getHashtag);
+        }
+//        그룹이 내 피드라면 null 입력
+        MemberGroup group = memberGroupService.getMemberGroup(request.getGroupId());
+//        기존 파일 삭제
+        fileService.deleteReviewFiles(review.getReviewFiles());
+//        새로운 파일 저장
+        List<Fileinfo> reviewFiles = fileService.createReviewFiles(photos);
+        System.out.println("확인6");
+
+        review.updateReview(reviewFiles, restaurant, group, category, hashtags, request);
+        return UpdateReviewResponse.createResponse(review);
     }
 
 //    삭제되지 않은 모든 리뷰
@@ -100,6 +133,8 @@ public class ReviewService {
         for (Review review : reviews) {
             List<Hashtag> hashtags = hashtagService.getHashtagByReview(review);
             review.setHashtags(hashtags);
+            List<Fileinfo> fileinfos = fileService.getFileInfos(review);
+            review.setReviewFiles(fileinfos);
             GetReviewResponse response = GetReviewResponse.createResponse(review);
             reviewsResponses.add(response);
         }
@@ -110,15 +145,15 @@ public class ReviewService {
 //    2. MY FOLLOWINGS -> FOLLOW OK
 //    3. MY REVIEWS -> PRIVATE OK
 //    4. NOT DELETED
-//    public List<GetReviewResponse> getTimelineReviews() {
-//        List<GetReviewResponse> reviewsResponses = new ArrayList<>();
-//        List<Review> reviews = reviewRepository.findTimeline();
-//        for (Review review : reviews) {
-//            List<Hashtag> hashtags = hashtagService.getHashtagByReview(review);
-//            review.setHashtags(hashtags);
-//            GetReviewResponse response = GetReviewResponse.createResponse(review);
-//            reviewsResponses.add(response);
-//        }
-//        return reviewsResponses;
-//    }
+    public List<GetReviewResponse> getTimelineReviews(Member member) {
+        List<GetReviewResponse> reviewsResponses = new ArrayList<>();
+        List<Review> reviews = reviewRepository.findTimeline(member);
+        for (Review review : reviews) {
+            List<Hashtag> hashtags = hashtagService.getHashtagByReview(review);
+            review.setHashtags(hashtags);
+            GetReviewResponse response = GetReviewResponse.createResponse(review);
+            reviewsResponses.add(response);
+        }
+        return reviewsResponses;
+    }
 }

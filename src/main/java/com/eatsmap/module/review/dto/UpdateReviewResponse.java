@@ -2,7 +2,6 @@ package com.eatsmap.module.review.dto;
 
 import com.eatsmap.infra.utils.file.Fileinfo;
 import com.eatsmap.module.hashtag.Hashtag;
-import com.eatsmap.module.member.Member;
 import com.eatsmap.module.review.Review;
 import com.eatsmap.module.review.ReviewPrivacy;
 import lombok.Data;
@@ -15,11 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class GetReviewResponse {
-
-    private Long memberId;
+public class UpdateReviewResponse {
 
     private String category;
+
     private Integer taste;
     private Integer clean;
     private Integer service;
@@ -32,26 +30,26 @@ public class GetReviewResponse {
     private LocalDate visitDate;
     private LocalDateTime regDate;
 
-    public static GetReviewResponse createResponse(Review review) {
-        GetReviewResponse createReviewResponse = new GetReviewResponse();
-        createReviewResponse.category = review.getCategory().getCategoryName();
-        createReviewResponse.memberId = review.getMember().getId();
-        createReviewResponse.taste = review.getTaste();
-        createReviewResponse.clean = review.getClean();
-        createReviewResponse.service = review.getService();
-        createReviewResponse.content = review.getContent();
-        createReviewResponse.privacy = review.getPrivacy();
-        createReviewResponse.visitDate = review.getVisitDate();
-        createReviewResponse.regDate = review.getRegDate();
-        for (Hashtag hashtag : review.getHashtags()) {
-            createReviewResponse.hashtagNames.add(hashtag.getHashtagName());
+    public static UpdateReviewResponse createResponse(Review review) {
+        UpdateReviewResponse updateReviewResponse = new UpdateReviewResponse();
+        updateReviewResponse.category = review.getCategory().getCategoryName();
+        updateReviewResponse.taste = review.getTaste();
+        updateReviewResponse.clean = review.getClean();
+        updateReviewResponse.service = review.getService();
+        updateReviewResponse.content = review.getContent();
+        updateReviewResponse.privacy = review.getPrivacy();
+        updateReviewResponse.visitDate = review.getVisitDate();
+        updateReviewResponse.regDate = review.getRegDate();
+        List<Hashtag> hashtagList = review.getHashtags();
+        for (Hashtag hashtag : hashtagList) {
+            updateReviewResponse.hashtagNames.add(hashtag.getHashtagName());
         }
         Map<String, String> fileInfo = new HashMap<>();
         for (Fileinfo file : review.getReviewFiles()) {
             fileInfo.put("savePath", file.getSavePath());
             fileInfo.put("renameFileName", file.getRenameFileName());
-            createReviewResponse.fileInfos.add(fileInfo);
+            updateReviewResponse.fileInfos.add(fileInfo);
         }
-        return createReviewResponse;
+        return updateReviewResponse;
     }
 }

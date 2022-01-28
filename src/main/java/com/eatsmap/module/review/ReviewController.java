@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,9 +35,9 @@ public class ReviewController {
 
     @PutMapping(path = "/update")
     public ResponseEntity<CommonResponse> updateReview(@RequestPart @Valid UpdateReviewRequest request,
-                                                       @RequestPart List<MultipartFile> photos,
+                                                       @RequestPart @Nullable List<MultipartFile> photos,
                                                        @CurrentMember Member member) {
-        CreateReviewResponse data = reviewService.updateReview(request, photos, member);
+        UpdateReviewResponse data = reviewService.updateReview(request, photos, member);
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -51,6 +52,13 @@ public class ReviewController {
     @GetMapping("/find/allReviews")
     public ResponseEntity<CommonResponse> getAllReviews() {
         List<GetReviewResponse> data = reviewService.getAllReviews();
+        CommonResponse response = CommonResponse.createResponse(true, data);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/timeline")
+    public ResponseEntity<CommonResponse> getTimeline(@CurrentMember Member member) {
+        List<GetReviewResponse> data = reviewService.getTimelineReviews(member);
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

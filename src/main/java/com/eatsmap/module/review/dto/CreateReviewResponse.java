@@ -1,5 +1,6 @@
 package com.eatsmap.module.review.dto;
 
+import com.eatsmap.infra.utils.file.Fileinfo;
 import com.eatsmap.module.hashtag.Hashtag;
 import com.eatsmap.module.review.Review;
 import com.eatsmap.module.review.ReviewPrivacy;
@@ -8,7 +9,9 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class CreateReviewResponse {
@@ -21,6 +24,7 @@ public class CreateReviewResponse {
     private String content;
 
     private List<String> hashtagNames = new ArrayList<>();
+    private List<Map<String, String>> fileInfos = new ArrayList<>();
 
     private ReviewPrivacy privacy;
     private LocalDate visitDate;
@@ -39,6 +43,12 @@ public class CreateReviewResponse {
         List<Hashtag> hashtagList = review.getHashtags();
         for (Hashtag hashtag : hashtagList) {
             createReviewResponse.hashtagNames.add(hashtag.getHashtagName());
+        }
+        Map<String, String> fileInfo = new HashMap<>();
+        for (Fileinfo file : review.getReviewFiles()) {
+            fileInfo.put("savePath", file.getSavePath());
+            fileInfo.put("renameFileName", file.getRenameFileName());
+            createReviewResponse.fileInfos.add(fileInfo);
         }
         return createReviewResponse;
     }

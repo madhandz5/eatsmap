@@ -10,6 +10,9 @@ import java.util.List;
 public class UpdateReviewRequest {
 
     @NotNull
+    private String id;
+
+    @NotNull
     @Max(5) @Min(1)
     private Integer taste;
 

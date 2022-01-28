@@ -9,6 +9,5 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewRepositoryExtension {
 
     List<Review> findByDeleted(boolean deleted);
-
-//    List<Review> findTimeline();
 }
+

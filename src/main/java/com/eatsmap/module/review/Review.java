@@ -7,6 +7,7 @@ import com.eatsmap.module.hashtag.Hashtag;
 import com.eatsmap.module.member.Member;
 import com.eatsmap.module.restaurant.Restaurant;
 import com.eatsmap.module.review.dto.CreateReviewRequest;
+import com.eatsmap.module.review.dto.UpdateReviewRequest;
 import com.eatsmap.module.reviewHashtagHistory.ReviewHashtagHistory;
 import lombok.*;
 
@@ -123,5 +124,19 @@ public class Review {
         for (Fileinfo reviewFile : reviewFiles) {
             reviewFile.setReview(this);
         }
+    }
+
+    public void updateReview(List<Fileinfo> reviewFiles, Restaurant restaurant, MemberGroup group, Category category, List<Hashtag> hashtags, UpdateReviewRequest request) {
+        this.setReviewFiles(reviewFiles);
+        this.setRestaurant(restaurant);
+        if (group != null) this.setGroup(group);
+        this.setCategory(category);
+        this.setHashtags(hashtags);
+        this.taste = request.getTaste();
+        this.service = request.getService();
+        this.clean = request.getClean();
+        this.content = request.getContent();
+        this.visitDate = LocalDate.parse(request.getVisitDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        this.privacy = ReviewPrivacy.valueOf(request.getPrivacy());
     }
 }

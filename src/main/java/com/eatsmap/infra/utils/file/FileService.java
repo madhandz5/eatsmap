@@ -30,4 +30,14 @@ public class FileService {
         return reviewFiles;
     }
 
+    @Transactional
+    public void deleteReviewFiles(List<Fileinfo> reviewFiles) {
+        for (Fileinfo reviewFile : reviewFiles) {
+            reviewFile.setDeleted(true);
+        }
+    }
+
+    public List<Fileinfo> getFileInfos(Review review) {
+        return fileRepository.getByReviewAndDeleted(review, false);
+    }
 }

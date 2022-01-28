@@ -2,12 +2,15 @@ package com.eatsmap.infra.utils.file;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.UUID;
 
 import com.eatsmap.infra.common.code.CommonCode;
 import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 import org.springframework.web.multipart.MultipartFile;
 
 public class FileUtil {
@@ -46,7 +49,7 @@ public class FileUtil {
 		
 		return savePath;
 	}
-	
+
 	private Fileinfo createFileDTO(MultipartFile mf) {
 		Fileinfo fileDTO = new Fileinfo();
 		String originFileName = mf.getOriginalFilename();
@@ -61,6 +64,7 @@ public class FileUtil {
 		fileDTO.setOriginFileName(originFileName);
 		fileDTO.setRenameFileName(renameFileName);
 		fileDTO.setSavePath(savePath);
+		fileDTO.setRegDate(LocalDate.now());
 		return fileDTO;
 	}
 
