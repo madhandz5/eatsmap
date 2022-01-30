@@ -2,7 +2,6 @@ package com.eatsmap.module.member;
 
 import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
-import com.eatsmap.infra.mail.MailProps;
 import com.eatsmap.infra.utils.kakao.KakaoAccountInfoDto;
 import com.eatsmap.infra.utils.kakao.KakaoAuthDto;
 import com.eatsmap.infra.utils.kakao.KakaoOAuth;
@@ -29,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +36,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -88,14 +86,10 @@ public class MemberService implements UserDetailsService {
     }
 
     @Transactional
-    public void loginByPassword(LoginRequest request) {
+    public void loginByPassword(LoginRequest request, String token) {
         Member member = getUserValidateByEmail(request.getEmail());
-
-//        Check email Not Verified
-        if (checkEmailVerified(request.getEmail())) {
-            throw new CommonException(ErrorCode.VERIFICATION_NOT_FOUND);
-        }
         login(member, member.getPassword());
+        saveVerification(token, member);
     }
 
     @Transactional
@@ -199,6 +193,8 @@ public class MemberService implements UserDetailsService {
         return new MemberAccount(member);
     }
 
+    //@CurrentMember 사용x, HttpServletRequest 객체 직접 활용
+    @Transactional
     public void logout(HttpServletRequest request, HttpServletResponse response) {
 //        1. Get Current Auth
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -215,6 +211,9 @@ public class MemberService implements UserDetailsService {
 //        3. Logout.
         new SecurityContextLogoutHandler().logout(request, response, authentication);
 
+//        유진. verification 만료?
+        checkVerificationKey(request.getHeader("Authorization").replace("Bearer","").trim(), principal.getUsername());
+
 //        3-1. Kakao Logout.
 
         if (memberType.equals(MemberType.KAKAO)) {
@@ -222,23 +221,23 @@ public class MemberService implements UserDetailsService {
         }
     }
 
-    @Transactional
     public void checkVerificationKey(String key, String email) {
-        Member member = getMember(email);
+        Member member = getUserValidateByEmail(email);
 
 //        현재 Member의 확인되지 않은 Verification 필터
-        Optional<Verification> verify = member.getVerificationGroup().stream().filter(verification -> !verification.isChecked()).findFirst();
+//        Optional<Verification> verify = member.getVerificationGroup().stream().filter(verification -> !verification.isChecked()).findFirst();
+        List<Verification> verify = member.getVerificationGroup().stream().filter(verification -> !verification.isChecked()).collect(Collectors.toList());
 
 //        Verification 존재 및 일치 여부 확인
         if (verify.isEmpty()) {
             throw new CommonException(ErrorCode.VERIFICATION_NOT_FOUND);
-        } else if (!key.equals(verify.get().getSecretKey())) {
+        }
+        if(!verify.stream().anyMatch(e -> key.equals(e.getSecretKey()))){
             throw new CommonException(ErrorCode.VERIFICATION_NOT_CORRECT);
         }
 
 //        Expire verification Key
         verificationService.terminateVerification(key);
-
 
     }
 
@@ -249,10 +248,8 @@ public class MemberService implements UserDetailsService {
         return ExitResponse.createResponse(memberRepository.save(findMember));
     }
 
-    @Transactional
-    public void saveVerification(String token, LoginRequest request) {    //유진 01/03
+    public void saveVerification(String token, Member member) {    //유진 01/03
 //        TODO: checked false 의미파악 및 해결
-        Member member = getUserValidateByEmail(request.getEmail());
         verificationService.saveNewVerification(token, member);
     }
 

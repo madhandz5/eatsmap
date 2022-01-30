@@ -20,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -94,9 +95,8 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
         String token = jwtUtil.encodeJwt(request.getEmail());
-        memberService.saveVerification(token, request);
 
-        memberService.loginByPassword(request);       //verification 등록 후 활성화
+        memberService.loginByPassword(request, token);       //verification 등록 후 활성화
 
         CommonResponse response = CommonResponse.createResponse(true, token);
         return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -120,7 +120,7 @@ public class MemberController {
 
     @ApiOperation(value = "로그아웃")
     @GetMapping("/logout")
-    public ResponseEntity logout(@CurrentMember Member member, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity logout(@ApiIgnore @CurrentMember Member member, HttpServletRequest request, HttpServletResponse response) {
         memberService.logout(request, response);
         CommonResponse success = CommonResponse.createResponse(true, "success");
         return ResponseEntity.status(HttpStatus.OK).body(success);

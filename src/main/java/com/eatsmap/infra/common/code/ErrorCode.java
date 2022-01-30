@@ -56,6 +56,7 @@ public enum ErrorCode {
 
     // FOLLOW (1600)
     FOLLOW_NOT_FOUND("1601", "잇친 정보가 존재하지 않습니다.", null),
+    ALREADY_EXISTED_FOLLOW("1602", "이미 팔로우한 유저입니다.", null),
 
     // NOTICE (1700)
     NOTICE_NOT_FOUND("1701", "요청하신 알림은 존재하지 않습니다.", null),
