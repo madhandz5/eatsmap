@@ -6,6 +6,7 @@ import com.eatsmap.module.group.MemberGroup;
 import com.eatsmap.module.group.MemberGroupRepository;
 import com.eatsmap.module.group.dto.JoinMemberToGroupResponse;
 import com.eatsmap.module.group.dto.MemberGroupDTO;
+import com.eatsmap.module.group.dto.SimpleMemberGroupDTO;
 import com.eatsmap.module.member.Member;
 import com.eatsmap.module.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -72,9 +73,8 @@ public class MemberGroupHistoryService {
         return memberGroup.get();
     }
 
-    public List<MemberGroupDTO> getAllMemberGroup(Member member){
-
-        //MemberGroupHistory와 MemberGroup 조인 -> MemberGroup정보 가져오기
+    public List<SimpleMemberGroupDTO> getAllMemberGroup(Member member){
+//      TODO: 그룹원 list 매핑
         return memberGroupRepository.getAllMemberGroup(member);
     }
 }

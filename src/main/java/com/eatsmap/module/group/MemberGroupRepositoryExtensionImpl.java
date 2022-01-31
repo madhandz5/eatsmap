@@ -1,7 +1,8 @@
 package com.eatsmap.module.group;
 
 import com.eatsmap.module.group.dto.MemberGroupDTO;
-import com.eatsmap.module.group.dto.QMemberGroupDTO;
+import com.eatsmap.module.group.dto.QSimpleMemberGroupDTO;
+import com.eatsmap.module.group.dto.SimpleMemberGroupDTO;
 import com.eatsmap.module.member.Member;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -22,16 +23,20 @@ public class MemberGroupRepositoryExtensionImpl extends QuerydslRepositorySuppor
     }
 
     @Override
-    public List<MemberGroupDTO> getAllMemberGroup(Member member){
+    public List<SimpleMemberGroupDTO> getAllMemberGroup(Member member){
         return queryFactory
-                .select(new QMemberGroupDTO(memberGroup.id, memberGroup.groupName, memberGroup.totalGroupMemberCnt, memberGroup.joinedGroupMemberCnt))
+                .select(new QSimpleMemberGroupDTO(memberGroup.id,
+                                            memberGroup.createdBy,
+                                            memberGroup.groupName,
+                                            memberGroup.regDate,
+                                            memberGroup.totalGroupMemberCnt,
+                                            memberGroup.joinedGroupMemberCnt))
                 .from(memberGroupHistory)
                 .join(memberGroupHistory.memberGroup, memberGroup)
                 .where(memberGroupHistory.member.id.eq(member.getId()))
                 .fetch();
     }
 
-    //
     @Override
     public List<String> getAllGroupMemberNickname() {
         return queryFactory

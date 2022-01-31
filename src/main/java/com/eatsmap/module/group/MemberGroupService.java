@@ -3,7 +3,7 @@ package com.eatsmap.module.group;
 import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
 import com.eatsmap.module.group.dto.CreateMemberGroupRequest;
-import com.eatsmap.module.group.dto.CreateMemberGroupResponse;
+import com.eatsmap.module.group.dto.MemberGroupDTO;
 import com.eatsmap.module.groupMemberHistory.MemberGroupHistory;
 import com.eatsmap.module.groupMemberHistory.MemberGroupHistoryService;
 import com.eatsmap.module.member.Member;
@@ -36,7 +36,7 @@ public class MemberGroupService {
 
     //그룹생성
     @Transactional
-    public CreateMemberGroupResponse createMemberGroup(CreateMemberGroupRequest request, Member member) {
+    public MemberGroupDTO createMemberGroup(CreateMemberGroupRequest request, Member member) {
         MemberGroup group = MemberGroup.createMemberGroup(request, member);
         Notice notice = noticeRepository.findNoticeByNoticeCode("NG");
 
@@ -55,7 +55,24 @@ public class MemberGroupService {
             MemberNoticeHistory memberNotice = MemberNoticeHistory.createMemberNoticeHistory(groupMemberId, notice);
             MemberNoticeHistory saveHistory = memberNoticeHistoryRepository.save(memberNotice);
         }
-        return CreateMemberGroupResponse.createResponse(memberGroupRepository.save(group), memberInfoDTOList);
+        return MemberGroupDTO.createResponse(memberGroupRepository.save(group), memberInfoDTOList);
+    }
+
+    //내가 그룹장인 그룹 조회
+    public List<MemberGroupDTO> getAllMyGroup(Member member){
+        List<MemberGroup> myGroups = memberGroupRepository.findAllByCreatedBy(member.getId());
+        List<MemberInfoDTO> memberInfoDTOList = new ArrayList<>();
+        List<MemberGroupDTO> responses = new ArrayList<>();
+
+        if(myGroups.size() > 0){
+            for (MemberGroup myGroup : myGroups) {
+                myGroup.getGroupMembers().forEach(e -> {
+                    memberInfoDTOList.add(MemberInfoDTO.mapperToMemberInfo(e.getMember()));
+                });
+                responses.add(MemberGroupDTO.createResponse(myGroup, memberInfoDTOList));
+            }
+        }
+        return responses;
     }
 
     public MemberGroup getMemberGroup(String groupId) {
