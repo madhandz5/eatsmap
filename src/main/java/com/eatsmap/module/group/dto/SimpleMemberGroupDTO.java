@@ -2,9 +2,11 @@ package com.eatsmap.module.group.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Getter
 public class SimpleMemberGroupDTO {
 
     private Long id;
@@ -13,6 +15,7 @@ public class SimpleMemberGroupDTO {
     private String groupName;
     private LocalDateTime regDate;
 
+    private Integer totalGroupMemberCnt;
     private Integer joinedGroupMemberCnt;
 
 
@@ -22,6 +25,7 @@ public class SimpleMemberGroupDTO {
         this.createdBy = createdBy;
         this.groupName = groupName;
         this.regDate = regDate;
+        this.totalGroupMemberCnt = totalGroupMemberCnt;
         this.joinedGroupMemberCnt = joinedGroupMemberCnt;
     }
 }

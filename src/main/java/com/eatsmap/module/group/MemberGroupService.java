@@ -4,6 +4,7 @@ import com.eatsmap.infra.common.code.ErrorCode;
 import com.eatsmap.infra.exception.CommonException;
 import com.eatsmap.module.group.dto.CreateMemberGroupRequest;
 import com.eatsmap.module.group.dto.MemberGroupDTO;
+import com.eatsmap.module.group.dto.SimpleMemberGroupDTO;
 import com.eatsmap.module.groupMemberHistory.MemberGroupHistory;
 import com.eatsmap.module.groupMemberHistory.MemberGroupHistoryService;
 import com.eatsmap.module.member.Member;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -59,18 +61,34 @@ public class MemberGroupService {
     }
 
     //내가 그룹장인 그룹 조회
-    public List<MemberGroupDTO> getAllMyGroup(Member member){
-        List<MemberGroup> myGroups = memberGroupRepository.findAllByCreatedBy(member.getId());
+    public List<MemberGroupDTO> getAllCreatingGroup(Member member){
         List<MemberInfoDTO> memberInfoDTOList = new ArrayList<>();
         List<MemberGroupDTO> responses = new ArrayList<>();
+        List<MemberGroup> myGroups = memberGroupRepository.findAllByCreatedBy(member.getId());
+        if(myGroups.isEmpty()) throw new CommonException(ErrorCode.GROUP_NOT_FOUND);
 
-        if(myGroups.size() > 0){
-            for (MemberGroup myGroup : myGroups) {
-                myGroup.getGroupMembers().forEach(e -> {
-                    memberInfoDTOList.add(MemberInfoDTO.mapperToMemberInfo(e.getMember()));
-                });
-                responses.add(MemberGroupDTO.createResponse(myGroup, memberInfoDTOList));
-            }
+        for (MemberGroup myGroup : myGroups) {
+            myGroup.getGroupMembers().forEach(e ->
+                memberInfoDTOList.add(MemberInfoDTO.mapperToMemberInfo(e.getMember()))
+            );
+            responses.add(MemberGroupDTO.createResponse(myGroup, memberInfoDTOList));
+        }
+        return responses;
+    }
+
+    //내가 그룹원인 그룹 조회
+    public List<MemberGroupDTO> getAllInvitedGroup(Member member) {
+        List<MemberGroupDTO> responses = new ArrayList<>();
+        List<SimpleMemberGroupDTO> dtoList = memberGroupRepository.getAllInvitedMemberGroup(member);
+        if(dtoList.isEmpty()) throw new CommonException(ErrorCode.GROUP_NOT_FOUND);
+
+        for (SimpleMemberGroupDTO dto : dtoList) {
+            List<MemberInfoDTO> memberInfoDTOList = new ArrayList<>();
+            memberGroupRepository.findById(dto.getId()).get()
+                    .getGroupMembers()
+                    .forEach(e -> memberInfoDTOList.add(MemberInfoDTO.mapperToMemberInfo(e.getMember())));
+
+            responses.add(MemberGroupDTO.createResponse(dto, memberInfoDTOList));
         }
         return responses;
     }
@@ -79,5 +97,4 @@ public class MemberGroupService {
         if(groupId.equals("my")) return null;
         return memberGroupRepository.findById(Long.parseLong(groupId)).orElseThrow(() -> new CommonException(ErrorCode.GROUP_NOT_FOUND));
     }
-
 }

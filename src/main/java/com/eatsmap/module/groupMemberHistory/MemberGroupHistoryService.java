@@ -73,8 +73,4 @@ public class MemberGroupHistoryService {
         return memberGroup.get();
     }
 
-    public List<SimpleMemberGroupDTO> getAllMemberGroup(Member member){
-//      TODO: 그룹원 list 매핑
-        return memberGroupRepository.getAllMemberGroup(member);
-    }
 }

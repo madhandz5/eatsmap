@@ -23,7 +23,7 @@ public class MemberGroupRepositoryExtensionImpl extends QuerydslRepositorySuppor
     }
 
     @Override
-    public List<SimpleMemberGroupDTO> getAllMemberGroup(Member member){
+    public List<SimpleMemberGroupDTO> getAllInvitedMemberGroup(Member member){  //그룹원으로서 내그룹 조회
         return queryFactory
                 .select(new QSimpleMemberGroupDTO(memberGroup.id,
                                             memberGroup.createdBy,
@@ -31,6 +31,7 @@ public class MemberGroupRepositoryExtensionImpl extends QuerydslRepositorySuppor
                                             memberGroup.regDate,
                                             memberGroup.totalGroupMemberCnt,
                                             memberGroup.joinedGroupMemberCnt))
+                .distinct()
                 .from(memberGroupHistory)
                 .join(memberGroupHistory.memberGroup, memberGroup)
                 .where(memberGroupHistory.member.id.eq(member.getId()))

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@Builder(access = AccessLevel.PRIVATE)
+@Builder
 public class MemberGroupDTO {
     private Long id;
 
@@ -24,7 +24,20 @@ public class MemberGroupDTO {
 
     private List<MemberInfoDTO> groupMembers;   //그룹원 정보
 
+
     public static MemberGroupDTO createResponse(MemberGroup group, List<MemberInfoDTO> memberInfoDTOList){
+        return MemberGroupDTO.builder()
+                .id(group.getId())
+                .createdBy(group.getCreatedBy())
+                .groupName(group.getGroupName())
+                .totalGroupMemberCnt(group.getTotalGroupMemberCnt())
+                .joinedGroupMemberCnt(group.getJoinedGroupMemberCnt())
+                .groupMembers(memberInfoDTOList)
+                .regDate(group.getRegDate())
+                .build();
+    }
+
+    public static MemberGroupDTO createResponse(SimpleMemberGroupDTO group, List<MemberInfoDTO> memberInfoDTOList){
         return MemberGroupDTO.builder()
                 .id(group.getId())
                 .createdBy(group.getCreatedBy())

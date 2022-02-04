@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface MemberGroupRepositoryExtension {
 
-    List<SimpleMemberGroupDTO> getAllMemberGroup(Member member);
+    List<SimpleMemberGroupDTO> getAllInvitedMemberGroup(Member member);
 
     List<String> getAllGroupMemberNickname();   //admin
 
