@@ -62,15 +62,14 @@ public class MemberGroupService {
 
     //내가 그룹장인 그룹 조회
     public List<MemberGroupDTO> getAllCreatingGroup(Member member){
-        List<MemberInfoDTO> memberInfoDTOList = new ArrayList<>();
         List<MemberGroupDTO> responses = new ArrayList<>();
         List<MemberGroup> myGroups = memberGroupRepository.findAllByCreatedBy(member.getId());
         if(myGroups.isEmpty()) throw new CommonException(ErrorCode.GROUP_NOT_FOUND);
 
         for (MemberGroup myGroup : myGroups) {
-            myGroup.getGroupMembers().forEach(e ->
-                memberInfoDTOList.add(MemberInfoDTO.mapperToMemberInfo(e.getMember()))
-            );
+            List<MemberInfoDTO> memberInfoDTOList = new ArrayList<>();
+            myGroup.getGroupMembers()
+                    .forEach(e -> memberInfoDTOList.add(MemberInfoDTO.mapperToMemberInfo(e.getMember())));
             responses.add(MemberGroupDTO.createResponse(myGroup, memberInfoDTOList));
         }
         return responses;
