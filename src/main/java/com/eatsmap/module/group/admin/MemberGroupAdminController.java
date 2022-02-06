@@ -1,4 +1,4 @@
-package com.eatsmap.module.group;
+package com.eatsmap.module.group.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;

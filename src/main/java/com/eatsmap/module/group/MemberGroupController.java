@@ -35,7 +35,7 @@ public class MemberGroupController {
         CommonResponse response = CommonResponse.createResponse(true, data);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-    //초대된 유저 수락
+
     @ApiOperation(value = "그룹원 그룹 가입", notes = "그룹원으로 초대된 유저 수락 및 그룹 가입")
     @GetMapping (path = "/join/{groupId}")
     public ResponseEntity<CommonResponse> joinMemberToGroup(@ApiIgnore @CurrentMember Member member, @PathVariable Long groupId){

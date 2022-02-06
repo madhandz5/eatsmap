@@ -5,8 +5,6 @@ import com.eatsmap.infra.exception.CommonException;
 import com.eatsmap.module.group.MemberGroup;
 import com.eatsmap.module.group.MemberGroupRepository;
 import com.eatsmap.module.group.dto.JoinMemberToGroupResponse;
-import com.eatsmap.module.group.dto.MemberGroupDTO;
-import com.eatsmap.module.group.dto.SimpleMemberGroupDTO;
 import com.eatsmap.module.member.Member;
 import com.eatsmap.module.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -67,10 +64,18 @@ public class MemberGroupHistoryService {
     }
 
     private MemberGroup getGroupById(Long groupId) {
-        Optional<MemberGroup> memberGroup = memberGroupRepository.findById(groupId);
-        if(memberGroup.isEmpty()) throw new CommonException(ErrorCode.GROUP_NOT_FOUND);
-
-        return memberGroup.get();
+        return memberGroupRepository.findById(groupId).orElseThrow(() -> new CommonException(ErrorCode.GROUP_NOT_FOUND));
     }
 
+    public void delete(List<MemberGroupHistory> historyList) {
+        if(!historyList.isEmpty()) {
+            memberGroupHistoryRepository.deleteAll(historyList);
+        }
+    }
+
+    public void exit(MemberGroup group, Member member) {
+        MemberGroupHistory history = memberGroupHistoryRepository.findByMemberAndMemberGroup(member, group);
+        if(history == null) throw new CommonException(ErrorCode.GROUP_HISTORY_NOT_FOUNT);
+        memberGroupHistoryRepository.delete(history);
+    }
 }

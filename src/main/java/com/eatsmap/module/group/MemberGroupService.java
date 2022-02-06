@@ -64,36 +64,59 @@ public class MemberGroupService {
     public List<MemberGroupDTO> getAllCreatingGroup(Member member){
         List<MemberGroupDTO> responses = new ArrayList<>();
         List<MemberGroup> myGroups = memberGroupRepository.findAllByCreatedBy(member.getId());
-        if(myGroups.isEmpty()) throw new CommonException(ErrorCode.GROUP_NOT_FOUND);
 
-        for (MemberGroup myGroup : myGroups) {
-            List<MemberInfoDTO> memberInfoDTOList = new ArrayList<>();
-            myGroup.getGroupMembers()
-                    .forEach(e -> memberInfoDTOList.add(MemberInfoDTO.mapperToMemberInfo(e.getMember())));
-            responses.add(MemberGroupDTO.createResponse(myGroup, memberInfoDTOList));
-        }
-        return responses;
+        return mapperToMemberGroupDTO(myGroups);
     }
 
     //내가 그룹원인 그룹 조회
     public List<MemberGroupDTO> getAllInvitedGroup(Member member) {
         List<MemberGroupDTO> responses = new ArrayList<>();
         List<SimpleMemberGroupDTO> dtoList = memberGroupRepository.getAllInvitedMemberGroup(member);
-        if(dtoList.isEmpty()) throw new CommonException(ErrorCode.GROUP_NOT_FOUND);
+        if(!dtoList.isEmpty()) {
+            for (SimpleMemberGroupDTO dto : dtoList) {
+                List<MemberInfoDTO> memberInfoDTOList = new ArrayList<>();
+                memberGroupRepository.findById(dto.getId()).get()
+                        .getGroupMembers()
+                        .forEach(e -> memberInfoDTOList.add(MemberInfoDTO.mapperToMemberInfo(e.getMember())));
 
-        for (SimpleMemberGroupDTO dto : dtoList) {
-            List<MemberInfoDTO> memberInfoDTOList = new ArrayList<>();
-            memberGroupRepository.findById(dto.getId()).get()
-                    .getGroupMembers()
-                    .forEach(e -> memberInfoDTOList.add(MemberInfoDTO.mapperToMemberInfo(e.getMember())));
-
-            responses.add(MemberGroupDTO.createResponse(dto, memberInfoDTOList));
+                responses.add(MemberGroupDTO.createResponse(dto, memberInfoDTOList));
+            }
         }
         return responses;
     }
 
-    public MemberGroup getMemberGroup(String groupId) {
-        if(groupId.equals("my")) return null;
-        return memberGroupRepository.findById(Long.parseLong(groupId)).orElseThrow(() -> new CommonException(ErrorCode.GROUP_NOT_FOUND));
+    //그룹장 : 그룹 삭제
+    @Transactional
+    public void deleteMemberGroup(Long groupId, Member member){
+        MemberGroup group = getGroup(groupId);
+        if(group.getCreatedBy() != member.getId()){
+            throw new CommonException(ErrorCode.GROUP_CREATION_ACCOUNT_NOT_EQUALS);
+        }
+        memberGroupHistoryService.delete(group.getGroupMembers());
+        memberGroupRepository.delete(group);
+    }
+
+    //그룹원 : 그룹 탈퇴
+    @Transactional
+    public void exitMemberGroup(Long groupId, Member member){
+        MemberGroup group = getGroup(groupId);
+        memberGroupHistoryService.exit(group, member);
+    }
+
+    private MemberGroup getGroup(Long groupId) {
+        return memberGroupRepository.findById(groupId).orElseThrow(() -> new CommonException(ErrorCode.GROUP_NOT_FOUND));
+    }
+
+    public List<MemberGroupDTO> mapperToMemberGroupDTO(List<MemberGroup> group){
+        List<MemberGroupDTO> dto = new ArrayList<>();
+        if(!group.isEmpty()){
+            for (MemberGroup memberGroup : group) {
+                List<MemberInfoDTO> memberInfoDTOList = new ArrayList<>();
+                memberGroup.getGroupMembers()
+                        .forEach(e -> memberInfoDTOList.add(MemberInfoDTO.mapperToMemberInfo(e.getMember())));
+                dto.add(MemberGroupDTO.createResponse(memberGroup, memberInfoDTOList));
+            }
+        }
+        return dto;
     }
 }
